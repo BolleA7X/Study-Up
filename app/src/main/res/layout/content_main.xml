@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/currentSubjectLabel"
         android:text="@string/timer_value"
-        android:textSize="100dp"
+        android:textSize="110dp"
         android:padding="50dp"
         android:gravity="center"
         />
