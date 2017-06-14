@@ -1,16 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.alessio.tesi.MainActivity"
     tools:showIn="@layout/activity_main">
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:id="@+id/currentSubjectLabel"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/prova"
-        android:textSize="50sp" />
-</LinearLayout>
+        android:textSize="50sp"
+        android:text="@string/current_subject_label"
+        android:gravity="center"
+        android:paddingTop="30dp"
+        />
+
+    <TextView
+        android:id="@+id/timerValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/currentSubjectLabel"
+        android:text="@string/timer_value"
+        android:textSize="100dp"
+        android:padding="50dp"
+        android:gravity="center"
+        />
+
+    <SeekBar
+        android:id="@+id/setTimerSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timerValue"
+        android:padding="20dp"
+        />
+
+</RelativeLayout>
