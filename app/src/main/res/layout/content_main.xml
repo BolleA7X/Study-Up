@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/currentSubjectLabel"
         android:layout_centerHorizontal="true"
-        android:layout_margin="90dp">
+        android:layout_margin="80dp">
 
         <ImageButton
             android:id="@+id/startTimerButton"
