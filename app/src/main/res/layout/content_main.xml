@@ -38,6 +38,8 @@
             android:scaleX="0.8"
             android:scaleY="0.8"
             app:srcCompat="@drawable/play_icon" />
+            app:srcCompat="@android:drawable/ic_media_play"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/timerValue"
