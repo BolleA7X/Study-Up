@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/subjectLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="@string/subject_label"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:padding="5dp"/>
+
+    <Spinner
+        android:id="@+id/subjectsSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_toEndOf="@+id/subjectLabel"
+        android:layout_toRightOf="@+id/subjectLabel"
+        android:padding="5dp" />
+
+    <TextView
+        android:id="@+id/StudyTypeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/study_type_label"
+        android:layout_below="@+id/subjectLabel"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:padding="5dp"
+        android:layout_marginTop="100dp"/>
+
+    <CheckBox
+        android:id="@+id/theoryCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/StudyTypeLabel"
+        android:layout_alignLeft="@+id/subjectsSpinner"
+        android:layout_alignStart="@+id/subjectsSpinner"
+        android:layout_toRightOf="@+id/StudyTypeLabel"
+        android:layout_toEndOf="@+id/StudyTypeLabel"
+        android:text="@string/theory"
+        android:padding="5dp"
+        android:textSize="40sp"/>
+
+    <CheckBox
+        android:id="@+id/exercisesCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/subjectsSpinner"
+        android:layout_alignStart="@+id/subjectsSpinner"
+        android:layout_below="@+id/theoryCheckBox"
+        android:text="@string/exercises"
+        android:padding="5dp"
+        android:textSize="40sp"/>
+
+    <CheckBox
+        android:id="@+id/projectCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/project"
+        android:layout_below="@+id/exercisesCheckBox"
+        android:layout_alignLeft="@+id/theoryCheckBox"
+        android:layout_alignStart="@+id/theoryCheckBox"
+        android:padding="5dp"
+        android:textSize="40sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/addSubjectButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="@string/plus_symbol"
+            android:textSize="60sp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/endedConfig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="@string/ok"
+            android:textSize="60sp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+
+</RelativeLayout>

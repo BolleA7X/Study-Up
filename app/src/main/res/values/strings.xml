@@ -7,4 +7,12 @@
     <string name="menu_results">Results</string>
     <string name="menu_trophies">Trophies</string>
     <string name="menu_calendar">Calendar</string>
+
+    <string name="subject_label">Corso</string>
+    <string name="study_type_label">Tipo</string>
+    <string name="theory">Teoria</string>
+    <string name="exercises">Esercizi</string>
+    <string name="project">Progetto</string>
+    <string name="plus_symbol">+</string>
+    <string name="ok">OK</string>
 </resources>
