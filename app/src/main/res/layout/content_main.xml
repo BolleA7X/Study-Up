@@ -37,7 +37,8 @@
             android:scaleType="center"
             android:scaleX="0.8"
             android:scaleY="0.8"
-            app:srcCompat="@drawable/play_icon" />
+            app:srcCompat="@drawable/play_icon"
+            android:contentDescription="imageStartButton" />
 
         <TextView
             android:id="@+id/timerValue"
