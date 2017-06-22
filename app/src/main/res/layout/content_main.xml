@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.alessio.tesi.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    tools:ignore="UnusedAttribute">
 
     <TextView
         android:id="@+id/currentSubjectLabel"
@@ -64,7 +65,6 @@
         android:layout_marginStart="70dp"
         android:background="@android:color/transparent"
         android:max="180"
-
         android:progress="90"
         android:progressTint="#00cc99"
         android:thumbTint="#00cc99" />

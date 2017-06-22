@@ -1,31 +1,29 @@
 package com.example.alessio.tesi;
 
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    /************Prova Timer************/
+    private int timeVal=90;
+    private long mytime;
     private TextView timerValue;
     private ImageButton imageB;
-
+    private SeekBar seekBar;
     private boolean isOn;
+
     CountDownTimer cTimer = null;
-    private SharedPreferences prefs;
 
     //Menu
     @Override
@@ -57,14 +55,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // get references to widgets
         imageB = (ImageButton)findViewById(R.id.startTimerButton);
-        timerValue =(TextView)findViewById(R.id.timerValue);
+        timerValue = (TextView)findViewById(R.id.timerValue);
+        seekBar = (SeekBar)findViewById(R.id.setTimerSeekBar);
 
         // set listeners
         imageB.setOnClickListener(this);
+        seekBar.setOnSeekBarChangeListener(seekBarListener);
 
-        // get preferences
-        prefs = getSharedPreferences("Prefs", MODE_PRIVATE);
-
+        timerValue.setText(String.valueOf(timeVal));
 
         //floating button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.setButton);
@@ -79,8 +77,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     protected void onPause() {
         super.onPause();
-
-        SharedPreferences.Editor edit = prefs.edit();
 
     }
 
@@ -105,10 +101,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     private void start(){
         isOn = true;
-        imageB.setImageResource(R.drawable.only_stop);
-
+        imageB.setImageResource(R.drawable.only_stop1);
+        mytime = timeVal*1000;
+        seekBar.setEnabled(false);
         //start timer function
-        cTimer = new CountDownTimer(30000, 1000) {
+        cTimer = new CountDownTimer(mytime, 1000) {
             public void onTick(long millisUntilFinished) {
                 String s = String.valueOf( millisUntilFinished / 1000);
                 timerValue.setText(s);
@@ -124,9 +121,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void stop(){
         imageB.setImageResource(R.drawable.only_play);
         isOn = false;
-        if(cTimer!=null)
+        seekBar.setEnabled(true);
+        timerValue.setText(String.valueOf(timeVal));
+        if(cTimer!=null){
             cTimer.cancel();
-
+        }
     }
+    //*****************************************************
+    // Event handler for the SeekBar
+    //*****************************************************
+    private OnSeekBarChangeListener seekBarListener = new OnSeekBarChangeListener() {
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress,
+                                      boolean fromUser) {
+            timeVal = seekBar.getProgress();
+            timerValue.setText(String.valueOf(timeVal));
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            Toast.makeText(MainActivity.this,"seek bar progress:"+seekBar.getProgress(),
+                    Toast.LENGTH_SHORT).show();
+        }
+    };
 
 }
