@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private FloatingActionButton fab;
     private int timeVal=90;
     private long mytime;
     private TextView timerValue;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         timerValue.setText(String.valueOf(timeVal));
 
         //floating button
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.setButton);
+        fab = (FloatingActionButton) findViewById(R.id.setButton);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,6 +105,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imageB.setImageResource(R.drawable.only_stop1);
         mytime = timeVal*1000;
         seekBar.setEnabled(false);
+        fab.setClickable(false);
+        fab.setVisibility(View.INVISIBLE);
+
         //start timer function
         cTimer = new CountDownTimer(mytime, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -122,6 +126,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imageB.setImageResource(R.drawable.only_play);
         isOn = false;
         seekBar.setEnabled(true);
+        fab.setClickable(true);
+        fab.setVisibility(View.VISIBLE);
+
         timerValue.setText(String.valueOf(timeVal));
         if(cTimer!=null){
             cTimer.cancel();
@@ -146,8 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            Toast.makeText(MainActivity.this,"seek bar progress:"+seekBar.getProgress(),
-                    Toast.LENGTH_SHORT).show();
+
         }
     };
 
