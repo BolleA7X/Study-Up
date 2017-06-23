@@ -113,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onTick(long millisUntilFinished) {
                 String s = String.valueOf( millisUntilFinished / 1000);
                 timerValue.setText(s);
-                //here you can have your logic to set text to edittext
             }
             public void onFinish() {
                 timerValue.setText("OK!");
