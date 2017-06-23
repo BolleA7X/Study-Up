@@ -49,8 +49,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.endedConfig:
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent);
+                finish();
         }
     }
 
