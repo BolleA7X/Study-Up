@@ -16,4 +16,10 @@
     <string name="project">Progetto</string>
     <string name="plus_symbol">+</string>
     <string name="ok">OK</string>
+
+    <string name="add_subject">Nuova materia</string>
+    <string name="add_subject_label">Aggiungere materia?</string>
+    <string name="add_label">Aggiungi</string>
+    <string name="abort_label">Annulla</string>
+
 </resources>

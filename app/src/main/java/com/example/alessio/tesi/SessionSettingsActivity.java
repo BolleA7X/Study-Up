@@ -1,7 +1,6 @@
 package com.example.alessio.tesi;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -9,18 +8,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+
+import static com.example.alessio.tesi.R.layout.session_settings_activity;
+
 public class SessionSettingsActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button endedConfig;
-
+    private Button addSubjectButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.session_settings_activity);
+        setContentView(session_settings_activity);
 
         endedConfig = (Button) findViewById(R.id.endedConfig);
-
         endedConfig.setOnClickListener(this);
+        addSubjectButton = (Button)findViewById(R.id.addSubjectButton);
+        addSubjectButton.setOnClickListener(this);
     }
 
     @Override
@@ -50,7 +53,17 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         switch (v.getId()){
             case R.id.endedConfig:
                 finish();
+                break;
+            case R.id.addSubjectButton:
+                openDialog();
+                break;
         }
     }
 
+    public void openDialog() {
+        FragmentManager fm = getFragmentManager();
+        setSubjectFragment dialogFragment = new setSubjectFragment ();
+        dialogFragment.show(fm, "Sample Fragment");
+
+    }
 }
