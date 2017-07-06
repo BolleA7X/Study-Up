@@ -1,0 +1,122 @@
+package com.example.alessio.tesi.Database;
+
+public class AppDB {
+    //database constants
+    public static final String DB_NAME = "appDB.db";
+    public static final int DB_VERSION = 1;
+
+    //session constants
+    public static final String SESSION_TABLE = "session";
+
+    public static final String SESSION_ID = "_id";
+    public static final int SESSION_ID_COL = 1;
+
+    public static final String SESSION_YEAR = "year";
+    public static final int SESSION_YEAR_COL = 2;
+
+    public static final String SESSION_MONTH = "month";
+    public static final int SESSION_MONTH_COL = 3;
+
+    public static final String SESSION_DAY = "day";
+    public static final int SESSION_DAY_COL = 4;
+
+    public static final String SESSION_LOCATION_NAME = "location_name";
+    public static final int SESSION_LOCATION_NAME_COL = 5;
+
+    public static final String SESSION_COURSE_ID = "course_id";
+    public static final int SESSION_COURSE_ID_COL = 6;
+
+    public static final String SESSION_TYPE_ID = "type_id";
+    public static final int SESSION_TYPE_ID_COL = 7;
+
+    //location constants
+    public static final String LOCATION_TABLE = "location";
+
+    public static final String LOCATION_NAME = "_name";
+    public static final int LOCATION_NAME_COL = 1;
+
+    public static final String LOCATION_LATITUDE = "latitude";
+    public static final int LOCATION_LATITUDE_COL = 2;
+
+    public static final String LOCATION_LONGITUDE = "longitude";
+    public static final int LOCATION_LONGITUDE_COL = 3;
+
+    //course constants
+    public static final String COURSE_TABLE = "course";
+
+    public static final String COURSE_ID = "_id";
+    public static final int COURSE_ID_COL = 1;
+
+    public static final String COURSE_NAME = "name";
+    public static final int COURSE_NAME_COL = 2;
+
+    //type constants
+    public static final String TYPE_TABLE = "type";
+
+    public static final String TYPE_ID = "_id";
+    public static final int TYPE_ID_COL = 1;
+
+    public static final String TYPE_THEORY = "theory";
+    public static final int TYPE_THEORY_COL = 2;
+
+    public static final String TYPE_EXERCISE = "exercise";
+    public static final int TYPE_EXERCISE_COL = 3;
+
+    public static final String TYPE_PROJECT = "project";
+    public static final int TYPE_PROJECT_COL = 4;
+
+    //trophy constants
+    public static final String TROPHY_TABLE = "trophy";
+
+    public static final String TROPHY_ID = "_id";
+    public static final int TROPHY_ID_COL = 1;
+
+    public static final String TROPHY_NAME = "name";
+    public static final int TROPHY_NAME_COL = 2;
+
+    public static final String TROPHY_COLOR = "color";
+    public static final int TROPHY_COLOR_COL = 3;
+
+    public static final String TROPHY_DESCRIPTION = "description";
+    public static final int TROPHY_DESCRIPTION_COL = 4;
+
+    public static final String TROPHY_UNLOCKED = "unlocked";
+    public static final int TROPHY_UNLOCKED_COL = 5;
+
+    //CREATE TABLE statements
+    public static final String CREATE_SESSION_TABLE =
+            "CREATE TABLE " + SESSION_TABLE + " ( " +
+                    SESSION_ID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    SESSION_YEAR + "INTEGER, " +
+                    SESSION_MONTH + "INTEGER, " +
+                    SESSION_DAY + "INTEGER, " +
+                    SESSION_LOCATION_NAME + "TEXT, " +
+                    SESSION_COURSE_ID + "INTEGER, " +
+                    SESSION_TYPE_ID + "INTEGER);";
+
+    public static final String CREATE_LOCATION_TABLE =
+            "CREATE TABLE " + LOCATION_TABLE + " ( " +
+                    LOCATION_NAME + "TEXT PRIMARY KEY, " +
+                    LOCATION_LATITUDE + "REAL, " +
+                    LOCATION_LONGITUDE + "REAL);";
+
+    public static final String CREATE_COURSE_TABLE =
+            "CREATE TABLE " + COURSE_TABLE + " ( " +
+                    COURSE_ID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COURSE_NAME + "TEXT);";
+
+    public static final String CREATE_TYPE_TABLE =
+            "CREATE TABLE " + TYPE_TABLE + " ( " +
+                    TYPE_ID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    TYPE_THEORY + "INTEGER, " +
+                    TYPE_EXERCISE + "INTEGER, " +
+                    TYPE_PROJECT + "INTEGER);";
+
+    public static final String CREATE_TROPHY_TABLE =
+            "CREATE TABLE " + TROPHY_TABLE + " ( " +
+                    TROPHY_ID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    TROPHY_NAME + "TEXT, " +
+                    TROPHY_COLOR + "TEXT, " +
+                    TROPHY_DESCRIPTION + "TEXT, " +
+                    TROPHY_UNLOCKED + "INTEGER);";
+}
