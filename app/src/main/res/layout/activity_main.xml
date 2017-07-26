@@ -4,10 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.alessio.tesi.MainActivity" >
+    tools:context="com.example.alessio.tesi.MainActivity"
+    android:id="@+id/mainActivity">
+
+    <fragment
+        android:name="com.example.alessio.tesi.TrophiesFragment"
+        android:id="@+id/trophies_fragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
 
     <include
-        android:id="@+id/mainActivity"
+        android:id="@+id/contentMainActivity"
         layout="@layout/content_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

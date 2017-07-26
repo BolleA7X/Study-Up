@@ -1,6 +1,8 @@
 package com.example.alessio.tesi;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -24,7 +26,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(session_settings_activity);
+        setContentView(R.layout.session_settings_activity);
 
         endedConfig = (Button) findViewById(R.id.endedConfig);
         endedConfig.setOnClickListener(this);
@@ -58,6 +60,13 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         if (id == R.id.menu_settings) {
             return true;
         }
+        else if (id==R.id.menu_trophies){
+            Fragment newFragment = new TrophiesFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.commit();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -66,7 +75,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.endedConfig:
-                finish();
+                finish();   //back to main activity
                 break;
             case R.id.addSubjectButton:
                 openDialog();
