@@ -1,10 +1,15 @@
 package com.example.alessio.tesi;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,9 +46,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.menu_settings) {
-            return true;
+        Toast msg;  // va tolto poi   <-------------------
+
+        switch(id){
+            case R.id.menu_trophies:
+                Fragment trophiesFragment = new TrophiesFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.mainActivity, trophiesFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                msg = Toast.makeText(this, "Trophies menu clicked", Toast.LENGTH_LONG);
+                msg.show();
+
+                break;
+            case R.id.menu_settings:
+                msg = Toast.makeText(this, "Settings menu clicked", Toast.LENGTH_LONG);
+                msg.show();
+                break;
+            case R.id.menu_results:
+                msg = Toast.makeText(this, "Results menu clicked", Toast.LENGTH_LONG);
+                msg.show();
+                break;
+            case R.id.menu_calendar:
+                msg = Toast.makeText(this, "Calendar menu clicked", Toast.LENGTH_LONG);
+                msg.show();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -78,13 +106,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     protected void onPause() {
         super.onPause();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -100,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
     private void start(){
         isOn = true;
         imageB.setImageResource(R.drawable.only_stop1);
@@ -121,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cTimer.start();
 
     }
+
     private void stop(){
         imageB.setImageResource(R.drawable.only_play);
         isOn = false;
@@ -133,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             cTimer.cancel();
         }
     }
+
     //*****************************************************
     // Event handler for the SeekBar
     //*****************************************************

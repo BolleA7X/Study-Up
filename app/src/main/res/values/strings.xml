@@ -22,4 +22,47 @@
     <string name="add_label">Aggiungi</string>
     <string name="abort_label">Annulla</string>
 
+    <string name="trophy_title_01">Fuori il primo! E gli altri?</string>
+    <string name="trophy_title_02">Splash!</string>
+    <string name="trophy_title_03">Pentasplash!</string>
+    <string name="trophy_title_04">E\' intelligente ma non si applica</string>
+    <string name="trophy_title_05">E\' intelligente e si applica</string>
+    <string name="trophy_title_06">Secchione</string>
+    <string name="trophy_title_07">Due piccioni con una fava</string>
+    <string name="trophy_title_08">Multitasking</string>
+    <string name="trophy_title_09">Stakanovista</string>
+    <string name="trophy_title_10">Più sono grossi…</string>
+    <string name="trophy_title_11">…più si fanno male cadendo!</string>
+    <string name="trophy_title_12">Smanettone</string>
+    <string name="trophy_title_13">E\' finita la pacchia!</string>
+    <string name="trophy_title_14">Guardone</string>
+    <string name="trophy_title_15">Mesiversario</string>
+    <string name="trophy_title_16">42</string>
+    <string name="trophy_title_17">Lasciatemi studiare</string>
+    <string name="trophy_title_18">Caffè?</string>
+    <string name="trophy_title_19">Caffeinomane</string>
+    <string name="trophy_title_20">Mr Pomodoro</string>
+
+    <string name="trophy_description_01">Apri per la prima volta l\'app.</string>
+    <string name="trophy_description_02">Completa un pomodoro.</string>
+    <string name="trophy_description_03">Completa 5 pomodori di fila.</string>
+    <string name="trophy_description_04">Completa 10 ore di studio totale.</string>
+    <string name="trophy_description_05">Completa 25 ore di studio totale.</string>
+    <string name="trophy_description_06">Completa 50 ore di studio totale.</string>
+    <string name="trophy_description_07">Studia nello stesso giorno due materie diverse.</string>
+    <string name="trophy_description_08">Studia nello stesso giorno tre materie diverse.</string>
+    <string name="trophy_description_09">Completa 10 pomodori in un solo giorno.</string>
+    <string name="trophy_description_10">Aggiungi una nuova materia.</string>
+    <string name="trophy_description_11">Cancella una materia dopo aver passato l\'esame.</string>
+    <string name="trophy_description_12">Prova la modalità di studio Pomodoro.</string>
+    <string name="trophy_description_13">Riapri l\'app dopo 7 giorni dall\'ultimo accesso.</string>
+    <string name="trophy_description_14">Visualizza i risultati delle tue sessioni.</string>
+    <string name="trophy_description_15">Utilizza l\'app per un mese.</string>
+    <string name="trophy_description_16">Completa 42 sessioni di qualunque tipo.</string>
+    <string name="trophy_description_17">Completa due sessioni di fila senza pausa.</string>
+    <string name="trophy_description_18">Completa una sessione normale da almeno un\'ora.</string>
+    <string name="trophy_description_19">Completa una sessione normale da almeno due ore.</string>
+    <string name="trophy_description_20">Sblocca tutti gli altri trofei..studiando!</string>
+
+
 </resources>

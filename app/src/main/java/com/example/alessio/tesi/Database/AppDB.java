@@ -1,9 +1,45 @@
 package com.example.alessio.tesi.Database;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import java.util.ArrayList;
+
 public class AppDB {
+
+    private static class DBHelper extends SQLiteOpenHelper {
+        public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+            super(context, name, factory, version);
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            Log.d("Creating db","");
+            db.execSQL(CREATE_SESSION_TABLE);
+            db.execSQL(CREATE_LOCATION_TABLE);
+            db.execSQL(CREATE_COURSE_TABLE);
+            db.execSQL(CREATE_TYPE_TABLE);
+            db.execSQL(CREATE_TROPHY_TABLE);
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            Log.d("Dropping tables","");
+            db.execSQL(DROP_SESSION_TABLE);
+            db.execSQL(DROP_LOCATION_TABLE);
+            db.execSQL(DROP_COURSE_TABLE);
+            db.execSQL(DROP_TYPE_TABLE);
+            db.execSQL(DROP_TROPHY_TABLE);
+            onCreate(db);
+        }
+    }
+
     //database constants
     public static final String DB_NAME = "appDB.db";
-    public static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 2;
 
     //session constants
     public static final String SESSION_TABLE = "session";
@@ -86,37 +122,95 @@ public class AppDB {
     //CREATE TABLE statements
     public static final String CREATE_SESSION_TABLE =
             "CREATE TABLE " + SESSION_TABLE + " ( " +
-                    SESSION_ID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    SESSION_YEAR + "INTEGER, " +
-                    SESSION_MONTH + "INTEGER, " +
-                    SESSION_DAY + "INTEGER, " +
-                    SESSION_LOCATION_NAME + "TEXT, " +
-                    SESSION_COURSE_ID + "INTEGER, " +
-                    SESSION_TYPE_ID + "INTEGER);";
+                    SESSION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    SESSION_YEAR + " INTEGER, " +
+                    SESSION_MONTH + " INTEGER, " +
+                    SESSION_DAY + " INTEGER, " +
+                    SESSION_LOCATION_NAME + " TEXT, " +
+                    SESSION_COURSE_ID + " INTEGER, " +
+                    SESSION_TYPE_ID + " INTEGER);";
 
     public static final String CREATE_LOCATION_TABLE =
             "CREATE TABLE " + LOCATION_TABLE + " ( " +
-                    LOCATION_NAME + "TEXT PRIMARY KEY, " +
-                    LOCATION_LATITUDE + "REAL, " +
-                    LOCATION_LONGITUDE + "REAL);";
+                    LOCATION_NAME + " TEXT PRIMARY KEY, " +
+                    LOCATION_LATITUDE + " REAL, " +
+                    LOCATION_LONGITUDE + " REAL);";
 
     public static final String CREATE_COURSE_TABLE =
             "CREATE TABLE " + COURSE_TABLE + " ( " +
-                    COURSE_ID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COURSE_NAME + "TEXT);";
+                    COURSE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COURSE_NAME + " TEXT);";
 
     public static final String CREATE_TYPE_TABLE =
             "CREATE TABLE " + TYPE_TABLE + " ( " +
-                    TYPE_ID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    TYPE_THEORY + "INTEGER, " +
-                    TYPE_EXERCISE + "INTEGER, " +
-                    TYPE_PROJECT + "INTEGER);";
+                    TYPE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    TYPE_THEORY + " INTEGER, " +
+                    TYPE_EXERCISE + " INTEGER, " +
+                    TYPE_PROJECT + " INTEGER);";
 
     public static final String CREATE_TROPHY_TABLE =
             "CREATE TABLE " + TROPHY_TABLE + " ( " +
-                    TROPHY_ID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    TROPHY_NAME + "TEXT, " +
-                    TROPHY_COLOR + "TEXT, " +
-                    TROPHY_DESCRIPTION + "TEXT, " +
-                    TROPHY_UNLOCKED + "INTEGER);";
+                    TROPHY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    TROPHY_NAME + " TEXT, " +
+                    TROPHY_COLOR + " TEXT, " +
+                    TROPHY_DESCRIPTION + " TEXT, " +
+                    TROPHY_UNLOCKED + " INTEGER);";
+
+    //DROP TABLE statements
+    public static final String DROP_SESSION_TABLE =
+            "DROP TABLE IF EXISTS " + SESSION_TABLE;
+
+    public static final String DROP_LOCATION_TABLE =
+            "DROP TABLE IF EXISTS " + LOCATION_TABLE;
+
+    public static final String DROP_COURSE_TABLE =
+            "DROP TABLE IF EXISTS " + COURSE_TABLE;
+
+    public static final String DROP_TYPE_TABLE =
+            "DROP TABLE IF EXISTS " + TYPE_TABLE;
+
+    public static final String DROP_TROPHY_TABLE =
+            "DROP TABLE IF EXISTS " + TROPHY_TABLE;
+
+    //attributes and methods
+    private SQLiteDatabase db;
+    private DBHelper dbHelper;
+
+    public AppDB(Context context) {
+        dbHelper = new DBHelper(context,DB_NAME,null,DB_VERSION);
+    }
+
+    private void openReadableDB() {
+        db = dbHelper.getReadableDatabase();
+    }
+
+    private void openWriteableDB() {
+        db = dbHelper.getWritableDatabase();
+    }
+
+    private void closeDB() {
+        if(db != null)
+            db.close();
+    }
+
+    public void insertSubject(Course course) {
+        ContentValues cv = new ContentValues();
+        cv.put(COURSE_NAME,course.getName());
+        this.openWriteableDB();
+        long rowID = db.insert(COURSE_TABLE,null,cv);
+        this.closeDB();
+    }
+
+    public ArrayList<String> getSubjects() {
+        this.openReadableDB();
+        String[] args = new String[1]; args[0] = COURSE_NAME;
+        Cursor cursor = db.query(COURSE_TABLE,args,null,null,null,null,null);
+        ArrayList<String> subjects = new ArrayList<String>();
+        while(cursor.moveToNext())
+           subjects.add(cursor.getString(cursor.getColumnIndex(COURSE_NAME)));
+        if(cursor !=null)
+            cursor.close();
+        this.closeDB();
+        return subjects;
+    }
 }
