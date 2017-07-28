@@ -23,6 +23,28 @@ public class AppDB {
             db.execSQL(CREATE_COURSE_TABLE);
             db.execSQL(CREATE_TYPE_TABLE);
             db.execSQL(CREATE_TROPHY_TABLE);
+
+            //inserting all trophies
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (1, "+Trophy.BRONZE+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (2, "+Trophy.BRONZE+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (3, "+Trophy.SILVER+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (4, "+Trophy.BRONZE+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (5, "+Trophy.SILVER+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (6, "+Trophy.GOLD+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (7, "+Trophy.BRONZE+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (8, "+Trophy.SILVER+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (9, "+Trophy.SILVER+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (10, "+Trophy.BRONZE+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (11, "+Trophy.BRONZE+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (12, "+Trophy.BRONZE+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (13, "+Trophy.BRONZE+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (14, "+Trophy.BRONZE+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (15, "+Trophy.SILVER+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (16, "+Trophy.GOLD+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (17, "+Trophy.SILVER+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (18, "+Trophy.BRONZE+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (19, "+Trophy.SILVER+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (20, "+Trophy.PLATINUM+", 0)");
         }
 
         @Override
@@ -39,7 +61,7 @@ public class AppDB {
 
     //database constants
     public static final String DB_NAME = "appDB.db";
-    public static final int DB_VERSION = 2;
+    public static final int DB_VERSION = 3;
 
     //session constants
     public static final String SESSION_TABLE = "session";
@@ -107,17 +129,11 @@ public class AppDB {
     public static final String TROPHY_ID = "_id";
     public static final int TROPHY_ID_COL = 1;
 
-    public static final String TROPHY_NAME = "name";
-    public static final int TROPHY_NAME_COL = 2;
-
     public static final String TROPHY_COLOR = "color";
-    public static final int TROPHY_COLOR_COL = 3;
-
-    public static final String TROPHY_DESCRIPTION = "description";
-    public static final int TROPHY_DESCRIPTION_COL = 4;
+    public static final int TROPHY_COLOR_COL = 2;
 
     public static final String TROPHY_UNLOCKED = "unlocked";
-    public static final int TROPHY_UNLOCKED_COL = 5;
+    public static final int TROPHY_UNLOCKED_COL = 3;
 
     //CREATE TABLE statements
     public static final String CREATE_SESSION_TABLE =
@@ -150,10 +166,8 @@ public class AppDB {
 
     public static final String CREATE_TROPHY_TABLE =
             "CREATE TABLE " + TROPHY_TABLE + " ( " +
-                    TROPHY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    TROPHY_NAME + " TEXT, " +
+                    TROPHY_ID + " INTEGER PRIMARY KEY, " +
                     TROPHY_COLOR + " TEXT, " +
-                    TROPHY_DESCRIPTION + " TEXT, " +
                     TROPHY_UNLOCKED + " INTEGER);";
 
     //DROP TABLE statements

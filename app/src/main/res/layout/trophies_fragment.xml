@@ -252,24 +252,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         style="@style/TrophyTitle"
-                        android:text="@string/trophy_title_13"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/TrophyDescription"
-                        android:text="@string/trophy_description_13"/>
-                </LinearLayout>
-            </TableRow>
-
-            <TableRow>
-                <ImageView
-                    style="@style/TrophyImage"/>
-                <LinearLayout
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        style="@style/TrophyTitle"
                         android:text="@string/trophy_title_14"/>
                     <TextView
                         android:layout_width="match_parent"

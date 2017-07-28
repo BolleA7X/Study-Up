@@ -32,6 +32,10 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         endedConfig.setOnClickListener(this);
         addSubjectButton = (Button)findViewById(R.id.addSubjectButton);
         addSubjectButton.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onResume() {
         subjectsSpinner = (Spinner)findViewById(R.id.subjectsSpinner);
 
         AppDB db = new AppDB(this);
@@ -40,6 +44,8 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
             subjects.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             subjectsSpinner.setAdapter(subjects);
         }
+
+        super.onResume();
     }
 
     @Override
