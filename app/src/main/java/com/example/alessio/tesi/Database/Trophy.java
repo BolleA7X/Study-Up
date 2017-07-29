@@ -10,7 +10,7 @@ public class Trophy {
     private String color;
     int unlocked;
 
-    public Trophy(int id, String name, String color, String description, int unlocked) {
+    public Trophy(int id, String color, int unlocked) {
         this.id = id;
         this.color = color;
         this.unlocked = unlocked;

@@ -21,16 +21,15 @@ public class AppDB {
             db.execSQL(CREATE_SESSION_TABLE);
             db.execSQL(CREATE_LOCATION_TABLE);
             db.execSQL(CREATE_COURSE_TABLE);
-            db.execSQL(CREATE_TYPE_TABLE);
             db.execSQL(CREATE_TROPHY_TABLE);
 
             //inserting all trophies
-            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (1, "+Trophy.BRONZE+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (1, "+Trophy.BRONZE+", 1)");
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (2, "+Trophy.BRONZE+", 0)");
-            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (3, "+Trophy.SILVER+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (3, "+Trophy.SILVER+", 1)");
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (4, "+Trophy.BRONZE+", 0)");
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (5, "+Trophy.SILVER+", 0)");
-            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (6, "+Trophy.GOLD+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (6, "+Trophy.GOLD+", 1)");
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (7, "+Trophy.BRONZE+", 0)");
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (8, "+Trophy.SILVER+", 0)");
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (9, "+Trophy.SILVER+", 0)");
@@ -44,7 +43,7 @@ public class AppDB {
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (17, "+Trophy.SILVER+", 0)");
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (18, "+Trophy.BRONZE+", 0)");
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (19, "+Trophy.SILVER+", 0)");
-            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (20, "+Trophy.PLATINUM+", 0)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (20, "+Trophy.PLATINUM+", 1)");
         }
 
         @Override
@@ -53,7 +52,7 @@ public class AppDB {
             db.execSQL(DROP_SESSION_TABLE);
             db.execSQL(DROP_LOCATION_TABLE);
             db.execSQL(DROP_COURSE_TABLE);
-            db.execSQL(DROP_TYPE_TABLE);
+            db.execSQL("DROP TABLE IF EXISTS type");
             db.execSQL(DROP_TROPHY_TABLE);
             onCreate(db);
         }
@@ -61,7 +60,7 @@ public class AppDB {
 
     //database constants
     public static final String DB_NAME = "appDB.db";
-    public static final int DB_VERSION = 3;
+    public static final int DB_VERSION = 4;
 
     //session constants
     public static final String SESSION_TABLE = "session";
@@ -78,14 +77,20 @@ public class AppDB {
     public static final String SESSION_DAY = "day";
     public static final int SESSION_DAY_COL = 4;
 
+    public static final String SESSION_THEORY = "theory";
+    public static final int SESSION_THEORY_COL = 5;
+
+    public static final String SESSION_EXERCISE = "exercise";
+    public static final int SESSION_EXERCISE_COL = 6;
+
+    public static final String SESSION_PROJECT = "project";
+    public static final int SESSION_PROJECT_COL = 7;
+
     public static final String SESSION_LOCATION_NAME = "location_name";
-    public static final int SESSION_LOCATION_NAME_COL = 5;
+    public static final int SESSION_LOCATION_NAME_COL = 8;
 
     public static final String SESSION_COURSE_ID = "course_id";
-    public static final int SESSION_COURSE_ID_COL = 6;
-
-    public static final String SESSION_TYPE_ID = "type_id";
-    public static final int SESSION_TYPE_ID_COL = 7;
+    public static final int SESSION_COURSE_ID_COL = 9;
 
     //location constants
     public static final String LOCATION_TABLE = "location";
@@ -108,21 +113,6 @@ public class AppDB {
     public static final String COURSE_NAME = "name";
     public static final int COURSE_NAME_COL = 2;
 
-    //type constants
-    public static final String TYPE_TABLE = "type";
-
-    public static final String TYPE_ID = "_id";
-    public static final int TYPE_ID_COL = 1;
-
-    public static final String TYPE_THEORY = "theory";
-    public static final int TYPE_THEORY_COL = 2;
-
-    public static final String TYPE_EXERCISE = "exercise";
-    public static final int TYPE_EXERCISE_COL = 3;
-
-    public static final String TYPE_PROJECT = "project";
-    public static final int TYPE_PROJECT_COL = 4;
-
     //trophy constants
     public static final String TROPHY_TABLE = "trophy";
 
@@ -142,9 +132,11 @@ public class AppDB {
                     SESSION_YEAR + " INTEGER, " +
                     SESSION_MONTH + " INTEGER, " +
                     SESSION_DAY + " INTEGER, " +
+                    SESSION_THEORY + " INTEGER, " +
+                    SESSION_EXERCISE + " INTEGER, " +
+                    SESSION_PROJECT + " INTEGER, " +
                     SESSION_LOCATION_NAME + " TEXT, " +
-                    SESSION_COURSE_ID + " INTEGER, " +
-                    SESSION_TYPE_ID + " INTEGER);";
+                    SESSION_COURSE_ID + " INTEGER);";
 
     public static final String CREATE_LOCATION_TABLE =
             "CREATE TABLE " + LOCATION_TABLE + " ( " +
@@ -156,13 +148,6 @@ public class AppDB {
             "CREATE TABLE " + COURSE_TABLE + " ( " +
                     COURSE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COURSE_NAME + " TEXT);";
-
-    public static final String CREATE_TYPE_TABLE =
-            "CREATE TABLE " + TYPE_TABLE + " ( " +
-                    TYPE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    TYPE_THEORY + " INTEGER, " +
-                    TYPE_EXERCISE + " INTEGER, " +
-                    TYPE_PROJECT + " INTEGER);";
 
     public static final String CREATE_TROPHY_TABLE =
             "CREATE TABLE " + TROPHY_TABLE + " ( " +
@@ -179,9 +164,6 @@ public class AppDB {
 
     public static final String DROP_COURSE_TABLE =
             "DROP TABLE IF EXISTS " + COURSE_TABLE;
-
-    public static final String DROP_TYPE_TABLE =
-            "DROP TABLE IF EXISTS " + TYPE_TABLE;
 
     public static final String DROP_TROPHY_TABLE =
             "DROP TABLE IF EXISTS " + TROPHY_TABLE;
@@ -217,7 +199,7 @@ public class AppDB {
 
     public ArrayList<String> getSubjects() {
         this.openReadableDB();
-        String[] args = new String[1]; args[0] = COURSE_NAME;
+        String[] args = new String[] {COURSE_NAME};
         Cursor cursor = db.query(COURSE_TABLE,args,null,null,null,null,null);
         ArrayList<String> subjects = new ArrayList<String>();
         while(cursor.moveToNext())
@@ -226,5 +208,22 @@ public class AppDB {
             cursor.close();
         this.closeDB();
         return subjects;
+    }
+
+    public Trophy[] getTrophies() {
+        this.openReadableDB();
+        String[] args = new String[] {TROPHY_COLOR,TROPHY_UNLOCKED};
+        Cursor cursor = db.query(TROPHY_TABLE,args,null,null,null,null,null);
+        Trophy[] trophies = new Trophy[20];
+        int i = 0;
+        while(cursor.moveToNext()) {
+            Trophy temp = new Trophy(i+1,cursor.getString(cursor.getColumnIndex(TROPHY_COLOR)),cursor.getInt(cursor.getColumnIndex(TROPHY_UNLOCKED)));
+            trophies[i] = temp;
+            ++i;
+        }
+        if(cursor !=null)
+            cursor.close();
+        this.closeDB();
+        return trophies;
     }
 }

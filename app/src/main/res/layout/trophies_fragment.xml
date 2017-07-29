@@ -9,8 +9,10 @@
             android:layout_height="wrap_content">
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t1"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -27,8 +29,11 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t2"
+                    style="@style/TrophyImage" />
+
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -45,8 +50,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t3"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -63,8 +70,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t4"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -81,8 +90,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t5"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -99,8 +110,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t6"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -117,8 +130,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t7"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -135,8 +150,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t8"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -154,8 +171,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t9"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -172,8 +191,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t10"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -190,8 +211,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t11"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -208,8 +231,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t12"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -226,8 +251,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t13"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -244,8 +271,11 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t14"
+                    style="@style/TrophyImage" />
+
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -262,8 +292,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t15"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -280,8 +312,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t16"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -298,8 +332,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t17"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -316,8 +352,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t18"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -334,8 +372,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t19"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -352,8 +392,10 @@
             </TableRow>
 
             <TableRow>
+
                 <ImageView
-                    style="@style/TrophyImage"/>
+                    android:id="@+id/t20"
+                    style="@style/TrophyImage" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
