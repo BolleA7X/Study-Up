@@ -52,7 +52,6 @@ public class AppDB {
             db.execSQL(DROP_SESSION_TABLE);
             db.execSQL(DROP_LOCATION_TABLE);
             db.execSQL(DROP_COURSE_TABLE);
-            db.execSQL("DROP TABLE IF EXISTS type");
             db.execSQL(DROP_TROPHY_TABLE);
             onCreate(db);
         }
@@ -60,7 +59,7 @@ public class AppDB {
 
     //database constants
     public static final String DB_NAME = "appDB.db";
-    public static final int DB_VERSION = 4;
+    public static final int DB_VERSION = 5;
 
     //session constants
     public static final String SESSION_TABLE = "session";
@@ -77,20 +76,23 @@ public class AppDB {
     public static final String SESSION_DAY = "day";
     public static final int SESSION_DAY_COL = 4;
 
+    public static final String SESSION_DURATION = "duration";
+    public static final int SESSION_DURATION_COL = 5;
+
     public static final String SESSION_THEORY = "theory";
-    public static final int SESSION_THEORY_COL = 5;
+    public static final int SESSION_THEORY_COL = 6;
 
     public static final String SESSION_EXERCISE = "exercise";
-    public static final int SESSION_EXERCISE_COL = 6;
+    public static final int SESSION_EXERCISE_COL = 7;
 
     public static final String SESSION_PROJECT = "project";
-    public static final int SESSION_PROJECT_COL = 7;
+    public static final int SESSION_PROJECT_COL = 8;
 
     public static final String SESSION_LOCATION_NAME = "location_name";
-    public static final int SESSION_LOCATION_NAME_COL = 8;
+    public static final int SESSION_LOCATION_NAME_COL = 9;
 
     public static final String SESSION_COURSE_ID = "course_id";
-    public static final int SESSION_COURSE_ID_COL = 9;
+    public static final int SESSION_COURSE_ID_COL = 10;
 
     //location constants
     public static final String LOCATION_TABLE = "location";
@@ -125,6 +127,15 @@ public class AppDB {
     public static final String TROPHY_UNLOCKED = "unlocked";
     public static final int TROPHY_UNLOCKED_COL = 3;
 
+    //counter constants
+    public static final String COUNTER_TABLE = "counter";
+
+    public static final String COUNTER_NAME = "_name";
+    public static final int COUNTER_NAME_COL = 1;
+
+    public static final String COUNTER_VALUE = "value";
+    public static final int COUNTER_VALUE_COL = 2;
+
     //CREATE TABLE statements
     public static final String CREATE_SESSION_TABLE =
             "CREATE TABLE " + SESSION_TABLE + " ( " +
@@ -132,6 +143,7 @@ public class AppDB {
                     SESSION_YEAR + " INTEGER, " +
                     SESSION_MONTH + " INTEGER, " +
                     SESSION_DAY + " INTEGER, " +
+                    SESSION_DURATION + " INTEGER, " +
                     SESSION_THEORY + " INTEGER, " +
                     SESSION_EXERCISE + " INTEGER, " +
                     SESSION_PROJECT + " INTEGER, " +
@@ -155,6 +167,11 @@ public class AppDB {
                     TROPHY_COLOR + " TEXT, " +
                     TROPHY_UNLOCKED + " INTEGER);";
 
+    public static final String CREATE_COUNTER_TABLE =
+            "CREATE TABLE " + COUNTER_TABLE + " ( " +
+                    COUNTER_NAME + " TEXT PRIMARY KEY, " +
+                    COUNTER_VALUE + " INTEGER);";
+
     //DROP TABLE statements
     public static final String DROP_SESSION_TABLE =
             "DROP TABLE IF EXISTS " + SESSION_TABLE;
@@ -167,6 +184,9 @@ public class AppDB {
 
     public static final String DROP_TROPHY_TABLE =
             "DROP TABLE IF EXISTS " + TROPHY_TABLE;
+
+    public static final String DROP_COUNTER_TABLE =
+            "DROP TABLE IF EXISTS " + COUNTER_TABLE;
 
     //attributes and methods
     private SQLiteDatabase db;
