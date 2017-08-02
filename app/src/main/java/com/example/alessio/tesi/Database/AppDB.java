@@ -59,7 +59,7 @@ public class AppDB {
 
     //database constants
     public static final String DB_NAME = "appDB.db";
-    public static final int DB_VERSION = 5;
+    public static final int DB_VERSION = 7;
 
     //session constants
     public static final String SESSION_TABLE = "session";
@@ -91,7 +91,7 @@ public class AppDB {
     public static final String SESSION_LOCATION_NAME = "location_name";
     public static final int SESSION_LOCATION_NAME_COL = 9;
 
-    public static final String SESSION_COURSE_ID = "course_id";
+    public static final String SESSION_COURSE_NAME = "course_name";
     public static final int SESSION_COURSE_ID_COL = 10;
 
     //location constants
@@ -109,11 +109,8 @@ public class AppDB {
     //course constants
     public static final String COURSE_TABLE = "course";
 
-    public static final String COURSE_ID = "_id";
-    public static final int COURSE_ID_COL = 1;
-
-    public static final String COURSE_NAME = "name";
-    public static final int COURSE_NAME_COL = 2;
+    public static final String COURSE_NAME = "_name";
+    public static final int COURSE_NAME_COL = 1;
 
     //trophy constants
     public static final String TROPHY_TABLE = "trophy";
@@ -148,7 +145,7 @@ public class AppDB {
                     SESSION_EXERCISE + " INTEGER, " +
                     SESSION_PROJECT + " INTEGER, " +
                     SESSION_LOCATION_NAME + " TEXT, " +
-                    SESSION_COURSE_ID + " INTEGER);";
+                    SESSION_COURSE_NAME + " TEXT);";
 
     public static final String CREATE_LOCATION_TABLE =
             "CREATE TABLE " + LOCATION_TABLE + " ( " +
@@ -158,8 +155,7 @@ public class AppDB {
 
     public static final String CREATE_COURSE_TABLE =
             "CREATE TABLE " + COURSE_TABLE + " ( " +
-                    COURSE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COURSE_NAME + " TEXT);";
+                    COURSE_NAME + " TEXT PRIMARY KEY);";
 
     public static final String CREATE_TROPHY_TABLE =
             "CREATE TABLE " + TROPHY_TABLE + " ( " +
@@ -217,6 +213,22 @@ public class AppDB {
         this.closeDB();
     }
 
+    public void insertSession(Session session) {
+        ContentValues cv = new ContentValues();
+        cv.put(SESSION_YEAR,session.getYear());
+        cv.put(SESSION_MONTH,session.getMonth());
+        cv.put(SESSION_DAY,session.getDay());
+        cv.put(SESSION_DURATION,session.getDuration());
+        cv.put(SESSION_THEORY,session.getTheory());
+        cv.put(SESSION_EXERCISE,session.getExercise());
+        cv.put(SESSION_PROJECT,session.getProject());
+        cv.put(SESSION_LOCATION_NAME,session.getLocation_name());
+        cv.put(SESSION_COURSE_NAME,session.getCourse_name());
+        this.openWriteableDB();
+        long rowId = db.insert(SESSION_TABLE,null,cv);
+        this.closeDB();
+    }
+
     public ArrayList<String> getSubjects() {
         this.openReadableDB();
         String[] args = new String[] {COURSE_NAME};
@@ -224,7 +236,7 @@ public class AppDB {
         ArrayList<String> subjects = new ArrayList<String>();
         while(cursor.moveToNext())
            subjects.add(cursor.getString(cursor.getColumnIndex(COURSE_NAME)));
-        if(cursor !=null)
+        if(cursor != null)
             cursor.close();
         this.closeDB();
         return subjects;

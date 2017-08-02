@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Tesi</string>
     <string name="set_button">SET</string>
-    <string name="current_subject_label">FISICA</string>
+    <string name="current_subject_label">CORSO</string>
     <string name="timer_value">90</string>
     <string name="image_desc">Triangular button image</string>
     <string name="menu_settings">Settings</string>

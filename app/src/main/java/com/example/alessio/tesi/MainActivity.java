@@ -16,8 +16,15 @@ import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.alessio.tesi.Database.AppDB;
+import com.example.alessio.tesi.Database.Session;
+
+import java.io.Serializable;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -27,7 +34,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView timerValue;
     private ImageButton imageB;
     private SeekBar seekBar;
+    private TextView currentSubject;
     private boolean isOn;
+    String[] sessionData;
 
     CountDownTimer cTimer = null;
 
@@ -86,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imageB = (ImageButton)findViewById(R.id.startTimerButton);
         timerValue = (TextView)findViewById(R.id.timerValue);
         seekBar = (SeekBar)findViewById(R.id.setTimerSeekBar);
+        currentSubject = (TextView)findViewById(R.id.currentSubjectLabel);
 
         // set listeners
         imageB.setOnClickListener(this);
@@ -99,9 +109,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),SessionSettingsActivity.class);
-                startActivity(intent);
+                intent.putExtra("dataToPass","");
+                startActivityForResult(intent,0);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        if(data != null) {
+            sessionData = data.getStringArrayExtra("currentSessionData");
+            String subj = sessionData[3];
+            if(subj != null)
+                currentSubject.setText(subj);
+        }
     }
 
     protected void onPause() {
@@ -121,7 +143,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     stop();
                 }
                 else {
-                    start();
+                    if(sessionData != null)
+                        start();
+                    else
+                        Toast.makeText(this,"Devi selezionare corso e tipo della sessione",Toast.LENGTH_SHORT);
                 }
                 break;
         }
@@ -143,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             public void onFinish() {
                 timerValue.setText("OK!");
+                saveSession(timeVal);
             }
         };
         cTimer.start();
@@ -155,6 +181,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         seekBar.setEnabled(true);
         fab.setClickable(true);
         fab.setVisibility(View.VISIBLE);
+
+        saveSession(timeVal-Integer.parseInt(timerValue.getText().toString()));
 
         timerValue.setText(String.valueOf(timeVal));
         if(cTimer!=null){
@@ -184,5 +212,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     };
+
+    private void saveSession(int duration) {
+        //TODO fare fragment (secondo me un DialogFragment) per inserire il posto
+        Session session = new Session(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH,duration,
+                                      Session.stringToInt(sessionData[0]),Session.stringToInt(sessionData[1]),
+                                      Session.stringToInt(sessionData[2]),"posto",sessionData[3]);
+        AppDB db = new AppDB(this);
+        if(session != null)
+            db.insertSession(session);
+    }
 
 }

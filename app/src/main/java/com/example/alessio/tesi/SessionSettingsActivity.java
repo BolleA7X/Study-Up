@@ -3,17 +3,22 @@ package com.example.alessio.tesi;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 
 
 import com.example.alessio.tesi.Database.AppDB;
+
+import java.io.Serializable;
 
 import static com.example.alessio.tesi.R.layout.session_settings_activity;
 
@@ -22,6 +27,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     private Button endedConfig;
     private Button addSubjectButton;
     private Spinner subjectsSpinner;
+    private CheckBox theory, exercises, project;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,9 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         endedConfig.setOnClickListener(this);
         addSubjectButton = (Button)findViewById(R.id.addSubjectButton);
         addSubjectButton.setOnClickListener(this);
+        theory = (CheckBox)findViewById(R.id.theoryCheckBox);
+        exercises = (CheckBox)findViewById(R.id.exercisesCheckBox);
+        project = (CheckBox)findViewById(R.id.projectCheckBox);
     }
 
     @Override
@@ -81,6 +90,11 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.endedConfig:
+                Intent intent = new Intent();
+                String[] dataToSend = {Boolean.toString(theory.isChecked()),Boolean.toString(exercises.isChecked()),
+                        Boolean.toString(project.isChecked()),subjectsSpinner.getSelectedItem().toString()};
+                intent.putExtra("currentSessionData",dataToSend);
+                setResult(1,intent);
                 finish();   //back to main activity
                 break;
             case R.id.addSubjectButton:

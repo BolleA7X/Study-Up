@@ -1,18 +1,25 @@
 package com.example.alessio.tesi.Database;
 
 public class Session {
+    public static final int TRUE = 1;
+    public static final int FALSE = 0;
+
     private int id;
     private int year, month, day, duration;
-    private int location_name, course_id;
+    private int theory, exercise, project;
+    private String location_name, course_name;
 
-    public Session(int id, int year, int month, int day, int duration, int location_name, int course_id) {
-        this.id = id;
+    public Session(int year, int month, int day, int duration, int theory, int exercise, int project,
+                   String location_name, String course_name) {
         this.year = year;
         this.month = month;
         this.day = day;
         this.duration = duration;
+        this.theory = theory;
+        this.exercise = exercise;
+        this.project = project;
         this.location_name = location_name;
-        this.course_id = course_id;
+        this.course_name = course_name;
     }
 
     public int getId() {
@@ -51,23 +58,56 @@ public class Session {
         return duration;
     }
 
+    public int getTheory() {
+        return theory;
+    }
+
+    public void setTheory(int theory) {
+        this.theory = theory;
+    }
+
+    public int getExercise() {
+        return exercise;
+    }
+
+    public void setExercise(int exercise) {
+        this.exercise = exercise;
+    }
+
+    public int getProject() {
+        return project;
+    }
+
+    public void setProject(int project) {
+        this.project = project;
+    }
+
     public void setDuration(int duration) {
         this.duration = duration;
     }
 
-    public int getLocation_name() {
+    public String getLocation_name() {
         return location_name;
     }
 
-    public void setLocation_name(int location_name) {
+    public void setLocation_name(String location_name) {
         this.location_name = location_name;
     }
 
-    public int getCourse_id() {
-        return course_id;
+    public String getCourse_name() {
+        return course_name;
     }
 
-    public void setCourse_id(int course_id) {
-        this.course_id = course_id;
+    public void setCourse_name(String course_name) {
+        this.course_name = course_name;
+    }
+
+    public static int stringToInt(String value) {
+        if(value.equals("true"))
+            return TRUE;
+        else if(value.equals("false"))
+            return FALSE;
+        else
+            return -1;
     }
 }
