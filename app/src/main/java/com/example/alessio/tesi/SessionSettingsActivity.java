@@ -26,7 +26,8 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
 
     private Button endedConfig;
     private Button addSubjectButton;
-    private Spinner subjectsSpinner;
+    private Button addLocationButton;
+    private Spinner subjectsSpinner, locationSpinner;
     private CheckBox theory, exercises, project;
 
     @Override
@@ -38,6 +39,8 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         endedConfig.setOnClickListener(this);
         addSubjectButton = (Button)findViewById(R.id.addSubjectButton);
         addSubjectButton.setOnClickListener(this);
+        addLocationButton = (Button)findViewById(R.id.addLocationButton);
+        addLocationButton.setOnClickListener(this);
         theory = (CheckBox)findViewById(R.id.theoryCheckBox);
         exercises = (CheckBox)findViewById(R.id.exercisesCheckBox);
         project = (CheckBox)findViewById(R.id.projectCheckBox);
@@ -46,12 +49,20 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     @Override
     protected void onResume() {
         subjectsSpinner = (Spinner)findViewById(R.id.subjectsSpinner);
+        locationSpinner = (Spinner)findViewById(R.id.locationSpinner);
 
         AppDB db = new AppDB(this);
+
         ArrayAdapter<String> subjects = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,db.getSubjects());
         if(subjects != null) {
             subjects.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             subjectsSpinner.setAdapter(subjects);
+        }
+
+        ArrayAdapter<String> locations = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,db.getLocations());
+        if(locations != null) {
+            locations.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            locationSpinner.setAdapter(locations);
         }
 
         super.onResume();
@@ -91,14 +102,23 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         switch (v.getId()){
             case R.id.endedConfig:
                 Intent intent = new Intent();
+                String locationName = locationSpinner.getSelectedItem().toString();
+                if(locationName == null)
+                    locationName = "";
+
                 String[] dataToSend = {Boolean.toString(theory.isChecked()),Boolean.toString(exercises.isChecked()),
-                        Boolean.toString(project.isChecked()),subjectsSpinner.getSelectedItem().toString()};
+                        Boolean.toString(project.isChecked()),subjectsSpinner.getSelectedItem().toString(),locationName};
                 intent.putExtra("currentSessionData",dataToSend);
                 setResult(1,intent);
                 finish();   //back to main activity
                 break;
             case R.id.addSubjectButton:
                 openDialog();
+                break;
+            case R.id.addLocationButton:
+                FragmentManager fm = getFragmentManager();
+                setLocationFragment dialogFragment = new setLocationFragment ();
+                dialogFragment.show(fm, "Sample Fragment");
                 break;
         }
     }

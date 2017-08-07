@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(data != null) {
             sessionData = data.getStringArrayExtra("currentSessionData");
             String subj = sessionData[3];
+            String locat = sessionData[4];
             if(subj != null)
                 currentSubject.setText(subj);
         }
@@ -172,22 +173,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
         cTimer.start();
-
     }
 
     private void stop(){
-        imageB.setImageResource(R.drawable.only_play);
-        isOn = false;
-        seekBar.setEnabled(true);
-        fab.setClickable(true);
-        fab.setVisibility(View.VISIBLE);
-
         saveSession(timeVal-Integer.parseInt(timerValue.getText().toString()));
-
-        timerValue.setText(String.valueOf(timeVal));
-        if(cTimer!=null){
-            cTimer.cancel();
-        }
     }
 
     //*****************************************************
@@ -214,13 +203,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     };
 
     private void saveSession(int duration) {
-        //TODO fare fragment (secondo me un DialogFragment) per inserire il posto
         Session session = new Session(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH,duration,
                                       Session.stringToInt(sessionData[0]),Session.stringToInt(sessionData[1]),
-                                      Session.stringToInt(sessionData[2]),"posto",sessionData[3]);
+                                      Session.stringToInt(sessionData[2]),sessionData[4]/*luogo*/,sessionData[3]/*corso*/);
         AppDB db = new AppDB(this);
         if(session != null)
             db.insertSession(session);
+
+        imageB.setImageResource(R.drawable.only_play);
+        isOn = false;
+        seekBar.setEnabled(true);
+        fab.setClickable(true);
+        fab.setVisibility(View.VISIBLE);
+
+        timerValue.setText(String.valueOf(timeVal));
+        if(cTimer!=null){
+            cTimer.cancel();
+        }
     }
 
 }

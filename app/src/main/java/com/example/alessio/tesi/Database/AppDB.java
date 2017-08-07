@@ -213,6 +213,16 @@ public class AppDB {
         this.closeDB();
     }
 
+    public void insertLocation(Location location) {
+        ContentValues cv = new ContentValues();
+        cv.put(LOCATION_NAME,location.getName());
+        cv.put(LOCATION_LATITUDE,location.getLatitude());
+        cv.put(LOCATION_LONGITUDE,location.getLongitude());
+        this.openWriteableDB();
+        long rowID = db.insert(LOCATION_TABLE,null,cv);
+        this.closeDB();
+    }
+
     public void insertSession(Session session) {
         ContentValues cv = new ContentValues();
         cv.put(SESSION_YEAR,session.getYear());
@@ -240,6 +250,19 @@ public class AppDB {
             cursor.close();
         this.closeDB();
         return subjects;
+    }
+
+    public ArrayList<String> getLocations() {
+        this.openReadableDB();
+        String[] args = new String[] {LOCATION_NAME};
+        Cursor cursor = db.query(LOCATION_TABLE,args,null,null,null,null,null);
+        ArrayList<String> locations = new ArrayList<String>();
+        while(cursor.moveToNext())
+            locations.add(cursor.getString(cursor.getColumnIndex(COURSE_NAME)));
+        if(cursor != null)
+            cursor.close();
+        this.closeDB();
+        return locations;
     }
 
     public Trophy[] getTrophies() {

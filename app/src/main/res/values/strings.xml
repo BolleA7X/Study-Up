@@ -10,6 +10,7 @@
     <string name="menu_calendar">Calendar</string>
 
     <string name="subject_label">Corso</string>
+    <string name="location_label">Luogo</string>
     <string name="study_type_label">Tipo</string>
     <string name="theory">Teoria</string>
     <string name="exercises">Esercizi</string>
@@ -17,8 +18,10 @@
     <string name="plus_symbol">+</string>
     <string name="ok">OK</string>
 
-    <string name="add_subject">Nuova materia</string>
+    <string name="add_subject">Nuovo corso</string>
     <string name="add_subject_label">Aggiungere materia?</string>
+    <string name="add_location">Nuovo luogo</string>
+    <string name="add_location_label">Aggiungere luogo?</string>
     <string name="add_label">Aggiungi</string>
     <string name="abort_label">Annulla</string>
 

@@ -4,6 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Spinner
+        android:id="@+id/locationSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignEnd="@+id/subjectsSpinner"
+        android:layout_alignLeft="@+id/subjectsSpinner"
+        android:layout_alignRight="@+id/subjectsSpinner"
+        android:layout_alignStart="@+id/subjectsSpinner"
+        android:layout_alignTop="@+id/locationLabel"
+        android:padding="5dp" />
+
+    <TextView
+        android:id="@+id/subjectLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        android:text="@string/subject_label"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
     <fragment
         android:name="com.example.alessio.tesi.TrophiesFragment"
         android:id="@+id/trophies_fragment"
@@ -11,15 +33,17 @@
         android:layout_height="match_parent" />
 
     <TextView
-        android:id="@+id/subjectLabel"
+        android:id="@+id/locationLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="@string/subject_label"
+        android:layout_alignLeft="@+id/subjectLabel"
+        android:layout_alignStart="@+id/subjectLabel"
+        android:layout_below="@+id/subjectLabel"
+        android:layout_marginTop="69dp"
+        android:padding="5dp"
+        android:text="@string/location_label"
         android:textSize="40sp"
-        android:textStyle="bold"
-        android:layout_margin="10dp"
-        android:padding="5dp"/>
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/subjectsSpinner"
@@ -30,8 +54,8 @@
         android:layout_marginStart="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_toEndOf="@+id/subjectLabel"
-        android:layout_toRightOf="@+id/subjectLabel"
+        android:layout_toEndOf="@+id/locationLabel"
+        android:layout_toRightOf="@+id/locationLabel"
         android:padding="5dp" />
 
     <TextView
@@ -39,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/study_type_label"
-        android:layout_below="@+id/subjectLabel"
+        android:layout_below="@+id/locationLabel"
         android:textSize="40sp"
         android:textStyle="bold"
         android:layout_marginLeft="10dp"
@@ -94,7 +118,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="15dp"
-            android:text="@string/plus_symbol"
+            android:text="@string/add_subject"
+            android:textSize="60sp"
+            android:layout_weight="1"
+            style="?android:attr/buttonBarStyle"/>
+
+        <Button
+            android:id="@+id/addLocationButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="@string/add_location"
             android:textSize="60sp"
             android:layout_weight="1"
             style="?android:attr/buttonBarStyle"/>
@@ -104,10 +138,10 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:padding="15dp"
             android:text="@string/ok"
-            android:textSize="60sp" />
+            android:textSize="60sp"
+            android:layout_gravity="center" />
     </LinearLayout>
 
 
