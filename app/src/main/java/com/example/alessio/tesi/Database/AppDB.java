@@ -6,7 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class AppDB {
 
@@ -280,5 +286,35 @@ public class AppDB {
             cursor.close();
         this.closeDB();
         return trophies;
+    }
+
+    public ArrayList<PieEntry> getPieChartData() {
+        ArrayList<PieEntry> entries = new ArrayList<>();
+        this.openReadableDB();
+        String[] args = new String[] {"SUM("+SESSION_DURATION+")"};
+        //1) ottengo la somma delle durate totali
+        Cursor cursor = db.query(SESSION_TABLE,args,null,null,null,null,null);
+        cursor.moveToFirst();
+        int totalDuration = cursor.getInt(0);
+        //2) ottengo la lista dei corsi, uso un iteratore per comodità
+        ArrayList<String> subjects = this.getSubjects();
+        Iterator<String> iterator = subjects.iterator();
+        //3)itero per ottenere la somma delle durate dei singoli corsi e calcolare le singole percentuali
+        while(iterator.hasNext()) {
+            String course = iterator.next();
+            String where = SESSION_COURSE_NAME + "= ?";
+            String[] whereArgs = {course};
+            if(!db.isOpen())
+                this.openReadableDB();
+            cursor = db.query(SESSION_TABLE,args,where,whereArgs,null,null,null);
+            cursor.moveToFirst();
+            float percent = (float)cursor.getInt(0)/(float)totalDuration*100;
+            //4)aggiungo ogni percentuale calcolata e il nome del corso ai dati del grafico
+            entries.add(new PieEntry(percent,course));
+        }
+        if(cursor != null)
+            cursor.close();
+        this.closeDB();
+        return entries;
     }
 }

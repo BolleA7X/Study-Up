@@ -87,10 +87,6 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
             return true;
         }
         else if (id==R.id.menu_trophies){
-            Fragment newFragment = new TrophiesFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.commit();
             return true;
         }
 

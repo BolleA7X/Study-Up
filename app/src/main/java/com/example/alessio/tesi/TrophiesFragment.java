@@ -1,7 +1,6 @@
 package com.example.alessio.tesi;
 
 import android.app.Fragment;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +9,6 @@ import android.widget.ImageView;
 
 import com.example.alessio.tesi.Database.AppDB;
 import com.example.alessio.tesi.Database.Trophy;
-
-import java.util.zip.Inflater;
-
-import static java.util.zip.Inflater.*;
-
-/**
- * Created by Fabio on 23/06/2017.
- */
 
 public class TrophiesFragment extends Fragment {
 

@@ -1,6 +1,5 @@
 package com.example.alessio.tesi;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -9,21 +8,18 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alessio.tesi.Database.AppDB;
 import com.example.alessio.tesi.Database.Session;
 
-import java.io.Serializable;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -55,8 +51,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        Toast msg;  // va tolto poi   <-------------------
-
         switch(id){
             case R.id.menu_trophies:
                 Fragment trophiesFragment = new TrophiesFragment();
@@ -65,21 +59,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 fragmentTransaction.add(R.id.mainActivity, trophiesFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-                msg = Toast.makeText(this, "Trophies menu clicked", Toast.LENGTH_LONG);
-                msg.show();
-
                 break;
             case R.id.menu_settings:
-                msg = Toast.makeText(this, "Settings menu clicked", Toast.LENGTH_LONG);
-                msg.show();
                 break;
             case R.id.menu_results:
-                msg = Toast.makeText(this, "Results menu clicked", Toast.LENGTH_LONG);
-                msg.show();
+                Intent intent = new Intent(this,ResultsActivity.class);
+                startActivity(intent);
                 break;
             case R.id.menu_calendar:
-                msg = Toast.makeText(this, "Calendar menu clicked", Toast.LENGTH_LONG);
-                msg.show();
                 break;
         }
 
