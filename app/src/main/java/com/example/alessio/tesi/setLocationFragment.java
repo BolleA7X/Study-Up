@@ -71,7 +71,7 @@ public class setLocationFragment extends DialogFragment  {
                     position[1] = location.getLongitude();
                 }
 
-                //metodi belli
+                //metodi belli.
                 @Override
                 public void onStatusChanged(String provider, int status, Bundle extras) {
 

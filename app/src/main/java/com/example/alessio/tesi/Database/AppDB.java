@@ -211,7 +211,7 @@ public class AppDB {
             db.close();
     }
 
-    //METODI PER ESEGUIRE SPECIFICHE QUERY
+    //METODI PER ESEGUIRE SPECIFICHE QUERY: NON SPECIFICO I DETTAGLI DI OGNI SINGOLO METODO
     //query per inserire nuova materia
     public void insertSubject(Course course) {
         ContentValues cv = new ContentValues();

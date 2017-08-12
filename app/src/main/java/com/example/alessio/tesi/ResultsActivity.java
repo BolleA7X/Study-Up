@@ -25,7 +25,7 @@ public class ResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.results_activity);
 
-        //istanzio il grafico a torta
+        //istanzio il grafico a torta.
         piechart = (PieChart)findViewById(R.id.subjectsPieChart);
 
         //eseguo query per ottenere i dati dal db da inserire el grafico a torta

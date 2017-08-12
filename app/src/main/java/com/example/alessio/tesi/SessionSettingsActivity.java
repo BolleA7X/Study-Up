@@ -57,7 +57,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         //eseguo la query tramite il metodo getSubjects() per ottenere l'ArrayAdapter contenete le info sui corsi
         ArrayAdapter<String> subjects = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,db.getSubjects());
         if(subjects != null) {
-            //se l'array è valido lo associo allo spinner
+            //se l'array è valido lo associo allo spinner.
             subjects.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             subjectsSpinner.setAdapter(subjects);
         }

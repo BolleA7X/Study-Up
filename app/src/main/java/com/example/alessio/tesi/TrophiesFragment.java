@@ -18,7 +18,7 @@ public class TrophiesFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState){
-        //questo array tiene gli id di tutte le ImageView dei trofei. Serve per poter iterare
+        //questo array tiene gli id di tutte le ImageView dei trofei. Serve per poter iterare.
         trophyIds = new int[] {R.id.t1,R.id.t2,R.id.t3,R.id.t4,R.id.t5,R.id.t6,R.id.t7,R.id.t8,R.id.t9,R.id.t10,
                                R.id.t11,R.id.t12,R.id.t13,R.id.t14,R.id.t15,R.id.t16,R.id.t17,R.id.t18,R.id.t19,R.id.t20};
 

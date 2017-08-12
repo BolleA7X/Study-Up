@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                       Session.stringToInt(sessionData[2]),sessionData[4]/*luogo*/,sessionData[3]/*corso*/);
         AppDB db = new AppDB(this);
         if(session != null)
-            db.insertSession(session);                  //eseguo query per inserire nel db i dati
+            db.insertSession(session);                  //eseguo query per inserire nel db i dati.
 
         //resetto il timer per poterlo riutilizzare (lavoro di luca spostato in questo metodo)
         imageB.setImageResource(R.drawable.only_play);
