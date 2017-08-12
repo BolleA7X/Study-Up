@@ -38,6 +38,7 @@ public class setLocationFragment extends DialogFragment  {
         builder.setMessage(R.string.add_location_label)
                 .setPositiveButton(R.string.add_label, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        //ottengo le coordinate con getCoordinates() (vedi sotto) e le inserisco nel db
                         double[] position = getCoordinates();
                         Location location = new Location(newLocation.getText().toString(),position[0],position[1]);
                         AppDB db = new AppDB(getActivity());
@@ -53,12 +54,16 @@ public class setLocationFragment extends DialogFragment  {
         return builder.create();
     }
 
+    //questo metodo serve per ottenere le coordinate tramite gps del dispositivo
+    //non so se funziona, non l'ho ancora testato
     private double[] getCoordinates() {
         final double[] position = new double[2];
         LocationManager lm = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        //se il gps non è attivo apro la schermata delle impostazioni gps del dispositivo
         if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
             startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         else {
+            //altrimenti prelevo le coordinate e le inserisco in un array temporaneo che ritorna al chiamante
             LocationListener ll = new LocationListener() {
                 @Override
                 public void onLocationChanged(android.location.Location location) {
@@ -66,6 +71,7 @@ public class setLocationFragment extends DialogFragment  {
                     position[1] = location.getLongitude();
                 }
 
+                //metodi belli
                 @Override
                 public void onStatusChanged(String provider, int status, Bundle extras) {
 

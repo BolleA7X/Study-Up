@@ -54,12 +54,15 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
 
         AppDB db = new AppDB(this);
 
+        //eseguo la query tramite il metodo getSubjects() per ottenere l'ArrayAdapter contenete le info sui corsi
         ArrayAdapter<String> subjects = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,db.getSubjects());
         if(subjects != null) {
+            //se l'array è valido lo associo allo spinner
             subjects.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             subjectsSpinner.setAdapter(subjects);
         }
 
+        //come sopra ma con i posti
         ArrayAdapter<String> locations = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,db.getLocations());
         if(locations != null) {
             locations.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -76,6 +79,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         return true;
     }
 
+    //TODO il menu ora come ora non funziona in questa activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -94,6 +98,10 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         return super.onOptionsItemSelected(item);
     }
 
+    //qua io prendo le informazioni da mandare nella MainActivity (vedi codice in MainActivity)
+    //avendolo fatto di fretta non ho messo i controlli nel caso in cui negli spinner non ci sia niente
+    //l'idea è prelevo i dati dagli spinner e checkbox, li metto in quell'array di stringhe "dataToSend" e uso l'intent per
+    //rispedirli indietro alla MainActivity che li legge in un metodo specifico.
     @Override
     public void onClick(View v) {
         switch (v.getId()){

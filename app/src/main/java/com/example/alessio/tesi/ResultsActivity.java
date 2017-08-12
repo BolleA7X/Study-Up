@@ -25,12 +25,16 @@ public class ResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.results_activity);
 
+        //istanzio il grafico a torta
         piechart = (PieChart)findViewById(R.id.subjectsPieChart);
 
+        //eseguo query per ottenere i dati dal db da inserire el grafico a torta
         AppDB db = new AppDB(this);
-        ArrayList<PieEntry> entries = db.getPieChartData();
+        ArrayList<PieEntry> entries = db.getPieChartData();     //contiene i dati del grafico
 
         if(entries.size() != 0) {
+            //una volta ottenuto l'ArrayList<PieEntry> con i dati, questi sono i passaggi necessari per poterli inserire
+            //nel grafico (da documentazione libreria)
             PieDataSet set = new PieDataSet(entries, "Distribuzione corsi");
             set.setColors(new int[] {R.color.violet,R.color.blue,R.color.ciano,R.color.gold,R.color.green,R.color.red});
             PieData data = new PieData(set);

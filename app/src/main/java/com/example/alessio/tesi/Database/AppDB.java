@@ -211,6 +211,8 @@ public class AppDB {
             db.close();
     }
 
+    //METODI PER ESEGUIRE SPECIFICHE QUERY
+    //query per inserire nuova materia
     public void insertSubject(Course course) {
         ContentValues cv = new ContentValues();
         cv.put(COURSE_NAME,course.getName());
@@ -219,6 +221,7 @@ public class AppDB {
         this.closeDB();
     }
 
+    //query per inserire nuovo posto
     public void insertLocation(Location location) {
         ContentValues cv = new ContentValues();
         cv.put(LOCATION_NAME,location.getName());
@@ -229,6 +232,7 @@ public class AppDB {
         this.closeDB();
     }
 
+    //query per inserire dati di sessione appena finita
     public void insertSession(Session session) {
         ContentValues cv = new ContentValues();
         cv.put(SESSION_YEAR,session.getYear());
@@ -245,6 +249,7 @@ public class AppDB {
         this.closeDB();
     }
 
+    //query per ottenere le materie (per relativo spinner)
     public ArrayList<String> getSubjects() {
         this.openReadableDB();
         String[] args = new String[] {COURSE_NAME};
@@ -258,6 +263,7 @@ public class AppDB {
         return subjects;
     }
 
+    //query per ottenere i posti (per relativo spinner)
     public ArrayList<String> getLocations() {
         this.openReadableDB();
         String[] args = new String[] {LOCATION_NAME};
@@ -271,6 +277,7 @@ public class AppDB {
         return locations;
     }
 
+    //query per ottenere i trofei (per avere i dati nel relatico fragment)
     public Trophy[] getTrophies() {
         this.openReadableDB();
         String[] args = new String[] {TROPHY_COLOR,TROPHY_UNLOCKED};
@@ -288,6 +295,7 @@ public class AppDB {
         return trophies;
     }
 
+    //query per ottenere i dati da inserire nel grafico a torta
     public ArrayList<PieEntry> getPieChartData() {
         ArrayList<PieEntry> entries = new ArrayList<>();
         this.openReadableDB();

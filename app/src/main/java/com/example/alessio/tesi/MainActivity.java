@@ -97,6 +97,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),SessionSettingsActivity.class);
+                /*
+                putExtra mette informazione extra nell'intent. Una volta che viene aperta la nuova activity è possibile usare
+                l'intent per passare informazioni tra le due activity. Il metodo startActivityForResult serve proprio per fare in
+                modo che la seconda activity possa dare risultati e passarli all prima
+                 */
                 intent.putExtra("dataToPass","");
                 startActivityForResult(intent,0);
             }
@@ -104,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    //questo metodo viene chiamato quando la seconda activity viene chiusa e passa i risultati a questa tramite la putExtra()
+    //nell'intent. Questi dati vengono prelevati dall'intent tramite getStringArrayExtra() e messi in "sessionData".
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
@@ -166,14 +173,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             public void onFinish() {
                 timerValue.setText("OK!");
+                //se il timer finisce salvo la sessione passando la durata totale del timer
                 saveSession(timeVal);
             }
         };
         cTimer.start();
     }
 
+    //se il timer viene stoppato prima della fine salvo la sessione passando la durata totale - la durata rimasta
     private void stop(){
-        saveSession(timeVal-Integer.parseInt(timerValue.getText().toString()));
+        saveSession(timeVal - Integer.parseInt(timerValue.getText().toString()));
     }
 
     //*****************************************************
@@ -199,14 +208,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
 
+    //salva la sessione
     private void saveSession(int duration) {
+        //creo una variabile Session e ci salvo i dati necessari, ovvero giorno mese e anno (dal calendario interno del sistema),
+        //la durata passata come parametro (vedi sopra), i dati sulla sessione (corso,luogo,teoria,esercizi,progetto)
         Session session = new Session(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH,duration,
                                       Session.stringToInt(sessionData[0]),Session.stringToInt(sessionData[1]),
                                       Session.stringToInt(sessionData[2]),sessionData[4]/*luogo*/,sessionData[3]/*corso*/);
         AppDB db = new AppDB(this);
         if(session != null)
-            db.insertSession(session);
+            db.insertSession(session);                  //eseguo query per inserire nel db i dati
 
+        //resetto il timer per poterlo riutilizzare (lavoro di luca spostato in questo metodo)
         imageB.setImageResource(R.drawable.only_play);
         isOn = false;
         seekBar.setEnabled(true);
