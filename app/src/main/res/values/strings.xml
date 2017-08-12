@@ -67,5 +67,8 @@
     <string name="trophy_description_19">Completa una sessione normale da almeno due ore.</string>
     <string name="trophy_description_20">Sblocca tutti gli altri trofei..studiando!</string>
 
+    <!-- Toast -->
+    <string name="FirstErrorToast">Devi selezionare corso e tipo della sessione!</string>
+
 
 </resources>

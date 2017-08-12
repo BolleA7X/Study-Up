@@ -25,9 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="#00cc99"
+        app:backgroundTint="@android:color/transparent"
         app:elevation="0dp"
-        app:fabSize="normal"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@drawable/pencil" />
 
 </android.support.design.widget.CoordinatorLayout>

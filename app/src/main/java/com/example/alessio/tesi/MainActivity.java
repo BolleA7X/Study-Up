@@ -3,6 +3,7 @@ package com.example.alessio.tesi;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivityForResult(intent,0);
             }
         });
+
     }
 
     @Override
@@ -134,12 +136,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if(sessionData != null)
                         start();
                     else
-                        Toast.makeText(this,"Devi selezionare corso e tipo della sessione",Toast.LENGTH_SHORT);
+                        FirstErrorToast();
                 }
                 break;
         }
     }
+    //Funzione che manda il toast se non ho ancora messo sessione e corso
+    private void FirstErrorToast(){
+        Context context = getApplicationContext();
+        CharSequence text = getString(R.string.FirstErrorToast);;
+        int duration = Toast.LENGTH_LONG;
 
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
     private void start(){
         isOn = true;
         imageB.setImageResource(R.drawable.only_stop1);

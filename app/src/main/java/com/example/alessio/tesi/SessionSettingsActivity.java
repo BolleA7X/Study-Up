@@ -31,6 +31,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     private CheckBox theory, exercises, project;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.session_settings_activity);
@@ -97,7 +98,10 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.endedConfig:
-                Intent intent = new Intent();
+                //
+                //ERA QUESTO CHE FACEVA CRASHARE L'APP
+                //
+                /*Intent intent = new Intent();
                 String locationName = locationSpinner.getSelectedItem().toString();
                 if(locationName == null)
                     locationName = "";
@@ -106,7 +110,9 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
                         Boolean.toString(project.isChecked()),subjectsSpinner.getSelectedItem().toString(),locationName};
                 intent.putExtra("currentSessionData",dataToSend);
                 setResult(1,intent);
-                finish();   //back to main activity
+                finish(); */  //back to main activity
+                //
+                //
                 break;
             case R.id.addSubjectButton:
                 openDialog();
