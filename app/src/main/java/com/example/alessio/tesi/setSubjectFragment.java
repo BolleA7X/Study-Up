@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-
 import com.example.alessio.tesi.Database.AppDB;
 import com.example.alessio.tesi.Database.Course;
 
@@ -17,14 +16,17 @@ import com.example.alessio.tesi.Database.Course;
 public class setSubjectFragment extends DialogFragment  {
 
     private EditText subject;
-
+    //override per far apparire subito la nuova materia/location nello spinner
+    @Override
+    public void onDismiss(DialogInterface dialogInterface) {
+        ((SessionSettingsActivity)getActivity()).updateSpinner();
+    }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater.
         LayoutInflater inflater = getActivity().getLayoutInflater();
-
         View view;
 
         // Inflate and set the layout for the dialog
@@ -47,4 +49,6 @@ public class setSubjectFragment extends DialogFragment  {
         // Create the AlertDialog object and return it
         return builder.create();
     }
+
+
 }

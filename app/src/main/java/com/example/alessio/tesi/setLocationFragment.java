@@ -21,6 +21,11 @@ import com.example.alessio.tesi.Database.Location;
 public class setLocationFragment extends DialogFragment  {
 
     private EditText newLocation;
+    //override per far apparire subito la nuova materia/location nello spinner
+    @Override
+    public void onDismiss(DialogInterface dialogInterface) {
+        ((SessionSettingsActivity)getActivity()).updateSpinner();
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

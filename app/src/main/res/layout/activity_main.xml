@@ -26,6 +26,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:backgroundTint="@android:color/transparent"
-        app:elevation="0dp" />
+        app:elevation="0dp"
+        app:srcCompat="@drawable/pencil" />
 
 </android.support.design.widget.CoordinatorLayout>
