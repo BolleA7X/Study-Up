@@ -9,30 +9,43 @@
     android:layout_marginTop="80dp"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/newLoc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:hint="@string/add_location"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+    <ScrollView android:id="@+id/ScrollView01"
+        android:layout_width="fill_parent"
+        android:layout_height="400dp">
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
+        <EditText
+            android:id="@+id/newLoc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:hint="@string/add_location"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <!--
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:apiKey="AIzaSyCyeU_RQQZkZRrx9ufDxKGchszoyiwM3rI"
+            android:layout_alignParentTop="true"
+            android:fontFamily="sans-serif"
+            android:hint="@string/add_location"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+        -->
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:apiKey="AIzaSyCyeU_RQQZkZRrx9ufDxKGchszoyiwM3rI"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginStart="30dp"
-        android:fontFamily="sans-serif"
-        android:hint="@string/add_location" />
+        android:layout_height="200dp"
+        android:id="@+id/map"
+        tools:context=".MapsActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+    </ScrollView>
 
 </RelativeLayout>

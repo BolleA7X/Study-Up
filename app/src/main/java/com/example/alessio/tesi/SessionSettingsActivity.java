@@ -154,7 +154,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     //Funzione che apre i dialog passando un DialogFragment
     public void openDialog(DialogFragment dialogFragment) {
         FragmentManager fm = getFragmentManager();
-        setSubjectFragment dialogFragment = new setSubjectFragment ();
+       
         dialogFragment.show(fm, "Sample Fragment");
     }
 
