@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
@@ -106,6 +107,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivityForResult(intent,0);
             }
         });
+        //Metti il corso nella textivew
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        String currentSub = sharedPref.getString("subj",null);
+
+        if(currentSub!= null && !currentSub.isEmpty() ){
+            currentSubject.setText(currentSub);
+        }
 
     }
 
@@ -122,11 +130,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 currentSubject.setText(subj);
         }
     }
-
+    @Override
     protected void onPause() {
         super.onPause();
     }
 
+    @Override
+    protected void onStop(){
+        String subjName = currentSubject.getText().toString();
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("subj", subjName);
+        editor.apply();
+        super.onStop();
+    }
     @Override
     protected void onResume() {
         super.onResume();

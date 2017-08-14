@@ -7,17 +7,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 
 import com.example.alessio.tesi.Database.AppDB;
+
+import java.io.Serializable;
+
+import static com.example.alessio.tesi.R.layout.session_settings_activity;
 
 public class SessionSettingsActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -28,6 +36,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     private CheckBox theory, exercises, project;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.session_settings_activity);
@@ -41,57 +50,40 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         theory = (CheckBox)findViewById(R.id.theoryCheckBox);
         exercises = (CheckBox)findViewById(R.id.exercisesCheckBox);
         project = (CheckBox)findViewById(R.id.projectCheckBox);
+        //Shared per i checkbox
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        Boolean th = sharedPref.getBoolean("th", false);
+        Boolean ex = sharedPref.getBoolean("ex", false);
+        Boolean pr = sharedPref.getBoolean("pr", false);
 
-        /*SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-        theory.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                editor.putBoolean("checkTh", theory.isChecked());
-                editor.apply();
-            }
-        });
-        exercises.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                editor.putBoolean("checkEx", exercises.isChecked());
-                editor.apply();
-            }
-        });
-        project.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                editor.putBoolean("checkPr", project.isChecked());
-                editor.apply();
-            }
-        });
-
-
-        sharedPreferences.getBoolean("checkTh", false);
-        sharedPreferences.getBoolean("checkEx", false);
-        sharedPreferences.getBoolean("checkPr", false);
-        editor.apply();*/
+        theory.setChecked(th);
+        exercises.setChecked(ex);
+        project.setChecked(pr);
     }
 
     @Override
     protected void onResume() {
         updateSpinner();
-        /*SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        sharedPreferences.getBoolean("checkTh", false);
-        sharedPreferences.getBoolean("checkEx", false);
-        sharedPreferences.getBoolean("checkPr", false);*/
         super.onResume();
     }
     @Override
     protected void onPause() {
-       /* SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putBoolean("checkTh", theory.isChecked());
-        editor.putBoolean("checkEx", exercises.isChecked());
-        editor.putBoolean("checkPr", project.isChecked());
-        editor.commit();*/
        super.onPause();
+    }
+    @Override
+    protected void onStop(){
+        //salva gli Shared per i checkbox
+        Boolean th = theory.isChecked();
+        Boolean ex = exercises.isChecked();
+        Boolean pr = project.isChecked();
+
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("th", th);
+        editor.putBoolean("ex", ex);
+        editor.putBoolean("pr", pr);
+        editor.apply();
+        super.onStop();
     }
 
     @Override
@@ -101,9 +93,12 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         return true;
     }
 
-
+    //TODO il menu ora come ora non funziona in questa activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -113,10 +108,14 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         else if (id==R.id.menu_trophies){
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
     //qua io prendo le informazioni da mandare nella MainActivity (vedi codice in MainActivity)
+    //avendolo fatto di fretta non ho messo i controlli nel caso in cui negli spinner non ci sia niente
+    //l'idea è prelevo i dati dagli spinner e checkbox, li metto in quell'array di stringhe "dataToSend" e uso l'intent per
+    //rispedirli indietro alla MainActivity che li legge in un metodo specifico.
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -155,6 +154,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     //Funzione che apre i dialog passando un DialogFragment
     public void openDialog(DialogFragment dialogFragment) {
         FragmentManager fm = getFragmentManager();
+        setSubjectFragment dialogFragment = new setSubjectFragment ();
         dialogFragment.show(fm, "Sample Fragment");
     }
 

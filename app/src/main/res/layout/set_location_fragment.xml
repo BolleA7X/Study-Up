@@ -17,17 +17,22 @@
         android:hint="@string/add_location"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="48dp" />
+        android:layout_alignParentStart="true" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:apiKey="AIzaSyCyeU_RQQZkZRrx9ufDxKGchszoyiwM3rI"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="70dp" />
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginStart="30dp"
+        android:fontFamily="sans-serif"
+        android:hint="@string/add_location" />
 
 </RelativeLayout>
