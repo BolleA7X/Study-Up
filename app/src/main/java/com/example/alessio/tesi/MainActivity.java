@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -26,6 +27,8 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private SharedPreferences prefs;
+    private Boolean pomodoroMode;
     private FloatingActionButton fab;
     private int timeVal=90;
     private long mytime;
@@ -52,17 +55,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        Fragment fragment;
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
 
         switch(id){
             case R.id.menu_trophies:
-                Fragment trophiesFragment = new TrophiesFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.mainActivity, trophiesFragment);
+                fragment = new TrophiesFragment();
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.mainActivity, fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 break;
             case R.id.menu_settings:
+                fragment = new SettingsFragment();
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.mainActivity, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
                 break;
             case R.id.menu_results:
                 Intent intent = new Intent(this,ResultsActivity.class);
@@ -79,6 +91,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        PreferenceManager.setDefaultValues(this,R.xml.preference,false);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        pomodoroMode = prefs.getBoolean("use_pomodoro_mode",false);
 
         // get references to widgets
         imageB = (ImageButton)findViewById(R.id.startTimerButton);
@@ -115,6 +131,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             currentSubject.setText(currentSub);
         }
 
+        //imposto la pomodoro mode
+        if(pomodoroMode) {
+            timeVal = 25;
+            timerValue.setText("25");
+            seekBar.setEnabled(false);
+        }
     }
 
     //questo metodo viene chiamato quando la seconda activity viene chiusa e passa i risultati a questa tramite la putExtra()
@@ -239,11 +261,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //resetto il timer per poterlo riutilizzare (lavoro di luca spostato in questo metodo)
         imageB.setImageResource(R.drawable.only_play);
         isOn = false;
-        seekBar.setEnabled(true);
+        if(!pomodoroMode) {
+            seekBar.setEnabled(true);
+            timerValue.setText(String.valueOf(timeVal));
+        }
+
         fab.setClickable(true);
         fab.setVisibility(View.VISIBLE);
 
-        timerValue.setText(String.valueOf(timeVal));
         if(cTimer!=null){
             cTimer.cancel();
         }

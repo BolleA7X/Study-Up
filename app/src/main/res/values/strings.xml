@@ -70,5 +70,11 @@
     <!-- Toast -->
     <string name="FirstErrorToast">Devi selezionare corso e tipo della sessione!</string>
 
+    <string name="delete_location_label">Cancella luogo</string>
+    <string name="delete_course_label">Cancella corso</string>
+    <string name="delete_all_label">Cancella tutti i dati</string>
+    <string name="pomodoro_mode_label">Usa modalità pomodoro</string>
+    <string name="pomodoro_mode_expl">Modalità alternativa con sessioni fisse da 25 minuti</string>
+
 
 </resources>

@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -154,7 +153,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     //Funzione che apre i dialog passando un DialogFragment
     public void openDialog(DialogFragment dialogFragment) {
         FragmentManager fm = getFragmentManager();
-       
+
         dialogFragment.show(fm, "Sample Fragment");
     }
 

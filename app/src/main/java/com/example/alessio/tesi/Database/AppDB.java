@@ -325,4 +325,15 @@ public class AppDB {
         this.closeDB();
         return entries;
     }
+
+    public void deleteAll() {
+        this.openWriteableDB();
+        db.execSQL(DROP_SESSION_TABLE);
+        db.execSQL(DROP_LOCATION_TABLE);
+        db.execSQL(DROP_COURSE_TABLE);
+        db.execSQL(CREATE_SESSION_TABLE);
+        db.execSQL(CREATE_LOCATION_TABLE);
+        db.execSQL(CREATE_COURSE_TABLE);
+        this.closeDB();
+    }
 }
