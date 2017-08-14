@@ -3,7 +3,9 @@ package com.example.alessio.tesi;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 
 import com.example.alessio.tesi.Database.AppDB;
@@ -39,12 +42,56 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         exercises = (CheckBox)findViewById(R.id.exercisesCheckBox);
         project = (CheckBox)findViewById(R.id.projectCheckBox);
 
+        /*SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        theory.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                editor.putBoolean("checkTh", theory.isChecked());
+                editor.apply();
+            }
+        });
+        exercises.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                editor.putBoolean("checkEx", exercises.isChecked());
+                editor.apply();
+            }
+        });
+        project.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                editor.putBoolean("checkPr", project.isChecked());
+                editor.apply();
+            }
+        });
+
+
+        sharedPreferences.getBoolean("checkTh", false);
+        sharedPreferences.getBoolean("checkEx", false);
+        sharedPreferences.getBoolean("checkPr", false);
+        editor.apply();*/
     }
 
     @Override
     protected void onResume() {
         updateSpinner();
+        /*SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        sharedPreferences.getBoolean("checkTh", false);
+        sharedPreferences.getBoolean("checkEx", false);
+        sharedPreferences.getBoolean("checkPr", false);*/
         super.onResume();
+    }
+    @Override
+    protected void onPause() {
+       /* SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putBoolean("checkTh", theory.isChecked());
+        editor.putBoolean("checkEx", exercises.isChecked());
+        editor.putBoolean("checkPr", project.isChecked());
+        editor.commit();*/
+       super.onPause();
     }
 
     @Override
@@ -57,9 +104,6 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -69,12 +113,10 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         else if (id==R.id.menu_trophies){
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     //qua io prendo le informazioni da mandare nella MainActivity (vedi codice in MainActivity)
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -116,7 +158,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         dialogFragment.show(fm, "Sample Fragment");
     }
 
-     public void updateSpinner(){
+    public void updateSpinner(){
         subjectsSpinner = (Spinner)findViewById(R.id.subjectsSpinner);
         locationSpinner = (Spinner)findViewById(R.id.locationSpinner);
 
