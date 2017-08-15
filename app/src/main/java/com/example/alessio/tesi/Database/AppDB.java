@@ -336,4 +336,22 @@ public class AppDB {
         db.execSQL(CREATE_COURSE_TABLE);
         this.closeDB();
     }
+
+    public int deleteCourse(String name) {
+        String where = COURSE_NAME + "= ?";
+        String[] whereArgs = {name};
+        this.openWriteableDB();
+        int rowCount = db.delete(COURSE_TABLE,where,whereArgs);
+        this.closeDB();
+        return rowCount;
+    }
+
+    public int deleteLocation(String name) {
+        String where = LOCATION_NAME + "= ?";
+        String[] whereArgs = {name};
+        this.openWriteableDB();
+        int rowCount = db.delete(LOCATION_TABLE,where,whereArgs);
+        this.closeDB();
+        return rowCount;
+    }
 }

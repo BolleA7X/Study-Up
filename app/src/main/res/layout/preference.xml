@@ -7,17 +7,17 @@
     android:color="@android:color/white" >
 
     <ListPreference
-        android:id="@+id/delete_location_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:key="delete_location_preference"
-        android:title="@string/delete_course_label" />
-
-    <ListPreference
         android:id="@+id/delete_course_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:key="delete_course_preference"
+        android:title="@string/delete_course_label" />
+
+    <ListPreference
+        android:id="@+id/delete_location_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:key="delete_location_preference"
         android:title="@string/delete_location_label" />
 
     <ListPreference

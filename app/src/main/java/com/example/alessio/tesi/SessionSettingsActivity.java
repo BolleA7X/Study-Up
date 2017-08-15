@@ -2,7 +2,9 @@ package com.example.alessio.tesi;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -100,12 +102,23 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.menu_settings) {
-            return true;
-        }
-        else if (id==R.id.menu_trophies){
-            return true;
+        switch(id){
+            case R.id.menu_trophies:
+                Fragment trophiesFragment = new TrophiesFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.sessionSettingsActivity, trophiesFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                break;
+            case R.id.menu_settings:
+                break;
+            case R.id.menu_results:
+                Intent intent = new Intent(this,ResultsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menu_calendar:
+                break;
         }
 
         return super.onOptionsItemSelected(item);

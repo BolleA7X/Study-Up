@@ -3,6 +3,8 @@ package com.example.alessio.tesi;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -57,5 +59,11 @@ public class TrophiesFragment extends Fragment {
         }
 
         return view;
+    }
+
+    //se sono in questo fragment disabilito il relativo item del menu
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.menu_trophies).setEnabled(false);
     }
 }
