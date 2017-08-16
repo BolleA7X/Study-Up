@@ -93,10 +93,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       /* PreferenceManager.setDefaultValues(this,R.xml.preference,false);
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        pomodoroMode = prefs.getBoolean("use_pomodoro_mode",false);*/
-
         // get references to widgets
         imageB = (ImageButton)findViewById(R.id.startTimerButton);
         timerValue = (TextView)findViewById(R.id.timerValue);
