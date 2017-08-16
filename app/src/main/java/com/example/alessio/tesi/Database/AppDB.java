@@ -12,6 +12,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class AppDB {
@@ -324,6 +325,15 @@ public class AppDB {
             cursor.close();
         this.closeDB();
         return entries;
+    }
+
+    public String getMostFrequentLocation() {
+        this.openReadableDB();
+        String[] args = {SESSION_LOCATION_NAME,"COUNT("+SESSION_LOCATION_NAME+") AS cont"};
+        String order = "cont DESC";
+        Cursor cursor = db.query(SESSION_TABLE,args,null,null,SESSION_LOCATION_NAME,null,order,"1");
+        cursor.moveToFirst();
+        return cursor.getString(cursor.getColumnIndex(SESSION_LOCATION_NAME));
     }
 
     public void deleteAll() {

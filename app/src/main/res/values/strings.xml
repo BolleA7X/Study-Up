@@ -76,5 +76,7 @@
     <string name="pomodoro_mode_label">Usa modalità pomodoro</string>
     <string name="pomodoro_mode_expl">Modalità alternativa con sessioni fisse da 25 minuti</string>
 
+    <string name="mostFrequentLocation">Luogo più frequente: </string>
+
 
 </resources>

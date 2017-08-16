@@ -8,10 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.alessio.tesi.Database.AppDB;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -21,17 +23,26 @@ import java.util.ArrayList;
 public class ResultsActivity extends AppCompatActivity {
 
     PieChart piechart;
+    TextView mostFrequentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.results_activity);
 
-        //istanzio il grafico a torta.
+        //preparo db
+        AppDB db = new AppDB(this);
+
+        //istanzio la textview per il posto più frequentato e setto il testo tramite query
+        mostFrequentLocation = (TextView)findViewById(R.id.mostFrequentLocationLabel);
+        mostFrequentLocation.setText(db.getMostFrequentLocation());
+
+        //istanzio il grafico a torta e disabilito la legenda
         piechart = (PieChart)findViewById(R.id.subjectsPieChart);
+        Legend legend = piechart.getLegend();
+        legend.setEnabled(false);
 
         //eseguo query per ottenere i dati dal db da inserire el grafico a torta
-        AppDB db = new AppDB(this);
         ArrayList<PieEntry> entries = db.getPieChartData();     //contiene i dati del grafico
 
         if(entries.size() != 0) {

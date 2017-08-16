@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.alessio.tesi.ResultsActivity"
-    android:id="@+id/resultsActivity" >
+    android:id="@+id/resultsActivity"
+    android:orientation="horizontal">
 
     <fragment
         android:name="com.example.alessio.tesi.TrophiesFragment"
@@ -15,8 +16,27 @@
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/subjectsPieChart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="500sp">
 
     </com.github.mikephil.charting.charts.PieChart>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/mostFrequentLocation" />
+
+        <TextView
+            android:id="@+id/mostFrequentLocationLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+    </LinearLayout>
 
 </LinearLayout>
