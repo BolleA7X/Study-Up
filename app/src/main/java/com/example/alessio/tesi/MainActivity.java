@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (isOn) {
                     stop();
                 } else {
-                    if( go ){
+                    if(go){
                         start();
                     }else{
                         FirstErrorToast();
@@ -295,6 +295,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(currentSub!= null && !currentSub.isEmpty() ){
             currentSubject.setText(currentSub);
+            go = true;
         }else{
             currentSubject.setText(R.string.subject_label);
             go = false;
