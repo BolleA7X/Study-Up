@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@android:color/white"
     android:layout_width="match_parent"
@@ -12,7 +13,8 @@
 
                 <ImageView
                     android:id="@+id/t1"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_01" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -32,7 +34,8 @@
 
                 <ImageView
                     android:id="@+id/t2"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_02" />
 
                 <LinearLayout
                     android:orientation="vertical">
@@ -53,7 +56,8 @@
 
                 <ImageView
                     android:id="@+id/t3"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_03" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -73,7 +77,8 @@
 
                 <ImageView
                     android:id="@+id/t4"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_04" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -93,7 +98,8 @@
 
                 <ImageView
                     android:id="@+id/t5"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_05" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -113,7 +119,8 @@
 
                 <ImageView
                     android:id="@+id/t6"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_06" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -133,7 +140,8 @@
 
                 <ImageView
                     android:id="@+id/t7"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_07" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -153,7 +161,8 @@
 
                 <ImageView
                     android:id="@+id/t8"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_08" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -174,7 +183,8 @@
 
                 <ImageView
                     android:id="@+id/t9"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_09" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -194,7 +204,8 @@
 
                 <ImageView
                     android:id="@+id/t10"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_10" />
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -214,7 +225,8 @@
 
                 <ImageView
                     android:id="@+id/t11"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_11"/>
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -234,7 +246,8 @@
 
                 <ImageView
                     android:id="@+id/t12"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_12"/>
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -254,7 +267,8 @@
 
                 <ImageView
                     android:id="@+id/t13"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_13"/>
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -274,7 +288,8 @@
 
                 <ImageView
                     android:id="@+id/t14"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_14"/>
 
                 <LinearLayout
                     android:orientation="vertical">
@@ -295,7 +310,8 @@
 
                 <ImageView
                     android:id="@+id/t15"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_15"/>
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -315,9 +331,11 @@
 
                 <ImageView
                     android:id="@+id/t16"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_16"/>
                 <LinearLayout
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    tools:ignore="TooManyViews">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -335,7 +353,8 @@
 
                 <ImageView
                     android:id="@+id/t17"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_17"/>
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -355,7 +374,8 @@
 
                 <ImageView
                     android:id="@+id/t18"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_18"/>
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -375,7 +395,8 @@
 
                 <ImageView
                     android:id="@+id/t19"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_19"/>
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView
@@ -395,7 +416,8 @@
 
                 <ImageView
                     android:id="@+id/t20"
-                    style="@style/TrophyImage" />
+                    style="@style/TrophyImage"
+                    android:contentDescription="@string/trophy_title_20"/>
                 <LinearLayout
                     android:orientation="vertical">
                     <TextView

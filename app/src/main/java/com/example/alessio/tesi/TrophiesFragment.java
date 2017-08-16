@@ -43,7 +43,7 @@ public class TrophiesFragment extends Fragment {
             //qua scelgo l'icona che deve avere
             //se è bloccato setto alla ImageView l'icona del trofeo bloccato
             if(trophyData[i].getUnlocked() == 0)
-                trophyImage.setImageResource(R.drawable.trophy_unlocked);
+                trophyImage.setImageResource(R.drawable.trophy_locked);
             else {
                 //se è sbloccato
                 //setto l'icona del colore giusto in base al trofeo
