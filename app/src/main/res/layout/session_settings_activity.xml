@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     android:id="@+id/sessionSettingsActivity">
 
+    <fragment
+        android:name="com.example.alessio.tesi.TrophiesFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+
     <Spinner
         android:id="@+id/locationSpinner"
         android:layout_width="match_parent"
