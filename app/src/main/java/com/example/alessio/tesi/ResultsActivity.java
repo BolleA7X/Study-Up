@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import com.example.alessio.tesi.Database.AppDB;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -36,8 +37,13 @@ public class ResultsActivity extends AppCompatActivity {
         if(entries.size() != 0) {
             //una volta ottenuto l'ArrayList<PieEntry> con i dati, questi sono i passaggi necessari per poterli inserire
             //nel grafico (da documentazione libreria)
+            Description desc = new Description();
+            desc.setText("");
+            piechart.setDescription(desc);
             PieDataSet set = new PieDataSet(entries, "Distribuzione corsi");
-            set.setColors(new int[] {R.color.violet,R.color.blue,R.color.ciano,R.color.gold,R.color.green,R.color.red});
+            int[] colors =  {android.R.color.holo_red_light,android.R.color.holo_green_dark,android.R.color.holo_orange_light,
+                    android.R.color.holo_blue_bright,android.R.color.holo_blue_dark,android.R.color.holo_purple};
+            set.setColors(colors,this);
             PieData data = new PieData(set);
             piechart.setData(data);
             piechart.invalidate();
