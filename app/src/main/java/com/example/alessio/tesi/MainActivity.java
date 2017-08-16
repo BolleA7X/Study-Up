@@ -28,7 +28,7 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SharedPreferences prefs;
-    private Boolean pomodoroMode;
+    //private Boolean pomodoroMode;
     private FloatingActionButton fab;
     private int timeVal=90;
     private long mytime;
@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView currentSubject;
     private boolean isOn;
     String[] sessionData;
-
+    //non so se è molto bello, ma questa è per capire se la subj è settata o no
+    public Boolean go;
     CountDownTimer cTimer = null;
 
     //Menu
@@ -92,9 +93,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PreferenceManager.setDefaultValues(this,R.xml.preference,false);
+       /* PreferenceManager.setDefaultValues(this,R.xml.preference,false);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        pomodoroMode = prefs.getBoolean("use_pomodoro_mode",false);
+        pomodoroMode = prefs.getBoolean("use_pomodoro_mode",false);*/
 
         // get references to widgets
         imageB = (ImageButton)findViewById(R.id.startTimerButton);
@@ -123,20 +124,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivityForResult(intent,0);
             }
         });
-        //Metti il corso nella textivew
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        String currentSub = sharedPref.getString("subj",null);
+        //Metti il corso nella textview
+        //SharedPreferences sharedPref = getSharedPreferences("MyPref", MODE_PRIVATE);
+        updateSubjText();
 
-        if(currentSub!= null && !currentSub.isEmpty() ){
-            currentSubject.setText(currentSub);
-        }
-
-        //imposto la pomodoro mode
-        if(pomodoroMode) {
-            timeVal = 25;
-            timerValue.setText("25");
-            seekBar.setEnabled(false);
-        }
     }
 
     //questo metodo viene chiamato quando la seconda activity viene chiusa e passa i risultati a questa tramite la putExtra()
@@ -148,9 +139,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             sessionData = data.getStringArrayExtra("currentSessionData");
             String subj = sessionData[3];
             String locat = sessionData[4];
-            if(subj != null)
+            if(subj != null) {
                 currentSubject.setText(subj);
+                go = true;
+            }
+
+            prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("subj", subj);
+            editor.putString("loc", locat);
+            editor.apply();
         }
+
     }
     @Override
     protected void onPause() {
@@ -159,11 +159,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onStop(){
-        String subjName = currentSubject.getText().toString();
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
+        /*String subjName = currentSubject.getText().toString();
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
         editor.putString("subj", subjName);
-        editor.apply();
+        editor.apply();*/
         super.onStop();
     }
     @Override
@@ -175,14 +175,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.startTimerButton:
+
                 if (isOn) {
                     stop();
-                }
-                else {
-                    if(sessionData != null)
+                } else {
+                    if( go ){
                         start();
-                    else
+                    }else{
                         FirstErrorToast();
+                    }
                 }
                 break;
         }
@@ -251,9 +252,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void saveSession(int duration) {
         //creo una variabile Session e ci salvo i dati necessari, ovvero giorno mese e anno (dal calendario interno del sistema),
         //la durata passata come parametro (vedi sopra), i dati sulla sessione (corso,luogo,teoria,esercizi,progetto)
-        Session session = new Session(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH,duration,
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String currentSub = prefs.getString("subj",null);
+        Boolean th = prefs.getBoolean("th", false);
+        Boolean ex = prefs.getBoolean("ex", false);
+        Boolean pr = prefs.getBoolean("pr", false);
+        String loc =  prefs.getString("subj", "località");
+        Boolean pomodoroMode = prefs.getBoolean("pomodoro",false);
+
+        Session session = new Session(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH, duration,
+                (th)?1:0, (ex)?1:0, (pr)?1:0,loc/*luogo*/,currentSub/*corso*/);
+        /*Session session = new Session(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH,duration,
                                       Session.stringToInt(sessionData[0]),Session.stringToInt(sessionData[1]),
-                                      Session.stringToInt(sessionData[2]),sessionData[4]/*luogo*/,sessionData[3]/*corso*/);
+                                      Session.stringToInt(sessionData[2]),sessionData[4],sessionData[3]);*/
         AppDB db = new AppDB(this);
         if(session != null)
             db.insertSession(session);                  //eseguo query per inserire nel db i dati.
@@ -261,9 +272,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //resetto il timer per poterlo riutilizzare (lavoro di luca spostato in questo metodo)
         imageB.setImageResource(R.drawable.only_play);
         isOn = false;
-        if(!pomodoroMode) {
+
+        if(pomodoroMode) {
             seekBar.setEnabled(true);
             timerValue.setText(String.valueOf(timeVal));
+        }else{
+            timerValue.setText("25");
         }
 
         fab.setClickable(true);
@@ -274,4 +288,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void updateSubjText(){
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String currentSub = prefs.getString("subj",null);
+        Boolean pomodoroMode = prefs.getBoolean("pomodoro",false);
+
+        if(currentSub!= null && !currentSub.isEmpty() ){
+            currentSubject.setText(currentSub);
+        }else{
+            currentSubject.setText(R.string.subject_label);
+            go = false;
+        }
+
+        //imposto la pomodoro mode
+        //String text=null;
+        if(!pomodoroMode) {
+            timeVal = 25;
+            timerValue.setText("25");
+            seekBar.setEnabled(false);
+            //text = "25";
+
+        }else if (pomodoroMode){
+            timeVal = 90;
+            timerValue.setText("90");
+            seekBar.setEnabled(true);
+            //text = "90";
+        }
+    }
 }

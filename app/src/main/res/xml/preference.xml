@@ -28,11 +28,12 @@
         android:title="@string/delete_all_label" />
 
     <CheckBoxPreference
+        android:id="@+id/checkPomodoro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:key="use_pomodoro_mode"
         android:title="@string/pomodoro_mode_label"
         android:summary="@string/pomodoro_mode_expl"
-        android:defaultValue="false" />
+        android:defaultValue="true" />
 
 </PreferenceScreen>

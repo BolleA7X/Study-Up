@@ -3,8 +3,6 @@ package com.example.alessio.tesi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,26 +14,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
 import com.example.alessio.tesi.Database.AppDB;
 import com.example.alessio.tesi.Database.Location;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+
+
 
 //classe che crea il dialog ed è chiamata in SessionSettingsActivity in openDialog()
 public class setLocationFragment extends DialogFragment{
-/**************************************/
 
 
-/******************************/
     private EditText newLocation;
     //override per far apparire subito la nuova materia/location nello spinner
     @Override

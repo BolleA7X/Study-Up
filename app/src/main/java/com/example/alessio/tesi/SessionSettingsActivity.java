@@ -1,6 +1,7 @@
 package com.example.alessio.tesi;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -12,6 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -50,10 +54,10 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         exercises = (CheckBox)findViewById(R.id.exercisesCheckBox);
         project = (CheckBox)findViewById(R.id.projectCheckBox);
         //Shared per i checkbox
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        Boolean th = sharedPref.getBoolean("th", false);
-        Boolean ex = sharedPref.getBoolean("ex", false);
-        Boolean pr = sharedPref.getBoolean("pr", false);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        Boolean th = pref.getBoolean("th", false);
+        Boolean ex = pref.getBoolean("ex", false);
+        Boolean pr = pref.getBoolean("pr", false);
 
         theory.setChecked(th);
         exercises.setChecked(ex);
