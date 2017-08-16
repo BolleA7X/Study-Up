@@ -1,42 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@android:color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.alessio.tesi.ResultsActivity"
-    android:id="@+id/resultsActivity"
-    android:orientation="horizontal">
+    android:layout_height="match_parent" >
 
-    <fragment
-        android:name="com.example.alessio.tesi.TrophiesFragment"
-        android:id="@+id/trophies_fragment"
-        android:layout_width="0dp"
-        android:layout_height="match_parent" />
-
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/subjectsPieChart"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="500sp">
+        android:layout_height="match_parent"
+        tools:context="com.example.alessio.tesi.ResultsActivity"
+        android:id="@+id/resultsActivity">
 
-    </com.github.mikephil.charting.charts.PieChart>
+        <fragment
+            android:name="com.example.alessio.tesi.TrophiesFragment"
+            android:id="@+id/trophies_fragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/subjectsPieChart"
+            android:layout_width="match_parent"
+            android:layout_height="500sp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/mostFrequentLocation" />
+        </com.github.mikephil.charting.charts.PieChart>
 
-        <TextView
-            android:id="@+id/mostFrequentLocationLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/subjectsPieChart"
+            android:layout_marginTop="10dp">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/mostFrequentLocationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="20sp"
+                android:text="@string/most_frequent_location_label" />
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/mostFrequentLocationLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="20sp"
+                android:text="@string/most_frequent_location_default_value"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

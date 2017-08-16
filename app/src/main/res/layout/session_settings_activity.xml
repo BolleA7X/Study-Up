@@ -120,7 +120,6 @@
         android:orientation="horizontal"
         style="?android:attr/buttonBarStyle"
         android:layout_below="@+id/projectCheckBox"
-        android:layout_marginTop="20dp"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
         android:layout_alignLeft="@+id/StudyTypeLabel"
@@ -157,6 +156,4 @@
             android:textStyle="bold"
             android:textSize="40sp" />
     </LinearLayout>
-
-
 </RelativeLayout>

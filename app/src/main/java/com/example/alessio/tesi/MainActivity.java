@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Funzione che manda il toast se non ho ancora messo sessione e corso
     private void FirstErrorToast(){
         Context context = getApplicationContext();
-        CharSequence text = getString(R.string.FirstErrorToast);;
+        CharSequence text = getString(R.string.first_error_toast);;
         int duration = Toast.LENGTH_LONG;
 
         Toast toast = Toast.makeText(context, text, duration);

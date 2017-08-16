@@ -68,7 +68,7 @@
     <string name="trophy_description_20">Sblocca tutti gli altri trofei..studiando!</string>
 
     <!-- Toast -->
-    <string name="FirstErrorToast">Devi selezionare corso e tipo della sessione!</string>
+    <string name="first_error_toast">Devi selezionare corso e tipo della sessione!</string>
 
     <string name="delete_location_label">Cancella luogo</string>
     <string name="delete_course_label">Cancella corso</string>
@@ -76,7 +76,8 @@
     <string name="pomodoro_mode_label">Usa modalità pomodoro</string>
     <string name="pomodoro_mode_expl">Modalità alternativa con sessioni fisse da 25 minuti</string>
 
-    <string name="mostFrequentLocation">Luogo più frequente: </string>
+    <string name="most_frequent_location_label">Luogo più frequente: </string>
+    <string name="most_frequent_location_default_value">Non specificato</string>
 
 
 </resources>

@@ -19,7 +19,7 @@
 
     <style name="TrophyImage">
         <item name="android:padding">10dp</item>
-        <item name="android:src">@drawable/trophy_unlocked</item>
+        <item name="android:src">@drawable/trophy_locked</item>
         <item name="android:layout_width">80dp</item>
         <item name="android:layout_height">80dp</item>
         <item name="android:scaleHeight">100</item>
