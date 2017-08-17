@@ -105,17 +105,26 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        Fragment fragment;
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
 
         switch(id){
             case R.id.menu_trophies:
-                Fragment trophiesFragment = new TrophiesFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.sessionSettingsActivity, trophiesFragment);
+                fragment = new TrophiesFragment();
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.sessionSettingsActivity, fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 break;
             case R.id.menu_settings:
+                fragment = new SettingsFragment();
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.sessionSettingsActivity, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
                 break;
             case R.id.menu_results:
                 Intent intent = new Intent(this,ResultsActivity.class);

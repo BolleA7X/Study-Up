@@ -22,8 +22,9 @@ import java.util.ArrayList;
 
 public class ResultsActivity extends AppCompatActivity {
 
-    PieChart piechart;
+    PieChart subjectsPiechart;
     TextView mostFrequentLocation;
+    TextView totalTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,31 +34,38 @@ public class ResultsActivity extends AppCompatActivity {
         //preparo db
         AppDB db = new AppDB(this);
 
-        //istanzio la textview per il posto più frequentato e setto il testo tramite query
+        //istanzio le textview e ne setto il testo tramite query
         mostFrequentLocation = (TextView)findViewById(R.id.mostFrequentLocationLabel);
-        mostFrequentLocation.setText(db.getMostFrequentLocation());
+        String place = db.getMostFrequentLocation();
+        if(place != null)
+            mostFrequentLocation.setText(place);
 
-        //istanzio il grafico a torta e disabilito la legenda
-        piechart = (PieChart)findViewById(R.id.subjectsPieChart);
-        Legend legend = piechart.getLegend();
+        totalTime = (TextView)findViewById(R.id.totalTimeLabel);
+        int time = db.getTotalTime();
+        totalTime.setText(String.valueOf(time)+" minuti");
+
+        //istanzio i grafico a torta e disabilito la legenda
+        subjectsPiechart = (PieChart)findViewById(R.id.subjectsPieChart);
+        Legend legend = subjectsPiechart.getLegend();
         legend.setEnabled(false);
 
         //eseguo query per ottenere i dati dal db da inserire el grafico a torta
-        ArrayList<PieEntry> entries = db.getPieChartData();     //contiene i dati del grafico
+        ArrayList<PieEntry> subjEntries = db.getSubjectsPieChartData();
 
-        if(entries.size() != 0) {
+        if(subjEntries.size() != 0) {
             //una volta ottenuto l'ArrayList<PieEntry> con i dati, questi sono i passaggi necessari per poterli inserire
             //nel grafico (da documentazione libreria)
             Description desc = new Description();
             desc.setText("");
-            piechart.setDescription(desc);
-            PieDataSet set = new PieDataSet(entries, "Distribuzione corsi");
+            subjectsPiechart.setDescription(desc);
+
+            PieDataSet subjSet = new PieDataSet(subjEntries, "Distribuzione corsi");
             int[] colors =  {android.R.color.holo_red_light,android.R.color.holo_green_dark,android.R.color.holo_orange_light,
                     android.R.color.holo_blue_bright,android.R.color.holo_blue_dark,android.R.color.holo_purple};
-            set.setColors(colors,this);
-            PieData data = new PieData(set);
-            piechart.setData(data);
-            piechart.invalidate();
+            subjSet.setColors(colors,this);
+            PieData data = new PieData(subjSet);
+            subjectsPiechart.setData(data);
+            subjectsPiechart.invalidate();
         }
         else
             Toast.makeText(this,"Nessun dato disponibile",Toast.LENGTH_SHORT).show();
@@ -77,19 +85,30 @@ public class ResultsActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        Fragment fragment;
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
 
         switch(id){
             case R.id.menu_trophies:
-                Fragment trophiesFragment = new TrophiesFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.resultsActivity, trophiesFragment);
+                fragment = new TrophiesFragment();
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.resultsActivity, fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 break;
             case R.id.menu_settings:
+                fragment = new SettingsFragment();
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.resultsActivity, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
                 break;
             case R.id.menu_results:
+                Intent intent = new Intent(this,ResultsActivity.class);
+                startActivity(intent);
                 break;
             case R.id.menu_calendar:
                 break;

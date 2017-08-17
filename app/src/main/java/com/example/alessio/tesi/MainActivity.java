@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Boolean th = prefs.getBoolean("th", false);
         Boolean ex = prefs.getBoolean("ex", false);
         Boolean pr = prefs.getBoolean("pr", false);
-        String loc =  prefs.getString("subj", "località");
+        String loc = prefs.getString("loc", "località");
         Boolean pomodoroMode = prefs.getBoolean("pomodoro",false);
 
         Session session = new Session(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH, duration,
@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                       Session.stringToInt(sessionData[2]),sessionData[4],sessionData[3]);*/
         AppDB db = new AppDB(this);
         if(session != null)
-            db.insertSession(session);                  //eseguo query per inserire nel db i dati.
+            db.insertSession(session);                  //eseguo query per inserire nel db i dati
 
         //resetto il timer per poterlo riutilizzare (lavoro di luca spostato in questo metodo)
         imageB.setImageResource(R.drawable.only_play);

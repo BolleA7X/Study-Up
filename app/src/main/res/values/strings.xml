@@ -78,6 +78,7 @@
 
     <string name="most_frequent_location_label">Luogo più frequente: </string>
     <string name="most_frequent_location_default_value">Non specificato</string>
+    <string name="total_time_label">Tempo totale: </string>
 
 
 </resources>

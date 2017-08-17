@@ -297,7 +297,7 @@ public class AppDB {
     }
 
     //query per ottenere i dati da inserire nel grafico a torta
-    public ArrayList<PieEntry> getPieChartData() {
+    public ArrayList<PieEntry> getSubjectsPieChartData() {
         ArrayList<PieEntry> entries = new ArrayList<>();
         this.openReadableDB();
         String[] args = new String[] {"SUM("+SESSION_DURATION+")"};
@@ -328,12 +328,32 @@ public class AppDB {
     }
 
     public String getMostFrequentLocation() {
+        String result = "";
         this.openReadableDB();
         String[] args = {SESSION_LOCATION_NAME,"COUNT("+SESSION_LOCATION_NAME+") AS cont"};
         String order = "cont DESC";
         Cursor cursor = db.query(SESSION_TABLE,args,null,null,SESSION_LOCATION_NAME,null,order,"1");
-        cursor.moveToFirst();
-        return cursor.getString(cursor.getColumnIndex(SESSION_LOCATION_NAME));
+        while(cursor.moveToNext()) {
+            result = cursor.getString(cursor.getColumnIndex(SESSION_LOCATION_NAME));
+            Log.println(Log.DEBUG, "cursor: ", result);
+        }
+        if(cursor != null)
+            cursor.close();
+        this.closeDB();
+        return result;
+    }
+
+    public int getTotalTime() {
+        int totalDuration = 0;
+        this.openReadableDB();
+        String[] args = new String[] {"SUM("+SESSION_DURATION+")"};
+        Cursor cursor = db.query(SESSION_TABLE,args,null,null,null,null,null);
+        while(cursor.moveToNext())
+            totalDuration = cursor.getInt(0);
+        if(cursor != null)
+            cursor.close();
+        this.closeDB();
+        return totalDuration;
     }
 
     public void deleteAll() {
