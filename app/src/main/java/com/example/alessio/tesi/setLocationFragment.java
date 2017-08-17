@@ -22,7 +22,6 @@ import com.example.alessio.tesi.Database.Location;
 //classe che crea il dialog ed è chiamata in SessionSettingsActivity in openDialog()
 public class setLocationFragment extends DialogFragment{
 
-
     private EditText newLocation;
     //override per far apparire subito la nuova materia/location nello spinner
     @Override

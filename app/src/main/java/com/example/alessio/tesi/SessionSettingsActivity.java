@@ -1,36 +1,23 @@
 package com.example.alessio.tesi;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-
 import com.example.alessio.tesi.Database.AppDB;
-
-import java.io.Serializable;
-
-import static com.example.alessio.tesi.R.layout.session_settings_activity;
 
 public class SessionSettingsActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -137,10 +124,6 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         return super.onOptionsItemSelected(item);
     }
 
-    //qua io prendo le informazioni da mandare nella MainActivity (vedi codice in MainActivity)
-    //avendolo fatto di fretta non ho messo i controlli nel caso in cui negli spinner non ci sia niente
-    //l'idea è prelevo i dati dagli spinner e checkbox, li metto in quell'array di stringhe "dataToSend" e uso l'intent per
-    //rispedirli indietro alla MainActivity che li legge in un metodo specifico.
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -166,21 +149,20 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
             //Bottone aggiunta materia
             case R.id.addSubjectButton:
                 setSubjectFragment subjDialogFragment = new setSubjectFragment ();
-                openDialog(subjDialogFragment);
+                FragmentManager fSm = getFragmentManager();
+                subjDialogFragment.show(fSm, "Sample Fragment");
                 break;
             //Bottone aggiunta location
             case R.id.addLocationButton:
-                setLocationFragment locDialogfragment = new setLocationFragment ();
-                openDialog(locDialogfragment);
+                MapViewFragment mapFragment = new MapViewFragment();
+                FragmentManager fLm = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fLm.beginTransaction();
+                fragmentTransaction.add(R.id.sessionSettingsActivity, mapFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
                 break;
 
         }
-    }
-    //Funzione che apre i dialog passando un DialogFragment
-    public void openDialog(DialogFragment dialogFragment) {
-        FragmentManager fm = getFragmentManager();
-
-        dialogFragment.show(fm, "Sample Fragment");
     }
 
     public void updateSpinner(){

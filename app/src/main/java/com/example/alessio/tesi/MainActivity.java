@@ -123,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Metti il corso nella textview
         //SharedPreferences sharedPref = getSharedPreferences("MyPref", MODE_PRIVATE);
         updateSubjText();
-
     }
 
     //questo metodo viene chiamato quando la seconda activity viene chiusa e passa i risultati a questa tramite la putExtra()

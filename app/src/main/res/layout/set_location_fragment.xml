@@ -9,27 +9,14 @@
     android:layout_marginTop="80dp"
     android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/newLoc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:hint="@string/add_location"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:apiKey="AIzaSyCyeU_RQQZkZRrx9ufDxKGchszoyiwM3rI"
-            android:layout_alignParentTop="true"
-            android:fontFamily="sans-serif"
-            android:hint="@string/add_location"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+    <EditText
+        android:id="@+id/newLoc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:fontFamily="sans-serif"
+        android:hint="@string/add_location" />
 
 </RelativeLayout>
