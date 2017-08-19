@@ -70,6 +70,9 @@
     <!-- Toast -->
     <string name="first_error_toast">Devi selezionare corso e tipo della sessione!</string>
 
+    <string name="gps_is_off">Il gps è disattivato, vuoi disattivarlo?</string>
+    <string name="go_to_sett">Vai alle impostazioni</string>
+
     <string name="delete_location_label">Cancella luogo</string>
     <string name="delete_course_label">Cancella corso</string>
     <string name="delete_all_label">Cancella tutti i dati</string>

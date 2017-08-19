@@ -28,7 +28,6 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SharedPreferences prefs;
-    //private Boolean pomodoroMode;
     private FloatingActionButton fab;
     private int timeVal=90;
     private long mytime;
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView currentSubject;
     private boolean isOn;
     String[] sessionData;
-    //non so se è molto bello, ma questa è per capire se la subj è settata o no
+    //questa è per capire se la subj è settata o no
     public Boolean go;
     CountDownTimer cTimer = null;
 
@@ -154,11 +153,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onStop(){
-        /*String subjName = currentSubject.getText().toString();
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("subj", subjName);
-        editor.apply();*/
         super.onStop();
     }
     @Override
@@ -297,18 +291,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //imposto la pomodoro mode
-        //String text=null;
         if(!pomodoroMode) {
             timeVal = 25;
             timerValue.setText("25");
             seekBar.setEnabled(false);
-            //text = "25";
 
         }else if (pomodoroMode){
             timeVal = 90;
             timerValue.setText("90");
             seekBar.setEnabled(true);
-            //text = "90";
         }
     }
 }
