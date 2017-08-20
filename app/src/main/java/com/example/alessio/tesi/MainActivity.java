@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -29,10 +30,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private SharedPreferences prefs;
     private FloatingActionButton fab;
-    private int timeVal=90;
-    private long mytime;
-    private TextView timerValue;
-    private ImageButton imageB;
+    private Boolean pomodoroMode;
+    //valore della seekbar che poi andrà moltiplicato per 5
+    private int timeVal=12;
+
+    private int secTimer=60;
+    private TextView minuteValue;
+    private TextView secondValue;
+    private ImageButton startTimerButton;
     private SeekBar seekBar;
     private TextView currentSubject;
     private boolean isOn;
@@ -96,17 +101,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         // get references to widgets
-        imageB = (ImageButton)findViewById(R.id.startTimerButton);
-        timerValue = (TextView)findViewById(R.id.timerValue);
+        startTimerButton = (ImageButton)findViewById(R.id.startTimerButton);
+        minuteValue = (TextView)findViewById(R.id.minuteValue);
+        secondValue = (TextView)findViewById(R.id.secondValue);
         seekBar = (SeekBar)findViewById(R.id.setTimerSeekBar);
         currentSubject = (TextView)findViewById(R.id.currentSubjectLabel);
 
         // set listeners
-        imageB.setOnClickListener(this);
+        startTimerButton.setOnClickListener(this);
         seekBar.setOnSeekBarChangeListener(seekBarListener);
 
-        timerValue.setText(String.valueOf(timeVal));
+        minuteValue.setText(String.valueOf(timeVal*5));
+        secondValue.setVisibility(View.INVISIBLE);
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        pomodoroMode = prefs.getBoolean("pomodoro",false);
         //floating button
         fab = (FloatingActionButton) findViewById(R.id.setButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         //Metti il corso nella textview
-        //SharedPreferences sharedPref = getSharedPreferences("MyPref", MODE_PRIVATE);
         updateSubjText();
     }
 
@@ -167,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.startTimerButton:
-
                 if (isOn) {
                     stop();
                 } else {
@@ -189,24 +196,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
+    //TODO notifiche
     private void start(){
+        secondValue.setVisibility(View.VISIBLE);
         isOn = true;
-        imageB.setImageResource(R.drawable.only_stop1);
-        mytime = timeVal*1000;
+        if(!pomodoroMode) {
+            startTimerButton.setImageResource(R.drawable.only_stop1_pomodoro);
+
+        }else if (pomodoroMode){
+            startTimerButton.setImageResource(R.drawable.only_stop1);
+        }
+
+        secTimer = 60;
+        int mytime = (timeVal*5)*60*1000; //secondi
         seekBar.setEnabled(false);
         fab.setClickable(false);
         fab.setVisibility(View.INVISIBLE);
-
         //start timer function
         cTimer = new CountDownTimer(mytime, 1000) {
             public void onTick(long millisUntilFinished) {
-                String s = String.valueOf( millisUntilFinished / 1000);
-                timerValue.setText(s);
+                updateViews(millisUntilFinished);
             }
             public void onFinish() {
-                timerValue.setText("OK!");
+                Toast toast = Toast.makeText(getApplicationContext(), "Timer concluso!", Toast.LENGTH_LONG);
+                toast.show();
                 //se il timer finisce salvo la sessione passando la durata totale del timer
-                saveSession(timeVal);
+                saveSession(timeVal*5);
             }
         };
         cTimer.start();
@@ -214,26 +229,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //se il timer viene stoppato prima della fine salvo la sessione passando la durata totale - la durata rimasta
     private void stop(){
-        saveSession(timeVal - Integer.parseInt(timerValue.getText().toString()));
-    }
+        secondValue.setVisibility(View.INVISIBLE);
+        if(!pomodoroMode) {
+            startTimerButton.setImageResource(R.drawable.only_play_pomodoro);
 
-    //*****************************************************
+        }else if (pomodoroMode){
+            startTimerButton.setImageResource(R.drawable.only_play);
+        }
+        isOn = false;
+        fab.setClickable(true);
+        fab.setVisibility(View.VISIBLE);
+
+        if(cTimer!=null){
+            cTimer.cancel();
+        }
+        int saveInt = timeVal*5 - Integer.parseInt(minuteValue.getText().toString());
+        saveSession(saveInt);
+    }
+    //Funzione per aggiornare le TextView per il timer
+    private void updateViews(long millisUntilFinished){
+        if(secTimer == 60){
+            String min = String.valueOf( millisUntilFinished / 60000);
+            minuteValue.setText(min);
+        }
+
+        secTimer = secTimer - 1;
+        secondValue.setText(String.valueOf(secTimer));
+
+        if(secTimer == 0){
+            secTimer = 60;
+        }
+    }
     // Event handler for the SeekBar
-    //*****************************************************
+    //TODO se metto la seekbar a 0 dopo un timer la Textview va a 60
     private OnSeekBarChangeListener seekBarListener = new OnSeekBarChangeListener() {
 
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
-
         }
-
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress,
                                       boolean fromUser) {
             timeVal = seekBar.getProgress();
-            timerValue.setText(String.valueOf(timeVal));
+            minuteValue.setText(String.valueOf(timeVal*5));
         }
-
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
 
@@ -250,7 +289,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Boolean ex = prefs.getBoolean("ex", false);
         Boolean pr = prefs.getBoolean("pr", false);
         String loc = prefs.getString("loc", "località");
-        Boolean pomodoroMode = prefs.getBoolean("pomodoro",false);
 
         Session session = new Session(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH, duration,
                 (th)?1:0, (ex)?1:0, (pr)?1:0,loc/*luogo*/,currentSub/*corso*/);
@@ -259,31 +297,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                       Session.stringToInt(sessionData[2]),sessionData[4],sessionData[3]);*/
         AppDB db = new AppDB(this);
         if(session != null)
-            db.insertSession(session);                  //eseguo query per inserire nel db i dati
+            db.insertSession(session);         //eseguo query per inserire nel db i dati
 
-        //resetto il timer per poterlo riutilizzare (lavoro di luca spostato in questo metodo)
-        imageB.setImageResource(R.drawable.only_play);
-        isOn = false;
-
-        if(pomodoroMode) {
-            seekBar.setEnabled(true);
-            timerValue.setText(String.valueOf(timeVal));
-        }else{
-            timerValue.setText("25");
-        }
-
-        fab.setClickable(true);
-        fab.setVisibility(View.VISIBLE);
-
-        if(cTimer!=null){
-            cTimer.cancel();
-        }
+        updateSubjText();
     }
 
     public void updateSubjText(){
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String currentSub = prefs.getString("subj",null);
-        Boolean pomodoroMode = prefs.getBoolean("pomodoro",false);
+        pomodoroMode = prefs.getBoolean("pomodoro",true);
 
         if(currentSub!= null && !currentSub.isEmpty() ){
             currentSubject.setText(currentSub);
@@ -294,15 +316,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //imposto la pomodoro mode
+        //non so perché ma funziona al contrario
         if(!pomodoroMode) {
-            timeVal = 25;
-            timerValue.setText("25");
+            timeVal = 5;
+            minuteValue.setText("25");
             seekBar.setEnabled(false);
+            startTimerButton.setImageResource(R.drawable.only_play_pomodoro);
 
         }else if (pomodoroMode){
-            timeVal = 90;
-            timerValue.setText("90");
+            timeVal = 12;
+            minuteValue.setText(String.valueOf(timeVal*5));
             seekBar.setEnabled(true);
+            startTimerButton.setImageResource(R.drawable.only_play);
         }
     }
 }

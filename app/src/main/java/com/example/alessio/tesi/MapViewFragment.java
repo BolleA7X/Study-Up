@@ -32,7 +32,6 @@ public class MapViewFragment extends Fragment {
     private Button revertButton;
 
     final double[] position = new double[2];
-    //TODO aggiungere controllo se è acceso il gps
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

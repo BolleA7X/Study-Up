@@ -41,20 +41,40 @@
             app:backgroundTint="@android:color/transparent"
             app:srcCompat="@drawable/only_play" />
 
-        <TextView
-            android:id="@+id/timerValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/timer_value"
-            android:textColor="@android:color/white"
-            android:textSize="70sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="110dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/minuteValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/timer_value"
+                android:textColor="@android:color/white"
+                android:textSize="70sp" />
+
+            <TextView
+                android:id="@+id/secondValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/seconds_value"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+        </LinearLayout>
 
     </FrameLayout>
 
 
     <SeekBar
         android:id="@+id/setTimerSeekBar"
+        style="@android:style/Widget.DeviceDefault.Light.SeekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/frameLayout"
@@ -65,9 +85,10 @@
         android:layout_marginRight="70dp"
         android:layout_marginStart="70dp"
         android:background="@android:color/transparent"
-        android:max="180"
-        android:progress="90"
+        android:max="24"
+        android:progress="12"
         android:progressTint="#00cc99"
         android:thumbTint="#00cc99" />
+
 
 </RelativeLayout>
