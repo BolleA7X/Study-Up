@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Fragment fragment;
         FragmentManager fragmentManager;
         FragmentTransaction fragmentTransaction;
+        Intent intent;
 
         switch(id){
             case R.id.menu_trophies:
@@ -77,10 +78,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 fragmentTransaction.commit();
                 break;
             case R.id.menu_results:
-                Intent intent = new Intent(this,ResultsActivity.class);
+                intent = new Intent(this,ResultsActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menu_calendar:
+                intent = new Intent(this,CalendarActivity.class);
+                startActivity(intent);
                 break;
         }
 
