@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:id="@+id/sessionSettingsActivity">
-
-    <fragment
-        android:name="com.example.alessio.tesi.TrophiesFragment"
-        android:layout_width="0dp"
-        android:layout_height="match_parent" />
 
     <fragment
         android:name="com.example.alessio.tesi.TrophiesFragment"
@@ -22,62 +17,57 @@
         android:id="@+id/subjectLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_margin="10dp"
-        android:padding="5dp"
-        android:text="@string/subject_label"
-        android:textSize="40sp"
-        android:textStyle="bold" />
+        style="@style/SessionsSettingsLabel"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="@string/subject_label" />
 
     <Spinner
         android:id="@+id/subjectsSpinner"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="15dp"
+        android:layout_height="50dp"
         android:layout_marginLeft="30dp"
         android:layout_marginStart="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginEnd="30dp"
         android:layout_toEndOf="@+id/locationLabel"
         android:layout_toRightOf="@+id/locationLabel"
-        android:padding="5dp" />
+        android:layout_alignTop="@+id/subjectLabel"
+        android:padding="5dp"/>
 
     <TextView
         android:id="@+id/locationLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/SessionsSettingsLabel"
         android:layout_alignLeft="@+id/subjectLabel"
         android:layout_alignStart="@+id/subjectLabel"
         android:layout_below="@+id/subjectLabel"
-        android:layout_marginTop="69dp"
-        android:padding="5dp"
-        android:text="@string/location_label"
-        android:textSize="40sp"
-        android:textStyle="bold" />
+        android:layout_marginTop="60dp"
+        android:text="@string/location_label" />
 
     <Spinner
         android:id="@+id/locationSpinner"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_alignEnd="@+id/subjectsSpinner"
         android:layout_alignLeft="@+id/subjectsSpinner"
         android:layout_alignRight="@+id/subjectsSpinner"
         android:layout_alignStart="@+id/subjectsSpinner"
         android:layout_alignTop="@+id/locationLabel"
-        android:padding="5dp" />
+        android:padding="5dp"/>
 
     <TextView
         android:id="@+id/StudyTypeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/SessionsSettingsLabel"
         android:text="@string/study_type_label"
         android:layout_below="@+id/locationLabel"
-        android:textSize="40sp"
-        android:textStyle="bold"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
-        android:padding="5dp"
-        android:layout_marginTop="100dp"/>
+        android:layout_marginTop="60dp"/>
 
     <CheckBox
         android:id="@+id/theoryCheckBox"
@@ -90,7 +80,7 @@
         android:layout_toEndOf="@+id/StudyTypeLabel"
         android:text="@string/theory"
         android:padding="5dp"
-        android:textSize="40sp"/>
+        android:textSize="30sp"/>
 
     <CheckBox
         android:id="@+id/exercisesCheckBox"
@@ -101,7 +91,7 @@
         android:layout_below="@+id/theoryCheckBox"
         android:text="@string/exercises"
         android:padding="5dp"
-        android:textSize="40sp"/>
+        android:textSize="30sp"/>
 
     <CheckBox
         android:id="@+id/projectCheckBox"
@@ -112,7 +102,7 @@
         android:layout_alignLeft="@+id/theoryCheckBox"
         android:layout_alignStart="@+id/theoryCheckBox"
         android:padding="5dp"
-        android:textSize="40sp"/>
+        android:textSize="30sp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -132,16 +122,25 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="@string/add_subject"
-            android:textSize="40sp" />
+            android:textSize="30sp" />
 
         <Button
             android:id="@+id/addLocationButton"
             style="?android:attr/buttonBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:padding="10dp"
             android:text="@string/add_location"
-            android:textSize="40sp" />
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="" />
 
         <Button
             android:id="@+id/endedConfig"
@@ -150,10 +149,12 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
             android:layout_weight="1"
             android:padding="10dp"
             android:text="@string/ok"
-            android:textSize="40sp"
+            android:textSize="30sp"
             android:textStyle="bold" />
     </LinearLayout>
 </RelativeLayout>
