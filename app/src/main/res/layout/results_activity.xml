@@ -29,12 +29,20 @@
 
         </com.github.mikephil.charting.charts.PieChart>
 
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/typesPieChart"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/subjectsPieChart"
+            android:layout_height="500sp">
+
+        </com.github.mikephil.charting.charts.PieChart>
+
         <LinearLayout
             android:id="@+id/mostFrequentLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@+id/subjectsPieChart"
+            android:layout_below="@+id/typesPieChart"
             android:layout_marginTop="10dp">
 
             <TextView

@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Boolean th = prefs.getBoolean("th", false);
         Boolean ex = prefs.getBoolean("ex", false);
         Boolean pr = prefs.getBoolean("pr", false);
-        String loc = prefs.getString("loc", "località");
+        String loc = prefs.getString("loc", "Nessun dato");
 
         Session session = new Session(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH, duration,
                 (th)?1:0, (ex)?1:0, (pr)?1:0,loc/*luogo*/,currentSub/*corso*/);
@@ -318,6 +318,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(session != null)
             db.insertSession(session);         //eseguo query per inserire nel db i dati
 
+        Toast.makeText(this, "Sessione: "+String.valueOf(th)+" "+String.valueOf(ex)+" "+String.valueOf(pr), Toast.LENGTH_SHORT).show();
         updateSubjText();
     }
 

@@ -10,6 +10,7 @@ import android.util.Log;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.renderer.scatter.ChevronUpShapeRenderer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -296,7 +297,7 @@ public class AppDB {
         return trophies;
     }
 
-    //query per ottenere i dati da inserire nel grafico a torta
+    //query per ottenere i dati da inserire nel grafico a torta dei corsi
     public ArrayList<PieEntry> getSubjectsPieChartData() {
         ArrayList<PieEntry> entries = new ArrayList<>();
         this.openReadableDB();
@@ -321,6 +322,43 @@ public class AppDB {
             //4)aggiungo ogni percentuale calcolata e il nome del corso ai dati del grafico
             entries.add(new PieEntry(percent,course));
         }
+        if(cursor != null)
+            cursor.close();
+        this.closeDB();
+        return entries;
+    }
+
+    //query per ottenere i dati da inserire nel grafico a torta dei tipi
+    public ArrayList<PieEntry> getTypesPieChartData() {
+        float[] percents = new float[3];
+        ArrayList<PieEntry> entries = new ArrayList<>();
+        this.openReadableDB();
+        String[] args = new String[] {"COUNT("+SESSION_ID+")"};
+        //1) ottengo il numero di sessioni
+        Cursor cursor = db.query(SESSION_TABLE,args,null,null,null,null,null);
+        cursor.moveToFirst();
+        float numberOfSessions = (float)cursor.getInt(0);
+        Log.d("Sessioni totali",String.valueOf(numberOfSessions));
+        //2) itero sui tre tipi di sessione e conto le occorrenze per ognuno
+        String[] types = {SESSION_THEORY,SESSION_EXERCISE,SESSION_PROJECT};
+        for(int i=0;i<3;i++) {
+            String where = types[i] + "= ?";
+            String[] whereArgs = {"1"};
+            if(!db.isOpen())
+                this.openReadableDB();
+            cursor = db.query(SESSION_TABLE,args,where,whereArgs,null,null,null);
+            cursor.moveToFirst();
+            //3) calcolo le percentuali assolute per ogni tipo
+            percents[i] = ((float)cursor.getInt(0))/numberOfSessions;
+            Log.d(types[i],String.valueOf(percents[i]));
+        }
+        //4) trovo il coefficiente di normalizzazione
+        float k = 1/(percents[0] + percents[1] + percents[2]);
+        Log.d("k",String.valueOf(k));
+        //5) calcolo le percentuali relative per ogni tipo e le inserisco nell'ArrayList
+        entries.add(new PieEntry(k*percents[0]*100,SESSION_THEORY));
+        entries.add(new PieEntry(k*percents[1]*100,SESSION_EXERCISE));
+        entries.add(new PieEntry(k*percents[2]*100,SESSION_PROJECT));
         if(cursor != null)
             cursor.close();
         this.closeDB();

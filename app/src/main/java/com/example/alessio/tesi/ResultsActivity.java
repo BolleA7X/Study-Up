@@ -23,6 +23,7 @@ import java.util.ArrayList;
 public class ResultsActivity extends AppCompatActivity {
 
     PieChart subjectsPiechart;
+    PieChart typesPiechart;
     TextView mostFrequentLocation;
     TextView totalTime;
 
@@ -44,28 +45,40 @@ public class ResultsActivity extends AppCompatActivity {
         int time = db.getTotalTime();
         totalTime.setText(String.valueOf(time)+" minuti");
 
-        //istanzio i grafico a torta e disabilito la legenda
+        //istanzio i grafici a torta e disabilito la legenda
         subjectsPiechart = (PieChart)findViewById(R.id.subjectsPieChart);
+        typesPiechart = (PieChart)findViewById(R.id.typesPieChart);
         Legend legend = subjectsPiechart.getLegend();
+        legend.setEnabled(false);
+        legend = typesPiechart.getLegend();
         legend.setEnabled(false);
 
         //eseguo query per ottenere i dati dal db da inserire el grafico a torta
         ArrayList<PieEntry> subjEntries = db.getSubjectsPieChartData();
+        ArrayList<PieEntry> typesEntries = db.getTypesPieChartData();
 
-        if(subjEntries.size() != 0) {
+        if(subjEntries.size() != 0 && typesEntries.size() != 0) {
             //una volta ottenuto l'ArrayList<PieEntry> con i dati, questi sono i passaggi necessari per poterli inserire
             //nel grafico (da documentazione libreria)
             Description desc = new Description();
             desc.setText("");
             subjectsPiechart.setDescription(desc);
+            typesPiechart.setDescription(desc);
 
-            PieDataSet subjSet = new PieDataSet(subjEntries, "Distribuzione corsi");
             int[] colors =  {android.R.color.holo_red_light,android.R.color.holo_green_dark,android.R.color.holo_orange_light,
                     android.R.color.holo_blue_bright,android.R.color.holo_blue_dark,android.R.color.holo_purple};
+
+            PieDataSet subjSet = new PieDataSet(subjEntries, "Distribuzione corsi");
             subjSet.setColors(colors,this);
-            PieData data = new PieData(subjSet);
-            subjectsPiechart.setData(data);
+            PieData subjData = new PieData(subjSet);
+            subjectsPiechart.setData(subjData);
             subjectsPiechart.invalidate();
+
+            PieDataSet typeSet = new PieDataSet(typesEntries, "Distribuzione tipi di sessione");
+            typeSet.setColors(colors,this);
+            PieData typesData = new PieData(typeSet);
+            typesPiechart.setData(typesData);
+            typesPiechart.invalidate();
         }
         else
             Toast.makeText(this,"Nessun dato disponibile",Toast.LENGTH_SHORT).show();
