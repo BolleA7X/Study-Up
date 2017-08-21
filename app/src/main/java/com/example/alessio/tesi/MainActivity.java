@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.alessio.tesi.Database.AppDB;
 import com.example.alessio.tesi.Database.Session;
+import com.example.alessio.tesi.Database.Trophy;
 
 import java.util.Calendar;
 
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //questa è per capire se la subj è settata o no
     public Boolean go;
     CountDownTimer cTimer = null;
+
+    //Contatori per sblocco trofei
 
     //Menu
     @Override
@@ -133,6 +136,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         //Metti il corso nella textview
         updateSubjText();
+
+        //Eseguo solo la prima volta che eseguo l'app
+        if(prefs.getBoolean("firstTimeOpeningApp", true) == true){
+            AppDB db = new AppDB(this);
+            Trophy[] trophyData = db.getTrophies();
+            trophyData[0].setUnlocked(1);
+            Toast t = Toast.makeText(this, "CONGRATULATIONS: TROPHY UNLOCKED.",Toast.LENGTH_LONG);
+            t.show();
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("firstTimeOpeningApp", false);
+            editor.apply();
+        }
+
     }
 
     //questo metodo viene chiamato quando la seconda activity viene chiusa e passa i risultati a questa tramite la putExtra()
