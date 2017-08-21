@@ -271,6 +271,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onProgressChanged(SeekBar seekBar, int progress,
                                       boolean fromUser) {
             timeVal = seekBar.getProgress();
+            if(timeVal==0){
+                timeVal =1;
+            }
             minuteValue.setText(String.valueOf(timeVal*5));
         }
         @Override
