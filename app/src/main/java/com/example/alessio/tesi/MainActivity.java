@@ -327,7 +327,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(session != null)
             db.insertSession(session);         //eseguo query per inserire nel db i dati
 
-        Toast.makeText(this, "Sessione: "+String.valueOf(th)+" "+String.valueOf(ex)+" "+String.valueOf(pr), Toast.LENGTH_SHORT).show();
         updateSubjText();
     }
 
