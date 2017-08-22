@@ -21,6 +21,7 @@ public class setSubjectFragment extends DialogFragment  {
     public void onDismiss(DialogInterface dialogInterface) {
         ((SessionSettingsActivity)getActivity()).updateSpinner();
     }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -46,9 +47,16 @@ public class setSubjectFragment extends DialogFragment  {
                         // bottone annulla
                     }
                 });
+        setRetainInstance(true);
         // Create the AlertDialog object and return it
         return builder.create();
     }
 
+    @Override
+    public void onDestroyView() {
+        if (getDialog() != null && getRetainInstance())
+            getDialog().setDismissMessage(null);
+        super.onDestroyView();
+    }
 
 }
