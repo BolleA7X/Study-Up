@@ -13,7 +13,7 @@ import com.example.alessio.tesi.Database.AppDB;
 import com.example.alessio.tesi.Database.Course;
 
 //classe che crea il dialog ed è chiamata in SessionSettingsActivity in openDialog()
-public class SetSubjectFragment extends DialogFragment  {
+public class setSubjectFragment extends DialogFragment  {
 
     private EditText subject;
     //override per far apparire subito la nuova materia/location nello spinner
