@@ -148,7 +148,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
                 break;
             //Bottone aggiunta materia
             case R.id.addSubjectButton:
-                setSubjectFragment subjDialogFragment = new setSubjectFragment ();
+                SetSubjectFragment subjDialogFragment = new SetSubjectFragment ();
                 FragmentManager fSm = getFragmentManager();
                 subjDialogFragment.show(fSm, "Sample Fragment");
                 break;
