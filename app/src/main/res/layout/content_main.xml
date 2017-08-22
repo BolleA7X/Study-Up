@@ -38,7 +38,7 @@
             android:elevation="0dp"
             android:onClick="onClick"
             android:scaleType="fitCenter"
-            app:backgroundTint="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent"
             app:srcCompat="@drawable/only_play" />
 
         <LinearLayout
@@ -74,7 +74,7 @@
 
     <SeekBar
         android:id="@+id/setTimerSeekBar"
-        style="@android:style/Widget.DeviceDefault.Light.SeekBar"
+        style="@android:style/Widget.Material.SeekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/frameLayout"

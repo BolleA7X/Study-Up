@@ -12,7 +12,8 @@
         android:name="com.example.alessio.tesi.TrophiesFragment"
         android:id="@+id/trophies_fragment"
         android:layout_width="0dp"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:layout="@layout/trophies_fragment" />
 
     <include
         android:id="@+id/contentMainActivity"

@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +21,7 @@ import android.widget.Toast;
 import com.example.alessio.tesi.Database.AppDB;
 
 public class SessionSettingsActivity extends AppCompatActivity implements View.OnClickListener{
-
+    private SharedPreferences prefs;
     private Button endedConfig;
     private Button addSubjectButton;
     private Button addLocationButton;
@@ -43,10 +44,11 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         exercises = (CheckBox)findViewById(R.id.exercisesCheckBox);
         project = (CheckBox)findViewById(R.id.projectCheckBox);
         //Shared per i checkbox
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        Boolean th = pref.getBoolean("th", false);
-        Boolean ex = pref.getBoolean("ex", false);
-        Boolean pr = pref.getBoolean("pr", false);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        Boolean th = prefs.getBoolean("th", false);
+        Boolean ex = prefs.getBoolean("ex", false);
+        Boolean pr = prefs.getBoolean("pr", false);
 
         theory.setChecked(th);
         exercises.setChecked(ex);
@@ -69,8 +71,8 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         Boolean ex = exercises.isChecked();
         Boolean pr = project.isChecked();
 
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
+        //SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("th", th);
         editor.putBoolean("ex", ex);
         editor.putBoolean("pr", pr);
@@ -172,7 +174,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         AppDB db = new AppDB(this);
 
         //eseguo la query tramite il metodo getSubjects() per ottenere l'ArrayAdapter contenete le info sui corsi
-        ArrayAdapter<String> subjects = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,db.getSubjects());
+        ArrayAdapter<String> subjects = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,db.getSubjects());
         if(subjects != null) {
             //se l'array è valido lo associo allo spinner.
             subjects.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -180,7 +182,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
             subjects.notifyDataSetChanged();
         }
         //come sopra ma con i posti
-        ArrayAdapter<String> locations = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,db.getLocations());
+        ArrayAdapter<String> locations = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,db.getLocations());
         if(locations != null) {
             locations.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             locationSpinner.setAdapter(locations);

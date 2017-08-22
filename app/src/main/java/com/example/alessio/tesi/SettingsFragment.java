@@ -47,9 +47,10 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 Boolean bo =checkPomodoro.isChecked();
-                String text = Boolean.toString(bo);
+                /*String text = Boolean.toString(bo);
                 Toast toast = Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
-                toast.show();
+                toast.show();*/
+
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean("pomodoro", bo);

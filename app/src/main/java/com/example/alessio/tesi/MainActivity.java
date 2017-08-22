@@ -3,14 +3,22 @@ package com.example.alessio.tesi;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
+
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Boolean pomodoroMode;
     //valore della seekbar che poi andrà moltiplicato per 5
     private int timeVal=12;
-
+    private int mNotificationId =0;
     private int secTimer=60;
     private TextView minuteValue;
     private TextView secondValue;
@@ -138,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         updateSubjText();
 
         //Eseguo solo la prima volta che eseguo l'app
-        if(prefs.getBoolean("firstTimeOpeningApp", true) == true){
+        if(prefs.getBoolean("firstTimeOpeningApp", true)){
             AppDB db = new AppDB(this);
             Trophy[] trophyData = db.getTrophies();
             trophyData[0].setUnlocked(1);
@@ -206,20 +214,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Funzione che manda il toast se non ho ancora messo sessione e corso
     private void FirstErrorToast(){
         Context context = getApplicationContext();
-        CharSequence text = getString(R.string.first_error_toast);;
+        CharSequence text = getString(R.string.first_error_toast);
         int duration = Toast.LENGTH_LONG;
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
-    //TODO notifiche
     private void start(){
+        //dovrebbe andare in stop() ma l'ho messa qua per vederla meglio
+        notificationGo();
         secondValue.setVisibility(View.VISIBLE);
         isOn = true;
         if(!pomodoroMode) {
             startTimerButton.setImageResource(R.drawable.only_stop1_pomodoro);
 
-        }else if (pomodoroMode){
+        }else{
             startTimerButton.setImageResource(R.drawable.only_stop1);
         }
 
@@ -249,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(!pomodoroMode) {
             startTimerButton.setImageResource(R.drawable.only_play_pomodoro);
 
-        }else if (pomodoroMode){
+        }else {
             startTimerButton.setImageResource(R.drawable.only_play);
         }
         isOn = false;
@@ -339,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //non so perché ma funziona al contrario
         if(!pomodoroMode) {
             timeVal = 5;
-            minuteValue.setText("25");
+            minuteValue.setText(R.string.pomodoro_value);
             seekBar.setEnabled(false);
             startTimerButton.setImageResource(R.drawable.only_play_pomodoro);
 
@@ -349,5 +358,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             seekBar.setEnabled(true);
             startTimerButton.setImageResource(R.drawable.only_play);
         }
+    }
+    //TODO non si cancella la notifica
+    public void notificationGo(){
+        NotificationCompat.Builder mBuilder = (android.support.v7.app.NotificationCompat.Builder)
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.icona_notifica)
+                        .setContentTitle(getString(R.string.notification_title_label))
+                        .setContentText(getString(R.string.notification_text_label));
+
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(this, MainActivity.class);
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(MainActivity.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mBuilder.setVibrate(new long[] { 500, 500});
+        mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
+        mBuilder.setLights(Color.RED, 3000, 3000);
+        mBuilder.setAutoCancel(true);
+
+        // mNotificationId is a unique integer your app uses to identify the
+        // notification. For example, to cancel the notification, you can pass its ID
+        // number to NotificationManager.cancel().
+        mNotificationManager.notify(mNotificationId, mBuilder.build());
     }
 }

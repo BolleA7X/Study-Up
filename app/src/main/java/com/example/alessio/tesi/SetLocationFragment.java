@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.example.alessio.tesi.Database.AppDB;
 import com.example.alessio.tesi.Database.Location;
 
@@ -47,9 +49,15 @@ public class SetLocationFragment extends DialogFragment{
                     public void onClick(DialogInterface dialog, int id) {
                         //ottengo le coordinate con getCoordinates() (vedi sotto) e le inserisco nel db
                         double[] position = getCoordinates();
-                        Location location = new Location(newLocation.getText().toString(),position[0],position[1]);
-                        AppDB db = new AppDB(getActivity());
-                        db.insertLocation(location);
+                        String luogo = newLocation.getText().toString();
+                        if(luogo!=null &&  !luogo.isEmpty()){
+                            Location location = new Location(luogo,position[0],position[1]);
+                            AppDB db = new AppDB(getActivity());
+                            db.insertLocation(location);
+                        }else{
+                            Toast toast = Toast.makeText(getActivity(), "Devi mettere un nome al luogo", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
                     }
                 })
                 .setNegativeButton(R.string.abort_label, new DialogInterface.OnClickListener() {
