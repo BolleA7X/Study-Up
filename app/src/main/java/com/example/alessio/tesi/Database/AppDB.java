@@ -413,7 +413,8 @@ public class AppDB {
         query = "SELECT "+select+" FROM "+SESSION_TABLE+" ORDER BY "+SESSION_ID+" DESC LIMIT 10";
         cursor1 = db.rawQuery(query,null);
         cursor1.moveToFirst();
-        cont = cursor1.getInt(0);
+        if(cursor1.getCount() != 0)
+            cont = cursor1.getInt(0);
         //ottengo la conta dei corsi diversi studiati ogni giorno per 10 giorni
         select = "DISTINCT COUNT("+SESSION_COURSE_NAME+")";
         query = "SELECT "+select+" FROM "+SESSION_TABLE+" ORDER BY "+SESSION_ID+" DESC LIMIT 10";
@@ -487,7 +488,7 @@ public class AppDB {
                 cursor2.close();
         }
         else
-            result[2] = 0;
+            result[2] = 10;
 
         if(cursor1 != null)
             cursor1.close();
