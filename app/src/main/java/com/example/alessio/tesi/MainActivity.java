@@ -10,19 +10,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
-
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -41,8 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FloatingActionButton fab;
     private Boolean pomodoroMode;
     //valore della seekbar che poi andrà moltiplicato per 5
-    private int timeVal=12;
-    private int mNotificationId =0;
+    private int timeVal;
     private int secTimer=60;
     private TextView minuteValue;
     private TextView secondValue;
@@ -109,8 +105,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        setContentView(R.layout.activity_main);
+        //timeVal = 12;
         // get references to widgets
         startTimerButton = (ImageButton)findViewById(R.id.startTimerButton);
         minuteValue = (TextView)findViewById(R.id.minuteValue);
@@ -127,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         pomodoroMode = prefs.getBoolean("pomodoro",false);
+        timeVal = prefs.getInt("timeVal",12);
         //floating button
         fab = (FloatingActionButton) findViewById(R.id.setButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         //Metti il corso nella textview
-        updateSubjText();
+        updateTimer(false);
 
         //Eseguo solo la prima volta che eseguo l'app
         if(prefs.getBoolean("firstTimeOpeningApp", true)){
@@ -220,9 +218,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
+
     private void start(){
-        //dovrebbe andare in stop() ma l'ho messa qua per vederla meglio
-        notificationGo();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("timeVal", timeVal);
+        editor.apply();
         secondValue.setVisibility(View.VISIBLE);
         isOn = true;
         if(!pomodoroMode) {
@@ -243,10 +244,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 updateViews(millisUntilFinished);
             }
             public void onFinish() {
+                notificationGo();
                 Toast toast = Toast.makeText(getApplicationContext(), "Timer concluso!", Toast.LENGTH_LONG);
                 toast.show();
                 //se il timer finisce salvo la sessione passando la durata totale del timer
                 saveSession(timeVal*5);
+
             }
         };
         cTimer.start();
@@ -294,11 +297,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress,
                                       boolean fromUser) {
-            timeVal = seekBar.getProgress();
+            timeVal = seekBar.getProgress() + 1;
+            //TODO spostarla quando è a zero
             //per non porlo uguale a 0
-            if(timeVal==0){
-                timeVal =1;
-            }
+            /*if(timeVal==0){
+                timeVal = 1;
+            }*/
             minuteValue.setText(String.valueOf(timeVal*5));
         }
         @Override
@@ -328,10 +332,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             db.insertSession(session);         //eseguo query per inserire nel db i dati
 
         Toast.makeText(this, "Sessione: "+String.valueOf(th)+" "+String.valueOf(ex)+" "+String.valueOf(pr), Toast.LENGTH_SHORT).show();
-        updateSubjText();
+        updateTimer(false);
     }
 
-    public void updateSubjText(){
+    public void updateTimer(Boolean tot){
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String currentSub = prefs.getString("subj",null);
         pomodoroMode = prefs.getBoolean("pomodoro",true);
@@ -349,17 +353,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(!pomodoroMode) {
             timeVal = 5;
             minuteValue.setText(R.string.pomodoro_value);
+            secondValue.setText(R.string.seconds_value);
             seekBar.setEnabled(false);
             startTimerButton.setImageResource(R.drawable.only_play_pomodoro);
 
         }else if (pomodoroMode){
-            timeVal = 12;
+            if(tot){
+                timeVal = 12;
+            }
             minuteValue.setText(String.valueOf(timeVal*5));
+            seekBar.setProgress(timeVal);
+            secondValue.setText(R.string.seconds_value);
             seekBar.setEnabled(true);
             startTimerButton.setImageResource(R.drawable.only_play);
         }
     }
-    //TODO non si cancella la notifica
+
     public void notificationGo(){
         NotificationCompat.Builder mBuilder = (android.support.v7.app.NotificationCompat.Builder)
                 new NotificationCompat.Builder(this)
@@ -367,14 +376,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .setContentTitle(getString(R.string.notification_title_label))
                         .setContentText(getString(R.string.notification_text_label));
 
-        // Creates an explicit intent for an Activity in your app
+        // Quando tocca la notifica rientro nella main
         Intent resultIntent = new Intent(this, MainActivity.class);
-
-        // The stack builder object will contain an artificial back stack for the
-        // started Activity.
-        // This ensures that navigating backward from the Activity leads out of
-        // your application to the Home screen.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+
         // Adds the back stack for the Intent (but not the Intent itself)
         stackBuilder.addParentStack(MainActivity.class);
         // Adds the Intent that starts the Activity to the top of the stack
@@ -387,14 +392,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBuilder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        //Questa parte costruisce la notifica con vibrazione, suono eccetera
         mBuilder.setVibrate(new long[] { 500, 500});
         mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
         mBuilder.setLights(Color.RED, 3000, 3000);
         mBuilder.setAutoCancel(true);
-
-        // mNotificationId is a unique integer your app uses to identify the
-        // notification. For example, to cancel the notification, you can pass its ID
-        // number to NotificationManager.cancel().
+        int mNotificationId =0;
         mNotificationManager.notify(mNotificationId, mBuilder.build());
     }
 }

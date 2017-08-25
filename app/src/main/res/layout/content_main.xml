@@ -33,12 +33,12 @@
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
             android:adjustViewBounds="true"
+            android:backgroundTint="#0000"
             android:contentDescription="@string/image_desc"
             android:cropToPadding="false"
             android:elevation="0dp"
             android:onClick="onClick"
             android:scaleType="fitCenter"
-            android:backgroundTint="@android:color/transparent"
             app:srcCompat="@drawable/only_play" />
 
         <LinearLayout
@@ -86,7 +86,7 @@
         android:layout_marginStart="70dp"
         android:background="@android:color/transparent"
         android:max="24"
-        android:progress="12"
+        android:progress="11"
         android:progressTint="#00cc99"
         android:thumbTint="#00cc99" />
 

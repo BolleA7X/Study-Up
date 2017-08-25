@@ -163,7 +163,6 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 break;
-
         }
     }
 

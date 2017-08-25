@@ -55,7 +55,7 @@ public class SettingsFragment extends PreferenceFragment {
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putBoolean("pomodoro", bo);
                 editor.apply();
-                ((MainActivity)getActivity()).updateSubjText();
+                ((MainActivity)getActivity()).updateTimer(true);
                 return true;
             }
         });
@@ -86,7 +86,7 @@ public class SettingsFragment extends PreferenceFragment {
         deleteLocation.setDefaultValue("nessuno");
     }
     /*  if(checkPomodoro.isChecked()){
-                    ((MainActivity)getActivity()).updateSubjText();
+                    ((MainActivity)getActivity()).updateTimer();
                 }*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -116,7 +116,7 @@ public class SettingsFragment extends PreferenceFragment {
                     editor.remove("pr");
                     editor.commit();
                     //Chiama il metodo in Main che aggiorna la TextView
-                    ((MainActivity)getActivity()).updateSubjText();
+                    ((MainActivity)getActivity()).updateTimer(true);
                     Toast.makeText(getActivity(), "Tutti i dati sono stati eliminati", Toast.LENGTH_SHORT).show();
                     return true;
                 }
