@@ -39,10 +39,15 @@ public class SettingsFragment extends PreferenceFragment {
         deleteAll = (ListPreference)findPreference("delete_all_preference");
         checkPomodoro = (CheckBoxPreference)findPreference("use_pomodoro_mode");
 
-        checkPomodoro.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+       checkPomodoro.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                updatePomodoro();
+                boolean pomodoroChecked = checkPomodoro.isChecked();
+
+                /*String text = Boolean.toString(pomodoroChecked);
+                Toast toast = Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
+                toast.show();*/
+                updatePomodoro(!pomodoroChecked);
                 return true;
             }
         });
@@ -141,13 +146,7 @@ public class SettingsFragment extends PreferenceFragment {
         return view;
     }
 
-    private void updatePomodoro(){
-
-        boolean pomodoroChecked = checkPomodoro.isChecked();
-
-            String text = Boolean.toString(pomodoroChecked);
-            Toast toast = Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
-            toast.show();
+    private void updatePomodoro(boolean pomodoroChecked){
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         SharedPreferences.Editor editor = prefs.edit();

@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isOn;
     String[] sessionData;
     //questa è per capire se la subj è settata o no
-    public Boolean go;
+    public boolean go;
     CountDownTimer cTimer = null;
 
     //Menu
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.apply();
         secondValue.setVisibility(View.VISIBLE);
         isOn = true;
-        if(!pomodoroMode) {
+        if(pomodoroMode) {
             startTimerButton.setImageResource(R.drawable.only_stop1_pomodoro);
         }else{
             startTimerButton.setImageResource(R.drawable.only_stop1);
@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //se il timer viene stoppato prima della fine salvo la sessione passando la durata totale - la durata rimasta
     private void stop(){
         secondValue.setVisibility(View.INVISIBLE);
-        if(!pomodoroMode) {
+        if(pomodoroMode) {
             startTimerButton.setImageResource(R.drawable.only_play_pomodoro);
 
         }else {
@@ -353,12 +353,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         updateTimer(false);
     }
 
-    public void updateTimer(Boolean tot){
+    public void updateTimer(boolean tot){
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String currentSub = prefs.getString("subj", null);
-        pomodoroMode = prefs.getBoolean("pomodoro", false);
+        pomodoroMode = prefs.getBoolean("pomodoro", true);
 
-        // se la materia
         if(currentSub!= null && !currentSub.isEmpty() ){
             currentSubject.setText(currentSub);
             go = true;
@@ -369,14 +368,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //imposto la pomodoro mode
         //non so perché ma funziona al contrario
-        if(!pomodoroMode) {
+        if(pomodoroMode) {
             timeVal = 5;
             minuteValue.setText(R.string.pomodoro_value);
             secondValue.setText(R.string.seconds_value);
             seekBar.setEnabled(false);
             startTimerButton.setImageResource(R.drawable.only_play_pomodoro);
 
-        }else if(pomodoroMode){
+        }else if(!pomodoroMode){
             if(tot){
                 timeVal = 12;
             }
