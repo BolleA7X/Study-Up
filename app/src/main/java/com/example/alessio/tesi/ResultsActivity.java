@@ -26,6 +26,7 @@ public class ResultsActivity extends AppCompatActivity {
     PieChart typesPiechart;
     TextView mostFrequentLocation;
     TextView totalTime;
+    TextView advice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,12 @@ public class ResultsActivity extends AppCompatActivity {
         totalTime = (TextView)findViewById(R.id.totalTimeLabel);
         int time = db.getTotalTime();
         totalTime.setText(String.valueOf(time)+" minuti");
+
+        advice = (TextView)findViewById(R.id.advice);
+        float[] infoForAdvice = db.getInfoForAdvice();              //informazioni recuperate dal db per il consiglio
+        //chiamo un metodo che generi a runtime la stringa del consiglio sulla base delle informazioni recuperate
+        //dal db
+        advice.setText(chooseAdvice(infoForAdvice));
 
         //istanzio i grafici a torta e disabilito la legenda
         subjectsPiechart = (PieChart)findViewById(R.id.subjectsPieChart);
@@ -128,5 +135,32 @@ public class ResultsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private String chooseAdvice(float[] infoForAdvice) {
+        String advice = new String("");
+        //considero la distanza temporale media tra le sessioni
+        if(infoForAdvice[2] <= 2)                                   //distanza media di 2 giorni o meno
+            advice = "Stai studiando con costanza. ";
+        else
+            advice = "Dovresti studiare con maggiore frequenza. ";
+
+        //considero la media dei minuti di studio al giorno
+        if(infoForAdvice[1] <= 60)
+            advice += "Sarebbe meglio studiare per più tempo al giorno. ";
+        else if(infoForAdvice[1] >= 240)
+            advice += "Rischi di affaticarti e stressarti se studi per troppo tempo al giorno. ";
+        else
+            advice += "Studi il corretto numero di ore al giorno: continua così. ";
+
+        //considero la media del numero di corsi diversi studiati negli ultimi 10 giorni
+        if(infoForAdvice[0] <= 2)
+            advice += "Negli ultimi dieci giorni hai studiato poche materie diverse al giorno.";
+        else if(infoForAdvice[0] >= 5)
+            advice += "Dovresti concentrarti su meno materie alla volta";
+        else
+            advice += "Negli ultimi dieci giorni hai studiato il corretto numero di materie diverse al giorno.";
+
+        return advice;
     }
 }

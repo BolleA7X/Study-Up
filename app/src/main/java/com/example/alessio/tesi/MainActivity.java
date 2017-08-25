@@ -339,9 +339,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Boolean ex = prefs.getBoolean("ex", false);
         Boolean pr = prefs.getBoolean("pr", false);
         String loc = prefs.getString("loc", "Nessun dato");
+        Calendar calendar = Calendar.getInstance();
 
-        Session session = new Session(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH, duration,
-                (th)?1:0, (ex)?1:0, (pr)?1:0,loc/*luogo*/,currentSub/*corso*/);
+        Session session = new Session(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH),
+                                      duration, (th)?1:0, (ex)?1:0, (pr)?1:0,loc/*luogo*/,currentSub/*corso*/);
         /*Session session = new Session(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH,duration,
                                       Session.stringToInt(sessionData[0]),Session.stringToInt(sessionData[1]),
                                       Session.stringToInt(sessionData[2]),sessionData[4],sessionData[3]);*/

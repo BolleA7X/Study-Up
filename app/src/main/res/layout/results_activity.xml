@@ -91,6 +91,12 @@
 
         </LinearLayout>
 
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/advice"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/totalTime" />
+
     </RelativeLayout>
 
 </ScrollView>

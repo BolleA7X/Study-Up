@@ -13,8 +13,11 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.renderer.scatter.ChevronUpShapeRenderer;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 public class AppDB {
 
@@ -393,6 +396,104 @@ public class AppDB {
             cursor.close();
         this.closeDB();
         return totalDuration;
+    }
+
+    public float[] getInfoForAdvice() {
+        int cont = 0;
+        float[] result = new float[3];
+        String select;
+        String[] whereArgs;
+        String query;
+        Cursor cursor1,cursor2;
+        this.openReadableDB();
+
+        //1) MEDIA DEI CORSI STUDIATI IN 10 GIORNI
+        //ottengo la conta dei giorni
+        select = "DISTINCT "+SESSION_DAY+","+SESSION_MONTH+","+SESSION_YEAR;
+        query = "SELECT "+select+" FROM "+SESSION_TABLE+" ORDER BY "+SESSION_ID+" DESC LIMIT 10";
+        cursor1 = db.rawQuery(query,null);
+        cursor1.moveToFirst();
+        cont = cursor1.getInt(0);
+        //ottengo la conta dei corsi diversi studiati ogni giorno per 10 giorni
+        select = "DISTINCT COUNT("+SESSION_COURSE_NAME+")";
+        query = "SELECT "+select+" FROM "+SESSION_TABLE+" ORDER BY "+SESSION_ID+" DESC LIMIT 10";
+        cursor2 = db.rawQuery(query,null);
+        cursor2.moveToFirst();
+        if(cont != 0)
+            result[0] = (float)cursor2.getInt(0) / (float)cont;
+        else
+            result[0] = 0;
+
+        //2) MEDIA DELLA DURATA TOTALE GIORNALIERA
+        //ottengo la durata totale
+        cont = this.getTotalTime();
+        //ottengo i giorni
+        select = "DISTINCT "+SESSION_DAY+","+SESSION_MONTH+","+SESSION_YEAR;
+        query = "SELECT "+select+" FROM "+SESSION_TABLE;
+        if(!db.isOpen())
+            this.openReadableDB();
+        cursor1 = db.rawQuery(query,null);
+        //calcolo il secondo risultato
+        if(cont != 0)
+            result[1] = (float)cont / (float)cursor1.getCount();
+        else
+            result[1] = 0;
+
+        //3) MEDIA DELLE DISTANZE DI TEMPO TRA SESSIONI
+        //ottengo il numero di sessioni
+        select = "COUNT(*)";
+        query = "SELECT "+select+" FROM "+SESSION_TABLE;
+        cursor1 = db.rawQuery(query,null);
+        cursor1.moveToFirst();
+        cont = cursor1.getInt(0);
+        if(cont > 1) {
+            //ottengo la somma delle differenze di tempo tra sessioni
+            long diffSum = 0;
+            Calendar cal1 = Calendar.getInstance();
+            Calendar cal2 = Calendar.getInstance();
+            select = SESSION_DAY + "," + SESSION_MONTH + "," + SESSION_YEAR;
+            query = "SELECT " + select + " FROM " + SESSION_TABLE + " WHERE " + SESSION_ID + "= ?";
+            whereArgs = new String[]{"1"};
+            cursor2 = db.rawQuery(query, whereArgs);
+            cursor2.moveToFirst();
+            cal1.set(cursor2.getInt(cursor2.getColumnIndex(SESSION_YEAR)),
+                    cursor2.getInt(cursor2.getColumnIndex(SESSION_MONTH)),
+                    cursor2.getInt(cursor2.getColumnIndex(SESSION_DAY)));
+            //considero come se le sessioni fossero tutte svolte alle 00:00
+            cal1.set(Calendar.HOUR_OF_DAY, 0);
+            cal1.set(Calendar.MINUTE, 0);
+            cal1.set(Calendar.SECOND, 0);
+            cal1.set(Calendar.MILLISECOND, 0);
+            for (int i = 2; i <= cont; i++) {
+                whereArgs = new String[]{String.valueOf(i)};
+                if (!db.isOpen())
+                    this.openReadableDB();
+                cursor2 = db.rawQuery(query, whereArgs);
+                cursor2.moveToFirst();
+                cal2.set(cursor2.getInt(cursor2.getColumnIndex(SESSION_YEAR)),
+                        cursor2.getInt(cursor2.getColumnIndex(SESSION_MONTH)),
+                        cursor2.getInt(cursor2.getColumnIndex(SESSION_DAY)));
+                cal2.set(Calendar.HOUR_OF_DAY, 0);
+                cal2.set(Calendar.MINUTE, 0);
+                cal2.set(Calendar.SECOND, 0);
+                cal2.set(Calendar.MILLISECOND, 0);
+                diffSum += TimeUnit.MILLISECONDS.toDays(Math.abs(cal2.getTimeInMillis() - cal1.getTimeInMillis()));
+                cal1 = cal2;
+            }
+            //calcolo il terzo risultato
+            result[2] = (float) diffSum / (float) cont;
+
+            if(cursor2 != null)
+                cursor2.close();
+        }
+        else
+            result[2] = 0;
+
+        if(cursor1 != null)
+            cursor1.close();
+        this.closeDB();
+
+        return result;
     }
 
     public int unlockTrophy(int id) {
