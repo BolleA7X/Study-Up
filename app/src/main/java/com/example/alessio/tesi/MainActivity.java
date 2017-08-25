@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onProgressChanged(SeekBar seekBar, int progress,
                                       boolean fromUser) {
             timeVal = seekBar.getProgress() + 1;
-            //TODO spostarla quando è a zero
+            // spostarla quando è a zero?
             //per non porlo uguale a 0
             /*if(timeVal==0){
                 timeVal = 1;
