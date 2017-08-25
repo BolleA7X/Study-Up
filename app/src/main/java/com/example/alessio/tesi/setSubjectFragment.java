@@ -20,6 +20,7 @@ public class setSubjectFragment extends DialogFragment  {
     @Override
     public void onDismiss(DialogInterface dialogInterface) {
         ((SessionSettingsActivity)getActivity()).updateSpinner();
+        // PROVA: setRetainInstance(false);
     }
 
     @Override
@@ -44,7 +45,7 @@ public class setSubjectFragment extends DialogFragment  {
                 })
                .setNegativeButton(R.string.abort_label, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // bottone annulla
+                        // PROVA: setRetainInstance(false);
                     }
                 });
         setRetainInstance(true);
@@ -56,6 +57,7 @@ public class setSubjectFragment extends DialogFragment  {
     public void onDestroyView() {
         if (getDialog() != null && getRetainInstance())
             getDialog().setDismissMessage(null);
+        // PROVA: else if(getDialog() != null && getRetainInstance() == false)getDialog().dismiss();
         super.onDestroyView();
     }
 

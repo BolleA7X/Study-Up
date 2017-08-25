@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private SharedPreferences prefs;
     private FloatingActionButton fab;
-    private Boolean pomodoroMode;
+    private boolean pomodoroMode;
     //valore della seekbar che poi andrà moltiplicato per 5
     private int timeVal;
     private int secTimer = 60;
@@ -52,8 +52,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //questa è per capire se la subj è settata o no
     public Boolean go;
     CountDownTimer cTimer = null;
-
-    //Contatori per sblocco trofei
 
     //Menu
     @Override
@@ -145,12 +143,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        //Eseguo solo la prima volta che eseguo l'app
+        //Eseguo solo la prima volta che eseguo l'app ----- SBLOCCO TROFEO 1
         if(prefs.getBoolean("firstTimeOpeningApp", true)){
             AppDB db = new AppDB(this);
-            Trophy[] trophyData = db.getTrophies();
-            trophyData[0].setUnlocked(1);
-            Toast t = Toast.makeText(this, "CONGRATULATIONS: TROPHY UNLOCKED.",Toast.LENGTH_LONG);
+            db.unlockTrophy(1);
+            Toast t = Toast.makeText(this, "CONGRATULATIONS: TROPHY 1 UNLOCKED.",Toast.LENGTH_LONG);
             t.show();
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("firstTimeOpeningApp", false);
@@ -181,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -190,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStop(){
         super.onStop();
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -211,6 +210,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
     //Funzione che manda il toast se non ho ancora messo sessione e corso
     private void FirstErrorToast(){
         Context context = getApplicationContext();
@@ -220,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
+
     private void start(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
@@ -229,7 +230,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         isOn = true;
         if(!pomodoroMode) {
             startTimerButton.setImageResource(R.drawable.only_stop1_pomodoro);
-
         }else{
             startTimerButton.setImageResource(R.drawable.only_stop1);
         }
@@ -250,6 +250,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 toast.show();
                 //se il timer finisce salvo la sessione passando la durata totale del timer
                 saveSession(timeVal*5);
+                // Se concludo un timer pomodoro, incremento contatore pomodoriCompletati e lo salvo nelle Preferences
+                if(pomodoroMode == true){
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    int pomodoriDiFilaCompletati = prefs.getInt("ConsecutivelyCompletedTomatoes", 0);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("ConsecutivelyCompletedTomatoes", ++pomodoriDiFilaCompletati);
+
+                    // Verifico quanti pomodori ho completato (di fila e non) per sbloccare i vari trofei compatibilmente con le altre condizioni ----- SBLOCCO TROFEI 2 - 3
+                    if(pomodoriDiFilaCompletati == 5){
+                        AppDB db = new AppDB(getApplicationContext());
+                        db.unlockTrophy(3); // SBLOCCO TROFEO 3
+                        Toast t = Toast.makeText(getApplicationContext(), "CONGRATULATIONS: TROPHY 3 UNLOCKED.",Toast.LENGTH_LONG);
+                    }
+                }
             }
         };
         cTimer.start();
@@ -274,6 +288,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int saveInt = timeVal*5 - Integer.parseInt(minuteValue.getText().toString());
         saveSession(saveInt);
     }
+
     //Funzione per aggiornare le TextView per il timer
     private void updateViews(long millisUntilFinished){
         if(secTimer == 60){
@@ -288,6 +303,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             secTimer = 60;
         }
     }
+
     // Event handler for the SeekBar
     private OnSeekBarChangeListener seekBarListener = new OnSeekBarChangeListener() {
 
@@ -342,6 +358,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String currentSub = prefs.getString("subj", null);
         pomodoroMode = prefs.getBoolean("pomodoro", false);
 
+        // se la materia
         if(currentSub!= null && !currentSub.isEmpty() ){
             currentSubject.setText(currentSub);
             go = true;
@@ -359,7 +376,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             seekBar.setEnabled(false);
             startTimerButton.setImageResource(R.drawable.only_play_pomodoro);
 
-        }else if (pomodoroMode){
+        }else if(pomodoroMode){
             if(tot){
                 timeVal = 12;
             }
@@ -370,6 +387,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startTimerButton.setImageResource(R.drawable.only_play);
         }
     }
+
     //TODO non si cancella la notifica
     public void notificationGo(){
         NotificationCompat.Builder mBuilder = (android.support.v7.app.NotificationCompat.Builder)
