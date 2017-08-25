@@ -105,9 +105,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-        //timeVal = 12;
+
         // get references to widgets
         startTimerButton = (ImageButton)findViewById(R.id.startTimerButton);
         minuteValue = (TextView)findViewById(R.id.minuteValue);
@@ -218,7 +217,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
-
     private void start(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
@@ -249,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 toast.show();
                 //se il timer finisce salvo la sessione passando la durata totale del timer
                 saveSession(timeVal*5);
-
             }
         };
         cTimer.start();
@@ -368,7 +365,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startTimerButton.setImageResource(R.drawable.only_play);
         }
     }
-
+    //TODO non si cancella la notifica
     public void notificationGo(){
         NotificationCompat.Builder mBuilder = (android.support.v7.app.NotificationCompat.Builder)
                 new NotificationCompat.Builder(this)
@@ -379,7 +376,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Quando tocca la notifica rientro nella main
         Intent resultIntent = new Intent(this, MainActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-
         // Adds the back stack for the Intent (but not the Intent itself)
         stackBuilder.addParentStack(MainActivity.class);
         // Adds the Intent that starts the Activity to the top of the stack

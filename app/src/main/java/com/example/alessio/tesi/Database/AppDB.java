@@ -32,12 +32,12 @@ public class AppDB {
             db.execSQL(CREATE_TROPHY_TABLE);
 
             //inserting all trophies
-            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (1, "+Trophy.BRONZE+", 1)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (1, "+Trophy.BRONZE+", 0)");
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (2, "+Trophy.BRONZE+", 0)");
-            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (3, "+Trophy.SILVER+", 1)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (3, "+Trophy.SILVER+", 0)");
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (4, "+Trophy.BRONZE+", 0)");
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (5, "+Trophy.SILVER+", 0)");
-            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (6, "+Trophy.GOLD+", 1)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (6, "+Trophy.GOLD+", 0)");
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (7, "+Trophy.BRONZE+", 0)");
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (8, "+Trophy.SILVER+", 0)");
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (9, "+Trophy.SILVER+", 0)");
@@ -51,7 +51,7 @@ public class AppDB {
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (17, "+Trophy.SILVER+", 0)");
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (18, "+Trophy.BRONZE+", 0)");
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (19, "+Trophy.SILVER+", 0)");
-            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (20, "+Trophy.PLATINUM+", 1)");
+            db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (20, "+Trophy.PLATINUM+", 0)");
         }
 
         @Override
@@ -67,7 +67,7 @@ public class AppDB {
 
     //database constants
     public static final String DB_NAME = "appDB.db";
-    public static final int DB_VERSION = 7;
+    public static final int DB_VERSION = 8;
 
     //session constants
     public static final String SESSION_TABLE = "session";
@@ -365,6 +365,7 @@ public class AppDB {
         return entries;
     }
 
+    //query per ottenere il luogo più frequente
     public String getMostFrequentLocation() {
         String result = "";
         this.openReadableDB();
@@ -392,6 +393,17 @@ public class AppDB {
             cursor.close();
         this.closeDB();
         return totalDuration;
+    }
+
+    public int unlockTrophy(int id) {
+        ContentValues cv = new ContentValues();
+        cv.put(TROPHY_UNLOCKED,1);
+        String where = TROPHY_ID + "= ?";
+        String[] whereArgs = {String.valueOf(id)};
+        this.openWriteableDB();
+        int rowCount = db.update(TROPHY_TABLE,cv,where,whereArgs);
+        this.closeDB();
+        return rowCount;
     }
 
     public void deleteAll() {
