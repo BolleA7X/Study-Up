@@ -86,7 +86,7 @@
         android:layout_marginStart="70dp"
         android:background="@android:color/transparent"
         android:max="24"
-        android:progress="11"
+        android:progress="12"
         android:progressTint="#00cc99"
         android:thumbTint="#00cc99" />
 

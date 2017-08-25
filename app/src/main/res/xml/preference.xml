@@ -34,6 +34,6 @@
         android:key="use_pomodoro_mode"
         android:title="@string/pomodoro_mode_label"
         android:summary="@string/pomodoro_mode_expl"
-        android:defaultValue="true" />
+        android:defaultValue="false" />
 
 </PreferenceScreen>

@@ -11,12 +11,8 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.Toast;
-
 import com.example.alessio.tesi.Database.AppDB;
-import com.example.alessio.tesi.Database.Course;
-
 import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -42,20 +38,12 @@ public class SettingsFragment extends PreferenceFragment {
         deleteLocation = (ListPreference)findPreference("delete_location_preference");
         deleteAll = (ListPreference)findPreference("delete_all_preference");
         checkPomodoro = (CheckBoxPreference)findPreference("use_pomodoro_mode");
+        updatePomodoro();
 
         checkPomodoro.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                Boolean bo =checkPomodoro.isChecked();
-                /*String text = Boolean.toString(bo);
-                Toast toast = Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
-                toast.show();*/
-
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putBoolean("pomodoro", bo);
-                editor.apply();
-                ((MainActivity)getActivity()).updateTimer(true);
+                updatePomodoro();
                 return true;
             }
         });
@@ -85,15 +73,12 @@ public class SettingsFragment extends PreferenceFragment {
         deleteLocation.setEntryValues(deleteLocationEntries);
         deleteLocation.setDefaultValue("nessuno");
     }
-    /*  if(checkPomodoro.isChecked()){
-                    ((MainActivity)getActivity()).updateTimer();
-                }*/
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = super.onCreateView(inflater,container,savedInstanceState);
-        //ho usato un metodo deprecato ma non so quale altro usare-Ale
-        //Ho trovato questo rigiro che pare funzionare - Luca
+
         int color = ContextCompat.getColor(getActivity(), android.R.color.white);
         view.setBackgroundColor(color);
 
@@ -155,5 +140,19 @@ public class SettingsFragment extends PreferenceFragment {
         });
 
         return view;
+    }
+    private void updatePomodoro(){
+
+        Boolean pom = checkPomodoro.isChecked();
+
+            String text = Boolean.toString(pom);
+            Toast toast = Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
+            toast.show();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("pomodoro", pom);
+        editor.apply();
+        ((MainActivity)getActivity()).updateTimer(true);
     }
 }

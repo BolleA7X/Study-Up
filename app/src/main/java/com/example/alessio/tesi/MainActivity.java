@@ -1,5 +1,6 @@
 package com.example.alessio.tesi;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -7,6 +8,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Boolean pomodoroMode;
     //valore della seekbar che poi andrà moltiplicato per 5
     private int timeVal;
-    private int secTimer=60;
+    private int secTimer = 60;
     private TextView minuteValue;
     private TextView secondValue;
     private ImageButton startTimerButton;
@@ -118,12 +120,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startTimerButton.setOnClickListener(this);
         seekBar.setOnSeekBarChangeListener(seekBarListener);
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //pomodoroMode = prefs.getBoolean("pomodoro",true);
+        timeVal = prefs.getInt("timeVal",12);
+
+        //Metti il corso nella textview
+        updateTimer(false);
         minuteValue.setText(String.valueOf(timeVal*5));
         secondValue.setVisibility(View.INVISIBLE);
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        pomodoroMode = prefs.getBoolean("pomodoro",false);
-        timeVal = prefs.getInt("timeVal",12);
         //floating button
         fab = (FloatingActionButton) findViewById(R.id.setButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -139,8 +144,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivityForResult(intent,0);
             }
         });
-        //Metti il corso nella textview
-        updateTimer(false);
 
         //Eseguo solo la prima volta che eseguo l'app
         if(prefs.getBoolean("firstTimeOpeningApp", true)){
@@ -294,17 +297,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress,
                                       boolean fromUser) {
-            timeVal = seekBar.getProgress() + 1;
+            //timeVal = seekBar.getProgress() + 1;
+            timeVal = seekBar.getProgress();
             // spostarla quando è a zero?
             //per non porlo uguale a 0
-            /*if(timeVal==0){
-                timeVal = 1;
-            }*/
             minuteValue.setText(String.valueOf(timeVal*5));
         }
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-
+            if(timeVal==0){
+                dontBeLazy();
+                timeVal = 1;
+                seekBar.setProgress(1);
+            }
         }
     };
 
@@ -334,8 +339,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void updateTimer(Boolean tot){
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String currentSub = prefs.getString("subj",null);
-        pomodoroMode = prefs.getBoolean("pomodoro",true);
+        String currentSub = prefs.getString("subj", null);
+        pomodoroMode = prefs.getBoolean("pomodoro", false);
 
         if(currentSub!= null && !currentSub.isEmpty() ){
             currentSubject.setText(currentSub);
@@ -395,5 +400,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBuilder.setAutoCancel(true);
         int mNotificationId =0;
         mNotificationManager.notify(mNotificationId, mBuilder.build());
+    }
+    private void dontBeLazy(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(R.string.lazy_text_label)
+                .setTitle(R.string.lazy_title_label)
+                .setCancelable(false)
+                .setPositiveButton(R.string.ok,
+                        new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User clicked OK, so save the mSelectedItems results somewhere
+                                // or return them to the component that opened the dialog
+                            }
+                        });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 }
