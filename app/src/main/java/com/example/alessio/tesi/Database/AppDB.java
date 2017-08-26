@@ -428,16 +428,24 @@ public class AppDB {
         select = "DISTINCT "+SESSION_DAY+","+SESSION_MONTH+","+SESSION_YEAR;
         query = "SELECT "+select+" FROM "+SESSION_TABLE+" ORDER BY "+SESSION_ID+" DESC LIMIT 10";
         cursor1 = db.rawQuery(query,null);
-        cursor1.moveToFirst();
-        if(cursor1.getCount() != 0)
-            cont = cursor1.getCount();
-        //ottengo la conta dei corsi diversi studiati ogni giorno per 10 giorni
-        select = "COUNT(DISTINCT "+SESSION_COURSE_NAME+")";
-        query = "SELECT "+select+" FROM "+SESSION_TABLE+" ORDER BY "+SESSION_ID+" DESC LIMIT 10";
-        cursor2 = db.rawQuery(query,null);
-        cursor2.moveToFirst();
-        if(cont != 0)
-            result[0] = (float)cursor2.getInt(0) / (float)cont;
+        if(cursor1.getCount() != 0) {
+            while(cursor1.moveToNext()) {
+                select = "COUNT(DISTINCT "+SESSION_COURSE_NAME+")";
+                query = "SELECT "+select+" FROM "+SESSION_TABLE+" WHERE "+
+                        SESSION_DAY+"=? AND "+
+                        SESSION_MONTH+"=? AND "+
+                        SESSION_YEAR+"=?";
+                whereArgs = new String[] {String.valueOf(cursor1.getInt(cursor1.getColumnIndex(SESSION_DAY))),
+                                          String.valueOf(cursor1.getInt(cursor1.getColumnIndex(SESSION_MONTH))),
+                                          String.valueOf(cursor1.getInt(cursor1.getColumnIndex(SESSION_YEAR)))};
+                if(!db.isOpen())
+                    this.openReadableDB();
+                cursor2 = db.rawQuery(query,whereArgs);
+                cursor2.moveToFirst();
+                cont += cursor2.getInt(0);
+            }
+            result[0] = (float)cont / (float)cursor1.getCount();
+        }
         else
             result[0] = 0;
 
@@ -458,11 +466,10 @@ public class AppDB {
 
         //3) MEDIA DELLE DISTANZE DI TEMPO TRA SESSIONI
         //ottengo il numero di sessioni
-        select = "COUNT(*)";
-        query = "SELECT "+select+" FROM "+SESSION_TABLE;
+        select = "*";
+        query = "SELECT "+select+" FROM "+SESSION_TABLE+" GROUP BY "+SESSION_DAY+","+SESSION_MONTH+","+SESSION_YEAR;
         cursor1 = db.rawQuery(query,null);
-        cursor1.moveToFirst();
-        cont = cursor1.getInt(0);
+        cont = cursor1.getCount();
         if(cont > 1) {
             //ottengo la somma delle differenze di tempo tra sessioni
             long diffSum = 0;
@@ -470,7 +477,8 @@ public class AppDB {
             Calendar cal2 = Calendar.getInstance();
             select = SESSION_DAY + "," + SESSION_MONTH + "," + SESSION_YEAR;
             query = "SELECT " + select + " FROM " + SESSION_TABLE + " WHERE " + SESSION_ID + "= ?";
-            whereArgs = new String[]{"1"};
+            cursor1.moveToFirst();
+            whereArgs = new String[] {String.valueOf(cursor1.getInt(cursor1.getColumnIndex(SESSION_ID)))};
             cursor2 = db.rawQuery(query, whereArgs);
             cursor2.moveToFirst();
             cal1.set(cursor2.getInt(cursor2.getColumnIndex(SESSION_YEAR)),
@@ -481,10 +489,10 @@ public class AppDB {
             cal1.set(Calendar.MINUTE, 0);
             cal1.set(Calendar.SECOND, 0);
             cal1.set(Calendar.MILLISECOND, 0);
-            for (int i = 2; i <= cont; i++) {
-                whereArgs = new String[]{String.valueOf(i)};
+            while(cursor1.moveToNext()) {
                 if (!db.isOpen())
                     this.openReadableDB();
+                whereArgs = new String[] {String.valueOf(cursor1.getInt(cursor1.getColumnIndex(SESSION_ID)))};
                 cursor2 = db.rawQuery(query, whereArgs);
                 cursor2.moveToFirst();
                 cal2.set(cursor2.getInt(cursor2.getColumnIndex(SESSION_YEAR)),
@@ -494,8 +502,8 @@ public class AppDB {
                 cal2.set(Calendar.MINUTE, 0);
                 cal2.set(Calendar.SECOND, 0);
                 cal2.set(Calendar.MILLISECOND, 0);
-                diffSum += TimeUnit.MILLISECONDS.toDays(Math.abs(cal2.getTimeInMillis() - cal1.getTimeInMillis()));
-                cal1 = cal2;
+                diffSum += (TimeUnit.MILLISECONDS.toDays(Math.abs(cal2.getTimeInMillis() - cal1.getTimeInMillis())));
+                cal1 = (Calendar)cal2.clone();
             }
             //calcolo il terzo risultato
             result[2] = (float) diffSum / (float) cont;

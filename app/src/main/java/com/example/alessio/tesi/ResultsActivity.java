@@ -162,10 +162,6 @@ public class ResultsActivity extends AppCompatActivity {
         else
             advice += "Negli ultimi dieci giorni hai studiato il corretto numero di materie diverse al giorno.";
 
-        Log.d("Frase 1: ",String.valueOf(infoForAdvice[2]));
-        Log.d("Frase 2: ",String.valueOf(infoForAdvice[1]));
-        Log.d("Frase 3: ",String.valueOf(infoForAdvice[0]));
-
         return advice;
     }
 }
