@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -51,12 +52,11 @@
         android:id="@+id/locationSpinner"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignEnd="@+id/subjectsSpinner"
         android:layout_alignLeft="@+id/subjectsSpinner"
-        android:layout_alignRight="@+id/subjectsSpinner"
         android:layout_alignStart="@+id/subjectsSpinner"
         android:layout_alignTop="@+id/locationLabel"
-        android:padding="5dp"/>
+        android:padding="5dp"
+        android:layout_toStartOf="@+id/viewLocationButton" />
 
     <TextView
         android:id="@+id/StudyTypeLabel"
@@ -157,4 +157,18 @@
             android:textSize="30sp"
             android:textStyle="bold" />
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/viewLocationButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignEnd="@+id/subjectsSpinner"
+        android:layout_alignRight="@+id/subjectsSpinner"
+        android:layout_alignTop="@+id/locationSpinner"
+        android:background="@android:color/white"
+        android:contentDescription="@string/map_button_content"
+        android:onClick="onClick"
+        android:scaleType="fitCenter"
+        app:srcCompat="@android:drawable/ic_menu_compass" />
+
 </RelativeLayout>

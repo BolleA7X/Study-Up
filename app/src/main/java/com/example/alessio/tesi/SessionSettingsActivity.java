@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -27,9 +28,9 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     private Button addLocationButton;
     private Spinner subjectsSpinner, locationSpinner;
     private CheckBox theory, exercises, project;
+    private ImageButton viewLocationButton;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.session_settings_activity);
@@ -43,6 +44,10 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         theory = (CheckBox)findViewById(R.id.theoryCheckBox);
         exercises = (CheckBox)findViewById(R.id.exercisesCheckBox);
         project = (CheckBox)findViewById(R.id.projectCheckBox);
+        viewLocationButton = (ImageButton)findViewById(R.id.viewLocationButton);
+        subjectsSpinner = (Spinner)findViewById(R.id.subjectsSpinner);
+        locationSpinner = (Spinner)findViewById(R.id.locationSpinner);
+
         //Shared per i checkbox
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         //SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
@@ -71,7 +76,6 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         Boolean ex = exercises.isChecked();
         Boolean pr = project.isChecked();
 
-        //SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("th", th);
         editor.putBoolean("ex", ex);
@@ -163,13 +167,13 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 break;
+            case R.id.viewLocationButton:
+                getLocation();
+                break;
         }
     }
 
     public void updateSpinner(){
-        subjectsSpinner = (Spinner)findViewById(R.id.subjectsSpinner);
-        locationSpinner = (Spinner)findViewById(R.id.locationSpinner);
-
         AppDB db = new AppDB(this);
 
         //eseguo la query tramite il metodo getSubjects() per ottenere l'ArrayAdapter contenete le info sui corsi
@@ -186,6 +190,35 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
             locations.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             locationSpinner.setAdapter(locations);
             locations.notifyDataSetChanged();
+        }
+    }
+    public void getLocation(){
+        String loc=null;
+        try {
+            loc = locationSpinner.getSelectedItem().toString();
+        }
+
+        catch (Exception exc) {
+        }
+
+        if(loc !=null && !loc.isEmpty()){
+            //Lancia il fragment della mappa
+            FragmentManager fM;
+            FragmentTransaction fT;
+            MyLocationsFragment MyLocFrag = new MyLocationsFragment();
+            Bundle bundle = new Bundle();
+            //passo al fragment il nome della location
+            bundle.putString("LocName", loc);
+            MyLocFrag.setArguments(bundle);
+            fM = getFragmentManager();
+            fT =fM.beginTransaction();
+            fT.add(R.id.sessionSettingsActivity, MyLocFrag);
+            fT.addToBackStack(null);
+            fT.commit();
+        }else{
+            //se non ci sono stringhe dà errore
+            Toast toast = Toast.makeText(getApplicationContext(), R.string.no_location_label, Toast.LENGTH_LONG);
+            toast.show();
         }
     }
 

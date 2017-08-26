@@ -35,7 +35,6 @@
             android:adjustViewBounds="true"
             android:backgroundTint="#0000"
             android:contentDescription="@string/image_desc"
-            android:cropToPadding="false"
             android:elevation="0dp"
             android:onClick="onClick"
             android:scaleType="fitCenter"

@@ -368,15 +368,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //imposto la pomodoro mode
-        //non so perché ma funziona al contrario
         if(pomodoroMode) {
             timeVal = 5;
             minuteValue.setText(R.string.pomodoro_value);
             secondValue.setText(R.string.seconds_value);
             seekBar.setEnabled(false);
             startTimerButton.setImageResource(R.drawable.only_play_pomodoro);
-
-        }else if(!pomodoroMode){
+        }else{
             if(tot){
                 timeVal = 12;
             }
@@ -388,7 +386,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    //TODO non si cancella la notifica
+    //TODO notifica anche del non pomodoro con timer al posto del pomodoro
     public void notificationGo(){
         NotificationCompat.Builder mBuilder = (android.support.v7.app.NotificationCompat.Builder)
                 new NotificationCompat.Builder(this)
@@ -412,11 +410,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         //Questa parte costruisce la notifica con vibrazione, suono eccetera
-        mBuilder.setVibrate(new long[] { 500, 500});
+        mBuilder.setVibrate(new long[] {500, 500});
         mBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
         mBuilder.setLights(Color.RED, 3000, 3000);
         mBuilder.setAutoCancel(true);
-        int mNotificationId =0;
+        int mNotificationId = 0;
         mNotificationManager.notify(mNotificationId, mBuilder.build());
     }
     private void dontBeLazy(){
@@ -428,8 +426,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         new DialogInterface.OnClickListener(){
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                // User clicked OK, so save the mSelectedItems results somewhere
-                                // or return them to the component that opened the dialog
                             }
                         });
         AlertDialog alert = alertDialogBuilder.create();

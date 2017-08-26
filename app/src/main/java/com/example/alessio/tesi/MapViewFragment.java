@@ -54,10 +54,10 @@ public class MapViewFragment extends Fragment {
 
                 //prende le coordinate e le mette nel DB
                 LatLng latLng=googleMap.getCameraPosition().target;
-                double latidude = latLng.latitude;
+                double latitude = latLng.latitude;
                 double longitude = latLng.longitude;
 
-                Location location = new Location(newLocation.getText().toString(),latidude,longitude);
+                Location location = new Location(newLocation.getText().toString(),latitude,longitude);
                 AppDB db = new AppDB(getActivity());
                 db.insertLocation(location);
                 ((SessionSettingsActivity)getActivity()).updateSpinner();
