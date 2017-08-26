@@ -414,9 +414,9 @@ public class AppDB {
         cursor1 = db.rawQuery(query,null);
         cursor1.moveToFirst();
         if(cursor1.getCount() != 0)
-            cont = cursor1.getInt(0);
+            cont = cursor1.getCount();
         //ottengo la conta dei corsi diversi studiati ogni giorno per 10 giorni
-        select = "DISTINCT COUNT("+SESSION_COURSE_NAME+")";
+        select = "COUNT(DISTINCT "+SESSION_COURSE_NAME+")";
         query = "SELECT "+select+" FROM "+SESSION_TABLE+" ORDER BY "+SESSION_ID+" DESC LIMIT 10";
         cursor2 = db.rawQuery(query,null);
         cursor2.moveToFirst();

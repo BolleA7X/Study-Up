@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -160,6 +161,10 @@ public class ResultsActivity extends AppCompatActivity {
             advice += "Dovresti concentrarti su meno materie alla volta";
         else
             advice += "Negli ultimi dieci giorni hai studiato il corretto numero di materie diverse al giorno.";
+
+        Log.d("Frase 1: ",String.valueOf(infoForAdvice[2]));
+        Log.d("Frase 2: ",String.valueOf(infoForAdvice[1]));
+        Log.d("Frase 3: ",String.valueOf(infoForAdvice[0]));
 
         return advice;
     }
