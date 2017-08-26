@@ -398,6 +398,22 @@ public class AppDB {
         return totalDuration;
     }
 
+    public double[] getCoordinates(String name) {
+        double[] result = new double[2];
+        this.openReadableDB();
+        String[] args = new String[] {LOCATION_LATITUDE,LOCATION_LONGITUDE};
+        String where = LOCATION_NAME+"= ?";
+        String[] whereArgs = {name};
+        Cursor cursor = db.query(LOCATION_TABLE,args,where,whereArgs,null,null,null);
+        cursor.moveToFirst();
+        result[0] = cursor.getDouble(cursor.getColumnIndex(LOCATION_LATITUDE));
+        result[1] = cursor.getDouble(cursor.getColumnIndex(LOCATION_LONGITUDE));
+        if(cursor != null)
+            cursor.close();
+        this.closeDB();
+        return result;
+    }
+
     public float[] getInfoForAdvice() {
         int cont = 0;
         float[] result = new float[3];
