@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SharedPreferences prefs;
     private FloatingActionButton fab;
     private boolean pomodoroMode;
+    private int stop = R.drawable.only_stop1_pomodoro_seeds;
+    private int start = R.drawable.only_play_pomodoro_seeds;
     //valore della seekbar che poi andrà moltiplicato per 5
     private int timeVal;
     private int secTimer = 60;
@@ -228,12 +230,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.apply();
         secondValue.setVisibility(View.VISIBLE);
         isOn = true;
-        if(pomodoroMode) {
-            startTimerButton.setImageResource(R.drawable.only_stop1_pomodoro);
-        }else{
-            startTimerButton.setImageResource(R.drawable.only_stop1);
-        }
-
+        startTimerButton.setImageResource(stop);
         secTimer = 60;
         int mytime = (timeVal*5)*60*1000; //secondi
         seekBar.setEnabled(false);
@@ -272,12 +269,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //se il timer viene stoppato prima della fine salvo la sessione passando la durata totale - la durata rimasta
     private void stop(){
         secondValue.setVisibility(View.INVISIBLE);
-        if(pomodoroMode) {
-            startTimerButton.setImageResource(R.drawable.only_play_pomodoro);
-
-        }else {
-            startTimerButton.setImageResource(R.drawable.only_play);
-        }
+        startTimerButton.setImageResource(start);
         isOn = false;
         fab.setClickable(true);
         fab.setVisibility(View.VISIBLE);
@@ -373,7 +365,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             minuteValue.setText(R.string.pomodoro_value);
             secondValue.setText(R.string.seconds_value);
             seekBar.setEnabled(false);
-            startTimerButton.setImageResource(R.drawable.only_play_pomodoro);
+            stop = R.drawable.only_stop1_pomodoro_seeds;
+            start = R.drawable.only_play_pomodoro_seeds;
+            startTimerButton.setImageResource(start);
         }else{
             if(tot){
                 timeVal = 12;
@@ -382,16 +376,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             seekBar.setProgress(timeVal);
             secondValue.setText(R.string.seconds_value);
             seekBar.setEnabled(true);
-            startTimerButton.setImageResource(R.drawable.only_play);
+            stop = R.drawable.only_stop1;
+            start = R.drawable.only_play;
+            startTimerButton.setImageResource(start);
         }
     }
 
     //TODO notifica anche del non pomodoro con timer al posto del pomodoro
     public void notificationGo(){
+        int notifyIcon = R.drawable.icona_notifica_custom;
+        int notifiyText = R.string.notification_title_label_custom;
+        if(pomodoroMode){
+            notifyIcon = R.drawable.icona_notifica_pomodoro;
+            notifiyText = R.string.notification_title_label_pomodoro;
+        }
         NotificationCompat.Builder mBuilder = (android.support.v7.app.NotificationCompat.Builder)
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.icona_notifica)
-                        .setContentTitle(getString(R.string.notification_title_label))
+                        .setSmallIcon(notifyIcon)
+                        .setContentTitle(getString(notifiyText))
                         .setContentText(getString(R.string.notification_text_label));
 
         // Quando tocca la notifica rientro nella main

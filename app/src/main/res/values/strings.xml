@@ -75,6 +75,7 @@
 
     <!-- Toast -->
     <string name="first_error_toast">Devi selezionare corso e tipo della sessione!</string>
+    <string name="empty_insert_error_toast">Inserisci un nome</string>
 
     <string name="gps_is_off">Il gps è disattivato, vuoi disattivarlo?</string>
     <string name="go_to_sett">Vai alle impostazioni</string>
@@ -89,7 +90,8 @@
     <string name="most_frequent_location_default_value">Non specificato</string>
     <string name="total_time_label">Tempo totale: </string>
 
-    <string name="notification_title_label">Timer Concluso! </string>
+    <string name="notification_title_label_custom">Timer Concluso! </string>
+    <string name="notification_title_label_pomodoro">Pomodoro Concluso! </string>
     <string name="notification_text_label">Continui? </string>
     <string name="lazy_title_label">Vuoi mettere il timer a zero?</string>
     <string name="lazy_text_label">Almeno 5 minuti, dai!</string>

@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.alessio.tesi.Database.AppDB;
+import com.example.alessio.tesi.Database.Course;
 import com.example.alessio.tesi.Database.Location;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,8 +32,6 @@ public class MapViewFragment extends Fragment {
     private EditText newLocation;
     private Button okButton;
     private Button revertButton;
-
-    final double[] position = new double[2];
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,10 +57,17 @@ public class MapViewFragment extends Fragment {
                 double latitude = latLng.latitude;
                 double longitude = latLng.longitude;
 
-                Location location = new Location(newLocation.getText().toString(),latitude,longitude);
-                AppDB db = new AppDB(getActivity());
-                db.insertLocation(location);
-                ((SessionSettingsActivity)getActivity()).updateSpinner();
+                String locs = newLocation.getText().toString();
+                if(locs!= null && !locs.isEmpty()){
+                    Location location = new Location(newLocation.getText().toString(),latitude,longitude);
+                    AppDB db = new AppDB(getActivity());
+                    db.insertLocation(location);
+                    ((SessionSettingsActivity)getActivity()).updateSpinner();
+                }else{
+                    Toast toast = Toast.makeText(getActivity(), R.string.empty_insert_error_toast, Toast.LENGTH_LONG);
+                    toast.show();
+                }
+
                 getActivity().getFragmentManager().popBackStack();
             }
         });

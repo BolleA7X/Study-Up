@@ -29,7 +29,8 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     private Spinner subjectsSpinner, locationSpinner;
     private CheckBox theory, exercises, project;
     private ImageButton viewLocationButton;
-
+    private int locSpinPosition;
+    private int subjSpinPosition;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +59,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         theory.setChecked(th);
         exercises.setChecked(ex);
         project.setChecked(pr);
+        updateSpinner();
     }
 
     @Override
@@ -71,15 +73,19 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     }
     @Override
     protected void onStop(){
-        //salva gli Shared per i checkbox
+        //salva gli Shared per i checkbox e le posizioni degli spinner
         Boolean th = theory.isChecked();
         Boolean ex = exercises.isChecked();
         Boolean pr = project.isChecked();
-
+        locSpinPosition = locationSpinner.getSelectedItemPosition();
+        subjSpinPosition = subjectsSpinner.getSelectedItemPosition();
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("th", th);
         editor.putBoolean("ex", ex);
         editor.putBoolean("pr", pr);
+        editor.putInt("locSpinPosition",locSpinPosition);
+        editor.putInt("subjSpinPosition",subjSpinPosition);
+
         editor.apply();
         super.onStop();
     }
@@ -132,6 +138,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onClick(View v) {
+
         switch (v.getId()){
             //bottone OK
             case R.id.endedConfig:
@@ -175,6 +182,9 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
 
     public void updateSpinner(){
         AppDB db = new AppDB(this);
+        //Prende dalle Shared l'ultima posizione dello spinner
+        locSpinPosition = prefs.getInt("locSpinPosition",-1);
+        subjSpinPosition = prefs.getInt("subjSpinPosition",-1);
 
         //eseguo la query tramite il metodo getSubjects() per ottenere l'ArrayAdapter contenete le info sui corsi
         ArrayAdapter<String> subjects = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,db.getSubjects());
@@ -182,6 +192,9 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
             //se l'array è valido lo associo allo spinner.
             subjects.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             subjectsSpinner.setAdapter(subjects);
+            if(subjSpinPosition != -1){
+                subjectsSpinner.setSelection(subjSpinPosition);
+            }
             subjects.notifyDataSetChanged();
         }
         //come sopra ma con i posti
@@ -189,6 +202,9 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         if(locations != null) {
             locations.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             locationSpinner.setAdapter(locations);
+            if(locSpinPosition != -1){
+                locationSpinner.setSelection(locSpinPosition);
+            }
             locations.notifyDataSetChanged();
         }
     }
