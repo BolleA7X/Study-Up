@@ -31,6 +31,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     private ImageButton viewLocationButton;
     private int locSpinPosition;
     private int subjSpinPosition;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,10 +68,12 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         updateSpinner();
         super.onResume();
     }
+
     @Override
     protected void onPause() {
        super.onPause();
     }
+
     @Override
     protected void onStop(){
         //salva gli Shared per i checkbox e le posizioni degli spinner
@@ -208,6 +211,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
             locations.notifyDataSetChanged();
         }
     }
+
     public void getLocation(){
         String loc=null;
         try {

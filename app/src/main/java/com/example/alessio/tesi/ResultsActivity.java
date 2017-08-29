@@ -90,6 +90,13 @@ public class ResultsActivity extends AppCompatActivity {
         }
         else
             Toast.makeText(this,"Nessun dato disponibile",Toast.LENGTH_SHORT).show();
+
+        // SBLOCCO TROFEO 14
+        if(db.getTrophies()[13].getUnlocked() == 0){
+            db.unlockTrophy(14);
+            Toast t = Toast.makeText(getApplicationContext(), "CONGRATULATIONS: TROPHY 14 UNLOCKED.",Toast.LENGTH_LONG);
+            t.show();
+        }
     }
 
     //Menu

@@ -43,10 +43,8 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 boolean pomodoroChecked = checkPomodoro.isChecked();
-
-                /*String text = Boolean.toString(pomodoroChecked);
-                Toast toast = Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
-                toast.show();*/
+                // Passo !pomodoroChecked (cioè il suo opposto) perché il suo valore quando chiamo updatePomodoro() è ancora
+                // quello vecchio (cioè quello prima di cliccarlo), perché si aggiorna dopo il 'return true' qua sotto.
                 updatePomodoro(!pomodoroChecked);
                 return true;
             }
@@ -103,7 +101,7 @@ public class SettingsFragment extends PreferenceFragment {
                     editor.remove("th");
                     editor.remove("ex");
                     editor.remove("pr");
-                    editor.commit();
+                    editor.apply();
                     //Chiama il metodo in Main che aggiorna la TextView
                     ((MainActivity)getActivity()).updateTimer(true);
                     Toast.makeText(getActivity(), "Tutti i dati sono stati eliminati", Toast.LENGTH_SHORT).show();
@@ -120,9 +118,14 @@ public class SettingsFragment extends PreferenceFragment {
                 deleteCourse.setDefaultValue("nessuno");
                 String newVal = newValue.toString();
                 if(!newVal.equals("nessuno")) {
-                    AppDB appDB = new AppDB(getActivity());
-                    appDB.deleteCourse(newVal);
+                    AppDB db = new AppDB(getActivity());
+                    db.deleteCourse(newVal);
                     Toast.makeText(getActivity(),"Cancellato corso "+newVal,Toast.LENGTH_SHORT).show();
+                    if(db.getTrophies()[10].getUnlocked() == 0){
+                        db.unlockTrophy(11);
+                        Toast t = Toast.makeText(getActivity(), "CONGRATULATIONS: TROPHY 11 UNLOCKED.",Toast.LENGTH_LONG);
+                        t.show();
+                    }
                 }
                 return false;
             }
@@ -135,8 +138,8 @@ public class SettingsFragment extends PreferenceFragment {
                 deleteLocation.setDefaultValue("nessuno");
                 String newVal = newValue.toString();
                 if(!newVal.equals("nessuno")) {
-                    AppDB appDB = new AppDB(getActivity());
-                    appDB.deleteLocation(newVal);
+                    AppDB db = new AppDB(getActivity());
+                    db.deleteLocation(newVal);
                     Toast.makeText(getActivity(),"Cancellato posto "+newVal,Toast.LENGTH_SHORT).show();
                 }
                 return false;

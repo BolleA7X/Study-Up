@@ -145,15 +145,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        //Eseguo solo la prima volta che eseguo l'app ----- SBLOCCO TROFEO 1
-        if(prefs.getBoolean("firstTimeOpeningApp", true)){
-            AppDB db = new AppDB(this);
+        AppDB db = new AppDB(this);
+        Trophy[] trophies = db.getTrophies();
+        // SBLOCCO TROFEO 1
+        // Eseguo solo la prima volta che apro l'app
+        if(trophies[0].getUnlocked() == 0){
             db.unlockTrophy(1);
             Toast t = Toast.makeText(this, "CONGRATULATIONS: TROPHY 1 UNLOCKED.",Toast.LENGTH_LONG);
             t.show();
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("firstTimeOpeningApp", false);
-            editor.apply();
         }
 
     }
@@ -227,6 +226,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("timeVal", timeVal);
+        // se non sono in modalità pomodoro, azzero il contatore dei pomodori consecutivi completati (utile a sblocco trofeo 3)
+        if(!pomodoroMode){
+            editor.putInt("ConsecutivelyCompletedTomatoes", 0);
+        }
         editor.apply();
         secondValue.setVisibility(View.VISIBLE);
         isOn = true;
@@ -247,19 +250,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 toast.show();
                 //se il timer finisce salvo la sessione passando la durata totale del timer
                 saveSession(timeVal*5);
-                // Se concludo un timer pomodoro, incremento contatore pomodoriCompletati e lo salvo nelle Preferences
-                if(pomodoroMode == true){
-                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    int pomodoriDiFilaCompletati = prefs.getInt("ConsecutivelyCompletedTomatoes", 0);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("ConsecutivelyCompletedTomatoes", ++pomodoriDiFilaCompletati);
-
-                    // Verifico quanti pomodori ho completato (di fila e non) per sbloccare i vari trofei compatibilmente con le altre condizioni ----- SBLOCCO TROFEI 2 - 3
-                    if(pomodoriDiFilaCompletati == 5){
-                        AppDB db = new AppDB(getApplicationContext());
-                        db.unlockTrophy(3); // SBLOCCO TROFEO 3
-                        Toast t = Toast.makeText(getApplicationContext(), "CONGRATULATIONS: TROPHY 3 UNLOCKED.",Toast.LENGTH_LONG);
+                // Apro il database (per fare delle get per i trofei)
+                AppDB db = new AppDB(getApplicationContext());
+                Trophy[] trophies = db.getTrophies();
+                // Se concludo un timer pomodoro, incremento contatore consecutivelyCompletedTomatoes e lo salvo nelle Preferences
+                if(pomodoroMode) {
+                    // SBLOCCO TROFEO 2
+                    if(trophies[1].getUnlocked() == 0){
+                        db.unlockTrophy(2);
+                        Toast t = Toast.makeText(getApplicationContext(), "CONGRATULATIONS: TROPHY 2 UNLOCKED.",Toast.LENGTH_LONG);
+                        t.show();
                     }
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    int consecutivelyCompletedTomatoes = prefs.getInt("ConsecutivelyCompletedTomatoes", 0);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putInt("ConsecutivelyCompletedTomatoes", ++consecutivelyCompletedTomatoes);
+                    editor.apply();
+
+                    // SBLOCCO TROFEO 3
+                    if(consecutivelyCompletedTomatoes == 5 && trophies[2].getUnlocked() == 0){
+                        db.unlockTrophy(3);
+                        Toast t = Toast.makeText(getApplicationContext(), "CONGRATULATIONS: TROPHY 3 UNLOCKED.",Toast.LENGTH_LONG);
+                        t.show();
+                    }
+                }
+
+                // SBLOCCO TROFEI 4 - 5 - 6
+                int totalStudyTime = db.getTotalTime();
+                if(totalStudyTime >= 600 && totalStudyTime < 1500 && trophies[3].getUnlocked() == 0){
+                    db.unlockTrophy(4);
+                    Toast t = Toast.makeText(getApplicationContext(), "CONGRATULATIONS: TROPHY 4 UNLOCKED.",Toast.LENGTH_LONG);
+                    t.show();
+                }
+                else if(totalStudyTime >= 1500 && totalStudyTime < 3000 && trophies[4].getUnlocked() == 0){
+                    db.unlockTrophy(5);
+                    Toast t = Toast.makeText(getApplicationContext(), "CONGRATULATIONS: TROPHY 5 UNLOCKED.",Toast.LENGTH_LONG);
+                    t.show();
+                }
+                else if(totalStudyTime >= 3000 && trophies[5].getUnlocked() == 0){
+                    db.unlockTrophy(6);
+                    Toast t = Toast.makeText(getApplicationContext(), "CONGRATULATIONS: TROPHY 6 UNLOCKED.",Toast.LENGTH_LONG);
+                    t.show();
                 }
             }
         };
@@ -346,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         updateTimer(false);
     }
 
-    public void updateTimer(boolean tot){
+    public void updateTimer(boolean reset){
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String currentSub = prefs.getString("subj", null);
         pomodoroMode = prefs.getBoolean("pomodoro", true);
@@ -369,7 +400,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             start = R.drawable.only_play_pomodoro_seeds;
             startTimerButton.setImageResource(start);
         }else{
-            if(tot){
+            if(reset){
                 timeVal = 12;
             }
             minuteValue.setText(String.valueOf(timeVal*5));
@@ -419,6 +450,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int mNotificationId = 0;
         mNotificationManager.notify(mNotificationId, mBuilder.build());
     }
+
     private void dontBeLazy(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage(R.string.lazy_text_label)

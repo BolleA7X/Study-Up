@@ -26,6 +26,7 @@ public class setSubjectFragment extends DialogFragment  {
         // PROVA: setRetainInstance(false);
     }
 
+    //TODO terminare errore setRetainInstance(true) rotazione modalità landscape
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
@@ -46,6 +47,12 @@ public class setSubjectFragment extends DialogFragment  {
                             Course course = new Course(subject.getText().toString());
                             AppDB db = new AppDB(getActivity());
                             db.insertSubject(course);
+                            // SBLOCCO TROFEO 10
+                            if(db.getTrophies()[9].getUnlocked() == 0){
+                                db.unlockTrophy(10);
+                                Toast t = Toast.makeText(getActivity(), "CONGRATULATIONS: TROPHY 10 UNLOCKED.",Toast.LENGTH_LONG);
+                                t.show();
+                            }
                         }else{
                             Toast toast = Toast.makeText(getActivity(), R.string.empty_insert_error_toast, Toast.LENGTH_LONG);
                             toast.show();
