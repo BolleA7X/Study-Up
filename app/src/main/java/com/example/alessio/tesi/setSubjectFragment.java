@@ -50,7 +50,7 @@ public class setSubjectFragment extends DialogFragment  {
                             // SBLOCCO TROFEO 10
                             if(db.getTrophies()[9].getUnlocked() == 0){
                                 db.unlockTrophy(10);
-                                Toast t = Toast.makeText(getActivity(), "CONGRATULATIONS: TROPHY 10 UNLOCKED.",Toast.LENGTH_LONG);
+                                Toast t = Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.unlockTrophy)+"10",Toast.LENGTH_LONG);
                                 t.show();
                             }
                         }else{

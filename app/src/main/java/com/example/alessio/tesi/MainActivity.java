@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Eseguo solo la prima volta che apro l'app
         if(trophies[0].getUnlocked() == 0){
             db.unlockTrophy(1);
-            Toast t = Toast.makeText(this, "CONGRATULATIONS: TROPHY 1 UNLOCKED.",Toast.LENGTH_LONG);
+            Toast t = Toast.makeText(this, this.getResources().getString(R.string.unlockTrophy)+"1",Toast.LENGTH_LONG);
             t.show();
         }
 
@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Funzione che manda il toast se non ho ancora messo sessione e corso
     private void FirstErrorToast(){
         Context context = getApplicationContext();
-        CharSequence text = getString(R.string.first_error_toast);
+        CharSequence text = this.getResources().getString(R.string.noSessionData);;
         int duration = Toast.LENGTH_LONG;
 
         Toast toast = Toast.makeText(context, text, duration);
@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             public void onFinish() {
                 notificationGo();
-                Toast toast = Toast.makeText(getApplicationContext(), "Timer concluso!", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.endedTimer), Toast.LENGTH_LONG);
                 toast.show();
                 //se il timer finisce salvo la sessione passando la durata totale del timer
                 saveSession(timeVal*5);
@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // SBLOCCO TROFEO 2
                     if(trophies[1].getUnlocked() == 0){
                         db.unlockTrophy(2);
-                        Toast t = Toast.makeText(getApplicationContext(), "CONGRATULATIONS: TROPHY 2 UNLOCKED.",Toast.LENGTH_LONG);
+                        Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"2",Toast.LENGTH_LONG);
                         t.show();
                     }
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // SBLOCCO TROFEO 3
                     if(consecutivelyCompletedTomatoes == 5 && trophies[2].getUnlocked() == 0){
                         db.unlockTrophy(3);
-                        Toast t = Toast.makeText(getApplicationContext(), "CONGRATULATIONS: TROPHY 3 UNLOCKED.",Toast.LENGTH_LONG);
+                        Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"3",Toast.LENGTH_LONG);
                         t.show();
                     }
                 }
@@ -279,17 +279,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int totalStudyTime = db.getTotalTime();
                 if(totalStudyTime >= 600 && totalStudyTime < 1500 && trophies[3].getUnlocked() == 0){
                     db.unlockTrophy(4);
-                    Toast t = Toast.makeText(getApplicationContext(), "CONGRATULATIONS: TROPHY 4 UNLOCKED.",Toast.LENGTH_LONG);
+                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"4",Toast.LENGTH_LONG);
                     t.show();
                 }
                 else if(totalStudyTime >= 1500 && totalStudyTime < 3000 && trophies[4].getUnlocked() == 0){
                     db.unlockTrophy(5);
-                    Toast t = Toast.makeText(getApplicationContext(), "CONGRATULATIONS: TROPHY 5 UNLOCKED.",Toast.LENGTH_LONG);
+                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"5",Toast.LENGTH_LONG);
                     t.show();
                 }
                 else if(totalStudyTime >= 3000 && trophies[5].getUnlocked() == 0){
                     db.unlockTrophy(6);
-                    Toast t = Toast.makeText(getApplicationContext(), "CONGRATULATIONS: TROPHY 6 UNLOCKED.",Toast.LENGTH_LONG);
+                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"6",Toast.LENGTH_LONG);
                     t.show();
                 }
             }
@@ -361,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Boolean th = prefs.getBoolean("th", false);
         Boolean ex = prefs.getBoolean("ex", false);
         Boolean pr = prefs.getBoolean("pr", false);
-        String loc = prefs.getString("loc", "Nessun dato");
+        String loc = prefs.getString("loc", this.getResources().getString(R.string.noData));
         Calendar calendar = Calendar.getInstance();
 
         Session session = new Session(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH),
@@ -373,7 +373,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(session != null)
             db.insertSession(session);         //eseguo query per inserire nel db i dati
 
-        Toast.makeText(this, "Sessione: "+String.valueOf(th)+" "+String.valueOf(ex)+" "+String.valueOf(pr), Toast.LENGTH_SHORT).show();
         updateTimer(false);
     }
 

@@ -56,9 +56,9 @@ public class SettingsFragment extends PreferenceFragment {
 
         //valori base degli altri due: prelevati dal db
         ArrayList<String> entries1 = db.getSubjects();
-        entries1.add(0,"nessuno");
+        entries1.add(0,getActivity().getResources().getString(R.string.none));
         ArrayList<String> entries2 = db.getLocations();
-        entries2.add(0,"nessuno");
+        entries2.add(0,getActivity().getResources().getString(R.string.none));
         CharSequence[] deleteCourseEntries = entries1.toArray(new CharSequence[entries1.size()]);
         CharSequence[] deleteLocationEntries = entries2.toArray(new CharSequence[entries2.size()]);
 
@@ -69,11 +69,11 @@ public class SettingsFragment extends PreferenceFragment {
 
         deleteCourse.setEntries(deleteCourseEntries);
         deleteCourse.setEntryValues(deleteCourseEntries);
-        deleteCourse.setDefaultValue("nessuno");
+        deleteCourse.setDefaultValue(getActivity().getResources().getString(R.string.none));
 
         deleteLocation.setEntries(deleteLocationEntries);
         deleteLocation.setEntryValues(deleteLocationEntries);
-        deleteLocation.setDefaultValue("nessuno");
+        deleteLocation.setDefaultValue(getActivity().getResources().getString(R.string.none));
     }
 
     @Override
@@ -104,7 +104,7 @@ public class SettingsFragment extends PreferenceFragment {
                     editor.apply();
                     //Chiama il metodo in Main che aggiorna la TextView
                     ((MainActivity)getActivity()).updateTimer(true);
-                    Toast.makeText(getActivity(), "Tutti i dati sono stati eliminati", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.allDataDeleted), Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 return false;
@@ -115,15 +115,15 @@ public class SettingsFragment extends PreferenceFragment {
         deleteCourse.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                deleteCourse.setDefaultValue("nessuno");
+                deleteCourse.setDefaultValue(getActivity().getResources().getString(R.string.none));
                 String newVal = newValue.toString();
-                if(!newVal.equals("nessuno")) {
+                if(!newVal.equals(getActivity().getResources().getString(R.string.none))) {
                     AppDB db = new AppDB(getActivity());
                     db.deleteCourse(newVal);
-                    Toast.makeText(getActivity(),"Cancellato corso "+newVal,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),newVal+" "+getActivity().getResources().getString(R.string.deleted),Toast.LENGTH_SHORT).show();
                     if(db.getTrophies()[10].getUnlocked() == 0){
                         db.unlockTrophy(11);
-                        Toast t = Toast.makeText(getActivity(), "CONGRATULATIONS: TROPHY 11 UNLOCKED.",Toast.LENGTH_LONG);
+                        Toast t = Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.unlockTrophy)+"11",Toast.LENGTH_LONG);
                         t.show();
                     }
                 }
@@ -135,12 +135,12 @@ public class SettingsFragment extends PreferenceFragment {
         deleteLocation.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                deleteLocation.setDefaultValue("nessuno");
+                deleteLocation.setDefaultValue(getActivity().getResources().getString(R.string.none));
                 String newVal = newValue.toString();
-                if(!newVal.equals("nessuno")) {
+                if(!newVal.equals(getActivity().getResources().getString(R.string.none))) {
                     AppDB db = new AppDB(getActivity());
                     db.deleteLocation(newVal);
-                    Toast.makeText(getActivity(),"Cancellato posto "+newVal,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),newVal+" "+getActivity().getResources().getString(R.string.deleted),Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }

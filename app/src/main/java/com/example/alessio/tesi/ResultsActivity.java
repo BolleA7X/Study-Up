@@ -76,25 +76,25 @@ public class ResultsActivity extends AppCompatActivity {
             int[] colors =  {android.R.color.holo_red_light,android.R.color.holo_green_dark,android.R.color.holo_orange_light,
                     android.R.color.holo_blue_bright,android.R.color.holo_blue_dark,android.R.color.holo_purple};
 
-            PieDataSet subjSet = new PieDataSet(subjEntries, "Distribuzione corsi");
+            PieDataSet subjSet = new PieDataSet(subjEntries, this.getResources().getString(R.string.courseDistribution));
             subjSet.setColors(colors,this);
             PieData subjData = new PieData(subjSet);
             subjectsPiechart.setData(subjData);
             subjectsPiechart.invalidate();
 
-            PieDataSet typeSet = new PieDataSet(typesEntries, "Distribuzione tipi di sessione");
+            PieDataSet typeSet = new PieDataSet(typesEntries, this.getResources().getString(R.string.typeDistribution));
             typeSet.setColors(colors,this);
             PieData typesData = new PieData(typeSet);
             typesPiechart.setData(typesData);
             typesPiechart.invalidate();
         }
         else
-            Toast.makeText(this,"Nessun dato disponibile",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,this.getResources().getString(R.string.noData),Toast.LENGTH_SHORT).show();
 
         // SBLOCCO TROFEO 14
         if(db.getTrophies()[13].getUnlocked() == 0){
             db.unlockTrophy(14);
-            Toast t = Toast.makeText(getApplicationContext(), "CONGRATULATIONS: TROPHY 14 UNLOCKED.",Toast.LENGTH_LONG);
+            Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"14",Toast.LENGTH_LONG);
             t.show();
         }
     }
@@ -149,25 +149,25 @@ public class ResultsActivity extends AppCompatActivity {
         String advice = new String("");
         //considero la distanza temporale media tra le sessioni
         if(infoForAdvice[2] <= 2)                                   //distanza media di 2 giorni o meno
-            advice = "Stai studiando con costanza. ";
+            advice = this.getResources().getString(R.string.advice_2_0);
         else
-            advice = "Dovresti studiare con maggiore frequenza. ";
+            advice = this.getResources().getString(R.string.advice_2_1);
 
         //considero la media dei minuti di studio al giorno
         if(infoForAdvice[1] <= 60)
-            advice += "Sarebbe meglio studiare per più tempo al giorno. ";
+            advice += this.getResources().getString(R.string.advice_1_0);
         else if(infoForAdvice[1] >= 240)
-            advice += "Rischi di affaticarti e stressarti se studi per troppo tempo al giorno. ";
+            advice += this.getResources().getString(R.string.advice_1_1);
         else
-            advice += "Studi il corretto numero di ore al giorno: continua così. ";
+            advice += this.getResources().getString(R.string.advice_1_2);
 
         //considero la media del numero di corsi diversi studiati negli ultimi 10 giorni
         if(infoForAdvice[0] <= 2)
-            advice += "Negli ultimi dieci giorni hai studiato poche materie diverse al giorno.";
+            advice += this.getResources().getString(R.string.advice_0_0);
         else if(infoForAdvice[0] >= 5)
-            advice += "Dovresti concentrarti su meno materie alla volta";
+            advice += this.getResources().getString(R.string.advice_0_1);
         else
-            advice += "Negli ultimi dieci giorni hai studiato il corretto numero di materie diverse al giorno.";
+            advice += this.getResources().getString(R.string.advice_0_2);
 
         return advice;
     }

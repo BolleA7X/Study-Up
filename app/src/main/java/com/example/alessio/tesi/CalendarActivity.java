@@ -25,6 +25,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -59,7 +60,7 @@ public class CalendarActivity extends AppCompatActivity
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
 
-    private static final String BUTTON_TEXT = "Call Google Calendar API";
+    private static String BUTTON_TEXT;
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = {CalendarScopes.CALENDAR_READONLY};
 
@@ -71,6 +72,9 @@ public class CalendarActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        BUTTON_TEXT = this.getResources().getString(R.string.callApiButtonText);
+
         LinearLayout activityLayout = new LinearLayout(this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -101,12 +105,11 @@ public class CalendarActivity extends AppCompatActivity
         mOutputText.setPadding(16, 16, 16, 16);
         mOutputText.setVerticalScrollBarEnabled(true);
         mOutputText.setMovementMethod(new ScrollingMovementMethod());
-        mOutputText.setText(
-                "Click the \'" + BUTTON_TEXT + "\' button to retrieve information.");
+        mOutputText.setText(this.getResources().getString(R.string.retrieveInfoText));
         activityLayout.addView(mOutputText);
 
         mProgress = new ProgressDialog(this);
-        mProgress.setMessage("Calling Google Calendar API ...");
+        mProgress.setMessage(this.getResources().getString(R.string.callingApi));
 
         setContentView(activityLayout);
 
@@ -130,7 +133,7 @@ public class CalendarActivity extends AppCompatActivity
         } else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
         } else if (!isDeviceOnline()) {
-            mOutputText.setText("No network connection available.");
+            mOutputText.setText(this.getResources().getString(R.string.noConnectionAvailable));
         } else {
             new MakeRequestTask(mCredential).execute();
         }
@@ -165,7 +168,7 @@ public class CalendarActivity extends AppCompatActivity
             // Request the GET_ACCOUNTS permission via a user dialog
             EasyPermissions.requestPermissions(
                     this,
-                    "This app needs to access your Google account (via Contacts).",
+                    this.getResources().getString(R.string.accessWarning),
                     REQUEST_PERMISSION_GET_ACCOUNTS,
                     Manifest.permission.GET_ACCOUNTS);
         }
@@ -190,8 +193,7 @@ public class CalendarActivity extends AppCompatActivity
             case REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode != RESULT_OK) {
                     mOutputText.setText(
-                            "This app requires Google Play Services. Please install " +
-                                    "Google Play Services on your device and relaunch this app.");
+                            this.getResources().getString(R.string.needsWarning));
                 } else {
                     getResultsFromApi();
                 }
@@ -397,9 +399,9 @@ public class CalendarActivity extends AppCompatActivity
         protected void onPostExecute(List<String> output) {
             mProgress.hide();
             if (output == null || output.size() == 0) {
-                mOutputText.setText("No results returned.");
+                mOutputText.setText(getApplication().getResources().getString(R.string.noResult));
             } else {
-                output.add(0, "Data retrieved using the Google Calendar API:");
+                output.add(0, getApplication().getResources().getString(R.string.messaggioInutile));
                 mOutputText.setText(TextUtils.join("\n", output));
             }
         }
@@ -417,11 +419,11 @@ public class CalendarActivity extends AppCompatActivity
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
                             CalendarActivity.REQUEST_AUTHORIZATION);
                 } else {
-                    mOutputText.setText("The following error occurred:\n"
+                    mOutputText.setText(getApplication().getResources().getString(R.string.apiError)+"\n"
                             + mLastError.getMessage());
                 }
             } else {
-                mOutputText.setText("Request cancelled.");
+                mOutputText.setText(getApplication().getResources().getString(R.string.reqCancelled));
             }
         }
     }
