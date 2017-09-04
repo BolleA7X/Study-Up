@@ -100,6 +100,10 @@ public class ResultsActivity extends AppCompatActivity {
     }
 
     //Menu
+    //IN QUESTA ACTIVITY EVITO CHE IL MENU SIA UTILIZZABILE
+    //by Alessio: ho pensato che fosse una buona idea per evitare che l'utente potesse aprire activity su activity troppe volte
+    //TODO se si decide di fare così dovremmo considerare l'idea di farlo anche nei fragment dei trofei e delle opzioni
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -143,7 +147,7 @@ public class ResultsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     private String chooseAdvice(float[] infoForAdvice) {
         String advice = new String("");

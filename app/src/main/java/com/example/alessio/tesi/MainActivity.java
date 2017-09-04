@@ -379,7 +379,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void updateTimer(boolean reset){
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String currentSub = prefs.getString("subj", null);
-        pomodoroMode = prefs.getBoolean("pomodoro", true);
+        pomodoroMode = prefs.getBoolean("pomodoro", false);
 
         if(currentSub!= null && !currentSub.isEmpty() ){
             currentSubject.setText(currentSub);

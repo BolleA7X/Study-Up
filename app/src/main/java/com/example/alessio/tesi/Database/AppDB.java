@@ -70,7 +70,7 @@ public class AppDB {
 
     //database constants
     public static final String DB_NAME = "appDB.db";
-    public static final int DB_VERSION = 8;
+    public static final int DB_VERSION = 9;
 
     //session constants
     public static final String SESSION_TABLE = "session";
@@ -135,15 +135,6 @@ public class AppDB {
     public static final String TROPHY_UNLOCKED = "unlocked";
     public static final int TROPHY_UNLOCKED_COL = 3;
 
-    //counter constants
-    public static final String COUNTER_TABLE = "counter";
-
-    public static final String COUNTER_NAME = "_name";
-    public static final int COUNTER_NAME_COL = 1;
-
-    public static final String COUNTER_VALUE = "value";
-    public static final int COUNTER_VALUE_COL = 2;
-
     //CREATE TABLE statements
     public static final String CREATE_SESSION_TABLE =
             "CREATE TABLE " + SESSION_TABLE + " ( " +
@@ -174,11 +165,6 @@ public class AppDB {
                     TROPHY_COLOR + " TEXT, " +
                     TROPHY_UNLOCKED + " INTEGER);";
 
-    public static final String CREATE_COUNTER_TABLE =
-            "CREATE TABLE " + COUNTER_TABLE + " ( " +
-                    COUNTER_NAME + " TEXT PRIMARY KEY, " +
-                    COUNTER_VALUE + " INTEGER);";
-
     //DROP TABLE statements
     public static final String DROP_SESSION_TABLE =
             "DROP TABLE IF EXISTS " + SESSION_TABLE;
@@ -191,9 +177,6 @@ public class AppDB {
 
     public static final String DROP_TROPHY_TABLE =
             "DROP TABLE IF EXISTS " + TROPHY_TABLE;
-
-    public static final String DROP_COUNTER_TABLE =
-            "DROP TABLE IF EXISTS " + COUNTER_TABLE;
 
     //attributes and methods
     private SQLiteDatabase db;
