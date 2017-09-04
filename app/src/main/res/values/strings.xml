@@ -104,7 +104,7 @@
     <string name="noConnectionAvailable">Nessun servizio di rete disponibile</string>
     <string name="accessWarning">Questa applicazione necessita di accedere al tuo account Google (via Contatti)</string>
     <string name="needsWarning">Questa applicazione necessita di Google Play Services. Ti preghiamo di installare
-        Google Play Services sul tuo dispositivo e riavviare l'app</string>
+        Google Play Services sul tuo dispositivo e riavviare l\'app</string>
     <string name="noResult">Nessun risultato ottenuto</string>
     <string name="messaggioInutile">Dati ottenuti usando il calendario di Goole:</string>
     <string name="apiError">Si è verificato un errore:</string>
