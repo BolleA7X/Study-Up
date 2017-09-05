@@ -543,4 +543,77 @@ public class AppDB {
         this.closeDB();
         return rowCount;
     }
+
+    //QUERY PER CONDIZIONI DI SBLOCCO TROFEI
+
+    //trofei 7 e 8: 2 o 3 materie diverse al giorno
+    //ritorna il numero di materie diverse studiate questo giorno
+    //va chiamato dopo aver salvato una sessione
+    public int differentCourses(Calendar calendar) {
+        this.openReadableDB();
+        String[] args = {"COUNT(DISTINCT "+SESSION_COURSE_NAME};
+        String where = SESSION_DAY+"= ? AND "+SESSION_MONTH+"= ? AND "+SESSION_YEAR+"= ?";
+        String[] whereArgs = {String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)),String.valueOf(calendar.get(Calendar.MONTH)),
+                              String.valueOf(calendar.get(Calendar.YEAR))};
+        Cursor cursor = db.query(SESSION_TABLE,args,where,whereArgs,null,null,null);
+        cursor.moveToFirst();
+        int result = cursor.getInt(0);
+        if(cursor != null)
+            cursor.close();
+        this.closeDB();
+        return result;
+    }
+
+    //trofeo 15: usare l'app per un mese
+    //ritorna true se c'è almeno una sessione al giorno per 30 giorni, false altrimenti
+    //si potrebbe chiamare anche questo dopo aver salvato una sessione
+    public boolean oneMonth() {
+        this.openReadableDB();
+        String[] args = {"DISTINCT "+SESSION_DAY,SESSION_MONTH,SESSION_YEAR};
+        Cursor cursor = db.query(SESSION_TABLE,args,null,null,null,null,null);
+        int result = cursor.getCount();
+        if(cursor != null)
+            cursor.close();
+        this.closeDB();
+
+        if(result < 30)
+            return false;
+        else
+            return true;
+    }
+
+    //trofeo 16: 42 sessioni di qualunque tipo
+    //ritorna il numero di sessioni totali
+    //pure questo alla fine di una sessione
+    public int numberOfSessions() {
+        this.openReadableDB();
+        String[] args = {"COUNT(*)"};
+        Cursor cursor = db.query(SESSION_TABLE,args,null,null,null,null,null);
+        cursor.moveToFirst();
+        int result = cursor.getInt(0);
+        if(cursor != null)
+            cursor.close();
+        this.closeDB();
+        return result;
+    }
+
+    //trofeo 20: PLATINO!!!
+    //ritorna true se il numero di trofei sbloccati è 19, false altrimenti
+    //questo andrebbe chiamato ogni volta si sblocca un trofeo ma può risultare pesante
+    public boolean platinum() {
+        this.openReadableDB();
+        String[] args = {"COUNT(*)"};
+        String where = TROPHY_UNLOCKED+"= 1";
+        Cursor cursor = db.query(TROPHY_TABLE,args,where,null,null,null,null);
+        cursor.moveToFirst();
+        int result = cursor.getInt(0);
+        if(cursor != null)
+            cursor.close();
+        this.closeDB();
+
+        if(result == 19)
+            return true;
+        else
+            return false;
+    }
 }
