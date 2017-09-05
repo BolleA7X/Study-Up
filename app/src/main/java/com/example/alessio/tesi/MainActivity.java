@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //questa è per capire se la subj è settata o no
     public boolean go;
     CountDownTimer cTimer = null;
+    //per avere i trofei a disposizione in tutti i metodi
+    private Trophy[] trophies;
 
     //Menu
     @Override
@@ -146,13 +148,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         AppDB db = new AppDB(this);
-        Trophy[] trophies = db.getTrophies();
+        trophies = db.getTrophies();
+
         // SBLOCCO TROFEO 1
         // Eseguo solo la prima volta che apro l'app
         if(trophies[0].getUnlocked() == 0){
             db.unlockTrophy(1);
             Toast t = Toast.makeText(this, this.getResources().getString(R.string.unlockTrophy)+"1",Toast.LENGTH_LONG);
             t.show();
+        }
+
+        // SBLOCCO TROFEO 20 (PLATINO)
+        //per ora l'ho messo qua, ovvero quando viene aperta l'app fa il controllo. In teoria andrebbe fatto ogni volta che
+        //viene sbloccato un trofeo
+        // SBLOCCO TROFEO 15
+        if(trophies[19].getUnlocked() == 0) {
+            if(db.platinum()) {
+                db.unlockTrophy(20);
+                Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"20",Toast.LENGTH_LONG);
+                t.show();
+            }
         }
 
     }
@@ -252,7 +267,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 saveSession(timeVal*5);
                 // Apro il database (per fare delle get per i trofei)
                 AppDB db = new AppDB(getApplicationContext());
-                Trophy[] trophies = db.getTrophies();
                 // Se concludo un timer pomodoro, incremento contatore consecutivelyCompletedTomatoes e lo salvo nelle Preferences
                 if(pomodoroMode) {
                     // SBLOCCO TROFEO 2
@@ -372,6 +386,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AppDB db = new AppDB(this);
         if(session != null)
             db.insertSession(session);         //eseguo query per inserire nel db i dati
+
+        // SBLOCCO TROFEI 7 - 8
+        if(trophies[6].getUnlocked() == 0 || trophies[7].getUnlocked() == 0) {
+            int differentCourses = db.differentCourses(calendar);
+            if(differentCourses == 2) {
+                db.unlockTrophy(7);
+                Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"7",Toast.LENGTH_LONG);
+                t.show();
+            }
+            else if(differentCourses > 2) {
+                db.unlockTrophy(8);
+                Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"8",Toast.LENGTH_LONG);
+                t.show();
+            }
+        }
+
+        // SBLOCCO TROFEO 15
+        if(trophies[14].getUnlocked() == 0) {
+            if(db.oneMonth()) {
+                db.unlockTrophy(15);
+                Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"15",Toast.LENGTH_LONG);
+                t.show();
+            }
+        }
+
+        // SBLOCCO TROFEO 16
+        if(trophies[15].getUnlocked() == 0) {
+            if(db.numberOfSessions() >= 42) {
+                db.unlockTrophy(16);
+                Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"16",Toast.LENGTH_LONG);
+                t.show();
+            }
+        }
 
         updateTimer(false);
     }

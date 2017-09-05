@@ -548,7 +548,6 @@ public class AppDB {
 
     //trofei 7 e 8: 2 o 3 materie diverse al giorno
     //ritorna il numero di materie diverse studiate questo giorno
-    //va chiamato dopo aver salvato una sessione
     public int differentCourses(Calendar calendar) {
         this.openReadableDB();
         String[] args = {"COUNT(DISTINCT "+SESSION_COURSE_NAME};
@@ -566,7 +565,6 @@ public class AppDB {
 
     //trofeo 15: usare l'app per un mese
     //ritorna true se c'è almeno una sessione al giorno per 30 giorni, false altrimenti
-    //si potrebbe chiamare anche questo dopo aver salvato una sessione
     public boolean oneMonth() {
         this.openReadableDB();
         String[] args = {"DISTINCT "+SESSION_DAY,SESSION_MONTH,SESSION_YEAR};
@@ -584,7 +582,6 @@ public class AppDB {
 
     //trofeo 16: 42 sessioni di qualunque tipo
     //ritorna il numero di sessioni totali
-    //pure questo alla fine di una sessione
     public int numberOfSessions() {
         this.openReadableDB();
         String[] args = {"COUNT(*)"};
