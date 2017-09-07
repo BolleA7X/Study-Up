@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tesi</string>
+    <string name="app_name">Study Up</string>
     <string name="set_button">SET</string>
     <string name="current_subject_label">CORSO</string>
     <string name="timer_value">60</string>

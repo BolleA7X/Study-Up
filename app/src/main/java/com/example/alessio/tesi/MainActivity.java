@@ -33,6 +33,7 @@ import com.example.alessio.tesi.Database.Session;
 import com.example.alessio.tesi.Database.Trophy;
 
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -147,8 +148,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        //Ottengo la data di oggi
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
         AppDB db = new AppDB(this);
         trophies = db.getTrophies();
+
+        // SBLOCCO TROFEO 13
+        if(trophies[12].getUnlocked() == 0) {
+            //Controllo che siano passati 7 giorni dall'ultimo utilizzo
+            //ottengo l'ultimo utilizzo
+            int lDay = prefs.getInt("lastDay",calendar.get(Calendar.DAY_OF_MONTH));
+            int lMonth = prefs.getInt("lastMonth",calendar.get(Calendar.MONTH));
+            int lYear = prefs.getInt("lastYear",calendar.get(Calendar.YEAR));
+            Calendar lastUse = Calendar.getInstance();
+            lastUse.set(lYear,lMonth,lDay);
+            //calcolo il numero di giorni passati
+            long difference = (TimeUnit.MILLISECONDS.toDays(Math.abs(calendar.getTimeInMillis() - lastUse.getTimeInMillis())));
+            if(difference >= 7) {
+                db.unlockTrophy(13);
+                Toast t = Toast.makeText(this, this.getResources().getString(R.string.unlockTrophy)+"13",Toast.LENGTH_LONG);
+                t.show();
+            }
+        }
+
+        //Quando apro l'app aggiorno la data di ultimo utilizzo
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("lastDay",calendar.get(Calendar.DAY_OF_MONTH));
+        editor.putInt("lastMonth",calendar.get(Calendar.MONTH));
+        editor.putInt("lastYear",calendar.get(Calendar.YEAR));
 
         // SBLOCCO TROFEO 1
         // Eseguo solo la prima volta che apro l'app
@@ -161,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // SBLOCCO TROFEO 20 (PLATINO)
         //per ora l'ho messo qua, ovvero quando viene aperta l'app fa il controllo. In teoria andrebbe fatto ogni volta che
         //viene sbloccato un trofeo
-        // SBLOCCO TROFEO 15
         if(trophies[19].getUnlocked() == 0) {
             if(db.platinum()) {
                 db.unlockTrophy(20);
@@ -238,12 +269,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void start(){
+        final AppDB db = new AppDB(this);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("timeVal", timeVal);
         // se non sono in modalità pomodoro, azzero il contatore dei pomodori consecutivi completati (utile a sblocco trofeo 3)
         if(!pomodoroMode){
             editor.putInt("ConsecutivelyCompletedTomatoes", 0);
+        }
+        // SBLOCCO TROFEO 12
+        if(pomodoroMode && trophies[11].getUnlocked() == 0) {
+            db.unlockTrophy(12);
+            trophies[11].setUnlocked(1);
+            Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"12",Toast.LENGTH_LONG);
+            t.show();
         }
         editor.apply();
         secondValue.setVisibility(View.VISIBLE);
@@ -266,12 +305,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //se il timer finisce salvo la sessione passando la durata totale del timer
                 saveSession(timeVal*5);
                 // Apro il database (per fare delle get per i trofei)
-                AppDB db = new AppDB(getApplicationContext());
                 // Se concludo un timer pomodoro, incremento contatore consecutivelyCompletedTomatoes e lo salvo nelle Preferences
                 if(pomodoroMode) {
                     // SBLOCCO TROFEO 2
                     if(trophies[1].getUnlocked() == 0){
                         db.unlockTrophy(2);
+                        trophies[1].setUnlocked(1);
                         Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"2",Toast.LENGTH_LONG);
                         t.show();
                     }
@@ -284,6 +323,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // SBLOCCO TROFEO 3
                     if(consecutivelyCompletedTomatoes == 5 && trophies[2].getUnlocked() == 0){
                         db.unlockTrophy(3);
+                        trophies[2].setUnlocked(1);
                         Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"3",Toast.LENGTH_LONG);
                         t.show();
                     }
@@ -293,17 +333,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int totalStudyTime = db.getTotalTime();
                 if(totalStudyTime >= 600 && totalStudyTime < 1500 && trophies[3].getUnlocked() == 0){
                     db.unlockTrophy(4);
+                    trophies[3].setUnlocked(1);
                     Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"4",Toast.LENGTH_LONG);
                     t.show();
                 }
                 else if(totalStudyTime >= 1500 && totalStudyTime < 3000 && trophies[4].getUnlocked() == 0){
                     db.unlockTrophy(5);
+                    trophies[4].setUnlocked(1);
                     Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"5",Toast.LENGTH_LONG);
                     t.show();
                 }
                 else if(totalStudyTime >= 3000 && trophies[5].getUnlocked() == 0){
                     db.unlockTrophy(6);
+                    trophies[5].setUnlocked(1);
                     Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"6",Toast.LENGTH_LONG);
+                    t.show();
+                }
+
+                // SBLOCCO TROFEI 18 - 19
+                if(trophies[17].getUnlocked() == 0 && timeVal*5 >= 120) {
+                    db.unlockTrophy(18);
+                    trophies[17].setUnlocked(1);
+                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"18",Toast.LENGTH_LONG);
+                    t.show();
+                }
+                if(trophies[18].getUnlocked() == 0 && timeVal*5 >= 180) {
+                    db.unlockTrophy(19);
+                    trophies[18].setUnlocked(1);
+                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"19",Toast.LENGTH_LONG);
                     t.show();
                 }
             }
@@ -380,9 +437,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Session session = new Session(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH),
                                       duration, (th)?1:0, (ex)?1:0, (pr)?1:0,loc/*luogo*/,currentSub/*corso*/);
-        /*Session session = new Session(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH,duration,
-                                      Session.stringToInt(sessionData[0]),Session.stringToInt(sessionData[1]),
-                                      Session.stringToInt(sessionData[2]),sessionData[4],sessionData[3]);*/
+
         AppDB db = new AppDB(this);
         if(session != null)
             db.insertSession(session);         //eseguo query per inserire nel db i dati
@@ -392,11 +447,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             int differentCourses = db.differentCourses(calendar);
             if(differentCourses == 2) {
                 db.unlockTrophy(7);
+                trophies[6].setUnlocked(1);
                 Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"7",Toast.LENGTH_LONG);
                 t.show();
             }
             else if(differentCourses > 2) {
                 db.unlockTrophy(8);
+                trophies[7].setUnlocked(1);
                 Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"8",Toast.LENGTH_LONG);
                 t.show();
             }
@@ -406,6 +463,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(trophies[14].getUnlocked() == 0) {
             if(db.oneMonth()) {
                 db.unlockTrophy(15);
+                trophies[14].setUnlocked(1);
                 Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"15",Toast.LENGTH_LONG);
                 t.show();
             }
@@ -415,6 +473,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(trophies[15].getUnlocked() == 0) {
             if(db.numberOfSessions() >= 42) {
                 db.unlockTrophy(16);
+                trophies[15].setUnlocked(1);
                 Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"16",Toast.LENGTH_LONG);
                 t.show();
             }
