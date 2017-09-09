@@ -158,26 +158,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AppDB db = new AppDB(this);
         trophies = db.getTrophies();
 
+        SharedPreferences.Editor editor = prefs.edit();
+
         // SBLOCCO TROFEO 13
-        if(trophies[12].getUnlocked() == 0) {
-            //Controllo che siano passati 7 giorni dall'ultimo utilizzo
-            //ottengo l'ultimo utilizzo
-            int lDay = prefs.getInt("lastDay",calendar.get(Calendar.DAY_OF_MONTH));
-            int lMonth = prefs.getInt("lastMonth",calendar.get(Calendar.MONTH));
-            int lYear = prefs.getInt("lastYear",calendar.get(Calendar.YEAR));
-            Calendar lastUse = Calendar.getInstance();
-            lastUse.set(lYear,lMonth,lDay);
-            //calcolo il numero di giorni passati
-            long difference = (TimeUnit.MILLISECONDS.toDays(Math.abs(calendar.getTimeInMillis() - lastUse.getTimeInMillis())));
-            if(difference >= 7) {
-                db.unlockTrophy(13);
-                Toast t = Toast.makeText(this, this.getResources().getString(R.string.unlockTrophy)+"13",Toast.LENGTH_LONG);
-                t.show();
-            }
+        //Controllo che siano passati 7 giorni dall'ultimo utilizzo
+        //ottengo l'ultimo utilizzo
+        int lDay = prefs.getInt("lastDay",calendar.get(Calendar.DAY_OF_MONTH));
+        int lMonth = prefs.getInt("lastMonth",calendar.get(Calendar.MONTH));
+        int lYear = prefs.getInt("lastYear",calendar.get(Calendar.YEAR));
+        Calendar lastUse = Calendar.getInstance();
+        lastUse.set(lYear,lMonth,lDay);
+        //calcolo il numero di giorni passati
+        long difference = (TimeUnit.MILLISECONDS.toDays(Math.abs(calendar.getTimeInMillis() - lastUse.getTimeInMillis())));
+        if(difference >= 7 && trophies[12].getUnlocked() == 0) {
+            db.unlockTrophy(13);
+            Toast t = Toast.makeText(this, this.getResources().getString(R.string.unlockTrophy)+"13",Toast.LENGTH_LONG);
+            t.show();
         }
+        //se il giorno è cambiato azzero il contatore di pomodori giornalieri
+        if(difference > 0)
+            editor.putInt("dailyTomatoes",0);
 
         //Quando apro l'app aggiorno la data di ultimo utilizzo
-        SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("lastDay",calendar.get(Calendar.DAY_OF_MONTH));
         editor.putInt("lastMonth",calendar.get(Calendar.MONTH));
         editor.putInt("lastYear",calendar.get(Calendar.YEAR));
@@ -270,8 +272,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void start(){
         final AppDB db = new AppDB(this);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = prefs.edit();
+        final SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("timeVal", timeVal);
         // se non sono in modalità pomodoro, azzero il contatore dei pomodori consecutivi completati (utile a sblocco trofeo 3)
         if(!pomodoroMode){
@@ -307,6 +308,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // Apro il database (per fare delle get per i trofei)
                 // Se concludo un timer pomodoro, incremento contatore consecutivelyCompletedTomatoes e lo salvo nelle Preferences
                 if(pomodoroMode) {
+                    int dailyTomatoes = prefs.getInt("dailyTomatoes",0);
+                    ++dailyTomatoes;
+                    editor.putInt("dailyTomatoes",dailyTomatoes);
                     // SBLOCCO TROFEO 2
                     if(trophies[1].getUnlocked() == 0){
                         db.unlockTrophy(2);
@@ -325,6 +329,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         db.unlockTrophy(3);
                         trophies[2].setUnlocked(1);
                         Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"3",Toast.LENGTH_LONG);
+                        t.show();
+                    }
+
+                    // SBLOCCO TROFEO 9
+                    if(dailyTomatoes == 10 && trophies[8].getUnlocked() == 0) {
+                        db.unlockTrophy(9);
+                        trophies[8].setUnlocked(1);
+                        Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"9",Toast.LENGTH_LONG);
                         t.show();
                     }
                 }
