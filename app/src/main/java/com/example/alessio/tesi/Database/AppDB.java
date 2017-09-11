@@ -550,7 +550,7 @@ public class AppDB {
     //ritorna il numero di materie diverse studiate questo giorno
     public int differentCourses(Calendar calendar) {
         this.openReadableDB();
-        String[] args = {"COUNT(DISTINCT "+SESSION_COURSE_NAME};
+        String[] args = {"COUNT(DISTINCT "+SESSION_COURSE_NAME+")"};
         String where = SESSION_DAY+"= ? AND "+SESSION_MONTH+"= ? AND "+SESSION_YEAR+"= ?";
         String[] whereArgs = {String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)),String.valueOf(calendar.get(Calendar.MONTH)),
                               String.valueOf(calendar.get(Calendar.YEAR))};

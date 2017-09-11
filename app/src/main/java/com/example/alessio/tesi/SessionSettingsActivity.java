@@ -132,8 +132,6 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
                 Intent intent = new Intent(this,ResultsActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.menu_calendar:
-                break;
         }
 
         return super.onOptionsItemSelected(item);

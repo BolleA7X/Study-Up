@@ -98,10 +98,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent = new Intent(this,ResultsActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.menu_calendar:
-                intent = new Intent(this,CalendarActivity.class);
-                startActivity(intent);
-                break;
         }
 
         return super.onOptionsItemSelected(item);
