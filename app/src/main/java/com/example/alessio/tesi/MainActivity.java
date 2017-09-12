@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     CountDownTimer cTimer = null;
     //per avere i trofei a disposizione in tutti i metodi
     private Trophy[] trophies;
+    private FragmentManager fSm;
     //TODO mettere icona ai settings
 
     //Menu
@@ -129,6 +130,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         minuteValue.setText(String.valueOf(timeVal*5));
         secondValue.setVisibility(View.INVISIBLE);
 
+        //vedo se devo loggare
+        boolean logged = prefs.getBoolean("logged",false);
+        if(!logged)
+            firstOpening();
+
         //floating button
         fab = (FloatingActionButton) findViewById(R.id.setButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -184,8 +190,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // SBLOCCO TROFEO 1
         // Eseguo solo la prima volta che apro l'app
         if(trophies[0].getUnlocked() == 0){
-            //***************************************************************************/
-            firstOpening();
             db.unlockTrophy(1);
             Toast t = Toast.makeText(this, this.getResources().getString(R.string.unlockTrophy)+"1",Toast.LENGTH_LONG);
             t.show();
@@ -580,10 +584,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
-    private void firstOpening(){
 
+    private void firstOpening(){
         LoginFragment loginFragment = new LoginFragment();
-        FragmentManager fSm = getFragmentManager();
+        fSm = getFragmentManager();
         loginFragment.show(fSm, "Sample Fragment");
     }
 }
