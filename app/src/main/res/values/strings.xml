@@ -110,7 +110,7 @@
     <string name="apiError">Si è verificato un errore:</string>
     <string name="reqCancelled">Richiesta annullata</string>
 
-    <string name="unlockTrophy">Congratulazioni! hai sbloccato il trofeo </string>
+    <string name="unlockTrophy">Congratulazioni! Hai sbloccato il trofeo </string>
 
     <string name="noSessionData">Devi selezionare corso e tipo della sessione!</string>
     <string name="endedTimer">Timer concluso!</string>
