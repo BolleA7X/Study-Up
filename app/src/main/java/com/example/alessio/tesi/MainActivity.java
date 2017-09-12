@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     CountDownTimer cTimer = null;
     //per avere i trofei a disposizione in tutti i metodi
     private Trophy[] trophies;
+    //TODO mettere icona ai settings
 
     //Menu
     @Override
@@ -183,6 +184,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // SBLOCCO TROFEO 1
         // Eseguo solo la prima volta che apro l'app
         if(trophies[0].getUnlocked() == 0){
+            //***************************************************************************/
+            firstOpening();
             db.unlockTrophy(1);
             Toast t = Toast.makeText(this, this.getResources().getString(R.string.unlockTrophy)+"1",Toast.LENGTH_LONG);
             t.show();
@@ -526,7 +529,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    //TODO notifica anche del non pomodoro con timer al posto del pomodoro
     public void notificationGo(){
         int notifyIcon = R.drawable.icona_notifica_custom;
         int notifiyText = R.string.notification_title_label_custom;
@@ -577,5 +579,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         });
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
+    }
+    private void firstOpening(){
+
+        LoginFragment loginFragment = new LoginFragment();
+        FragmentManager fSm = getFragmentManager();
+        loginFragment.show(fSm, "Sample Fragment");
     }
 }

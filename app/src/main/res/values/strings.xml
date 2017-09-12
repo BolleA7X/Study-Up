@@ -27,6 +27,10 @@
     <string name="add_label">Aggiungi</string>
     <string name="abort_label">Annulla</string>
 
+    <string name="login_textview_label">es:Student94</string>
+    <string name="login_textview_title">Benvenuto! Inserisci un username!</string>
+    <string name="password_textview_label">Password</string>
+
     <string name="no_location_label">Non ci sono ancora luoghi salvati!</string>
     <string name="close_button_content">Bottone per chiudere mappa</string>
     <string name="map_button_content">Bottone per aprire mappa</string>

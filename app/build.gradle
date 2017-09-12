@@ -45,4 +45,5 @@ dependencies {
     compile('com.google.apis:google-api-services-calendar:v3-rev254-1.22.0') {
         exclude group: 'org.apache.httpcomponents'
     }
+    compile 'com.google.android.gms:play-services-safetynet:11.0.4'
 }
