@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -20,44 +21,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import com.example.alessio.tesi.Database.AppDB;
-import com.example.alessio.tesi.Database.Course;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.safetynet.SafetyNet;
-import com.google.android.gms.safetynet.SafetyNetApi;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.api.client.http.HttpResponse;
-import com.google.api.client.json.JsonParser;
-
 import org.json.JSONObject;
-
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.concurrent.Executor;
-
-import static android.content.ContentValues.TAG;
-import static java.lang.System.in;
 
 public class LoginFragment  extends DialogFragment {
     private EditText logText,logPwd;
     private Button loginButton,registrationButton;
+    private Fragment frg;
+    String username;
+    SharedPreferences prefs;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final Fragment frg = this;
+        frg = this;
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater.
@@ -78,7 +53,7 @@ public class LoginFragment  extends DialogFragment {
         registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = logText.getText().toString();
+                username = logText.getText().toString();
                 String password = logPwd.getText().toString();
                 //INVIO DATI AL SERVER
                 //invio username e password al server che mi risponde dicendomi se c'è stato un errore o è andata bene
@@ -91,40 +66,16 @@ public class LoginFragment  extends DialogFragment {
                             jsonObject.accumulate("username", username);
                             jsonObject.accumulate("password", password);
                             String json = jsonObject.toString();
-                            Log.d("JSON", json);
-                            //2) preparo la richiesta
-                            RequestHandler rh = new RequestHandler(json,"registration.php");
-                            JsonReader reader = rh.getResponse();
-                            String name;
-                            if(reader != null)
-                                name = reader.nextName();
-                            else
-                                name = "error";
-                            if (name.equals("message")) {
-                                String message = reader.nextString();
-                                //se risposta positiva
-                                if (message.equals("ok")) {
-                                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                                    SharedPreferences.Editor editor = prefs.edit();
-                                    editor.putBoolean("logged", true);
-                                    editor.putString("loggedAs", username);
-                                    getActivity().getFragmentManager().beginTransaction().remove(frg).commit();
-                                }
-                                //se username già preso
-                                else if (message.equals("taken"))
-                                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.usrnameTaken), Toast.LENGTH_SHORT).show();
-                                    //se la query fallisce per motivi misteriosi
-                                else if (message.equals("error"))
-                                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.unknownErr), Toast.LENGTH_SHORT).show();
-                            }
-
+                            //2) preparo la richiesta, la invio e ottengo la risposta
+                            Registration sc = new Registration(new RequestHandler(json,"registration.php"));
+                            sc.execute();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }
                 else
-                    Toast.makeText(getActivity(),getActivity().getResources().getString(R.string.noConnection),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),getActivity().getResources().getString(R.string.noConnection),Toast.LENGTH_LONG).show();
             }
         });
 
@@ -165,5 +116,50 @@ public class LoginFragment  extends DialogFragment {
             return true;
         else
             return false;
+    }
+
+    private class Registration extends AsyncTask<Void,Void,Void> {
+        private RequestHandler rh;
+        private JSONObject response;
+
+        Registration(RequestHandler rh) {
+            this.rh = rh;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            response = rh.makeRequest();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            String message;
+            try {
+                if (response != null)
+                    message = response.getString("message");
+                else
+                    message = "error";
+                //3) interpretazione della risposta
+                //se risposta positiva
+                if (message.equals("ok")) {
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(frg.getActivity());
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean("logged", true);
+                    editor.putString("loggedAs", username);
+                    editor.commit();
+                    Log.d("logged?",String.valueOf(prefs.getBoolean("logged",false)));
+                    getActivity().getFragmentManager().beginTransaction().remove(frg).commit();
+                }
+                //se username già preso
+                else if (message.equals("taken"))
+                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.usrnameTaken), Toast.LENGTH_LONG).show();
+                    //se la query fallisce per motivi misteriosi
+                else if (message.equals("error"))
+                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.unknownErr), Toast.LENGTH_LONG).show();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

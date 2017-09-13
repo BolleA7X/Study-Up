@@ -130,11 +130,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         minuteValue.setText(String.valueOf(timeVal*5));
         secondValue.setVisibility(View.INVISIBLE);
 
-        //vedo se devo loggare
-        boolean logged = prefs.getBoolean("logged",false);
-        if(!logged)
-            firstOpening();
-
         //floating button
         fab = (FloatingActionButton) findViewById(R.id.setButton);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +145,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivityForResult(intent,0);
             }
         });
+
+        //vedo se devo loggare
+        boolean logged = prefs.getBoolean("logged",false);
+        if(!logged)
+            firstOpening();
 
         //Ottengo la data di oggi
         Calendar calendar = Calendar.getInstance();
