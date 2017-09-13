@@ -140,5 +140,6 @@
     <string name="usrnameTaken">Questo username è già stato preso</string>
     <string name="unknownErr">Errore sconosciuto. Riprovare più tardi</string>
     <string name="noConnection">Non sei connesso a internet</string>
+    <string name="loginFailed">Username o password sbagliati</string>
 
 </resources>

@@ -1,5 +1,7 @@
 package com.example.alessio.tesi;
 
+import android.app.Fragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -19,12 +21,15 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class SettingsFragment extends PreferenceFragment {
 
-    ListPreference deleteCourse, deleteLocation, deleteAll;
+    ListPreference deleteCourse, deleteLocation, deleteAll, logout;
     CheckBoxPreference checkPomodoro;
+    Fragment frg;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preference);
+        frg = this;
 
         AppDB db = new AppDB(getActivity());
 
@@ -32,11 +37,13 @@ public class SettingsFragment extends PreferenceFragment {
         deleteCourse = new ListPreference(getActivity());
         deleteLocation = new ListPreference(getActivity());
         deleteAll = new ListPreference(getActivity());
+        logout = new ListPreference(getActivity());
         checkPomodoro = new CheckBoxPreference(getActivity());
 
         deleteCourse = (ListPreference)findPreference("delete_course_preference");
         deleteLocation = (ListPreference)findPreference("delete_location_preference");
         deleteAll = (ListPreference)findPreference("delete_all_preference");
+        logout = (ListPreference)findPreference("logout_button");
         checkPomodoro = (CheckBoxPreference)findPreference("use_pomodoro_mode");
 
        checkPomodoro.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -74,6 +81,10 @@ public class SettingsFragment extends PreferenceFragment {
         deleteLocation.setEntries(deleteLocationEntries);
         deleteLocation.setEntryValues(deleteLocationEntries);
         deleteLocation.setDefaultValue(getActivity().getResources().getString(R.string.none));
+
+        logout.setEntries(deleteAllEntries);
+        logout.setEntryValues(deleteAllEntriesValues);
+        logout.setDefaultValue(getActivity().getResources().getString(R.string.none));
     }
 
     @Override
@@ -141,6 +152,26 @@ public class SettingsFragment extends PreferenceFragment {
                     AppDB db = new AppDB(getActivity());
                     db.deleteLocation(newVal);
                     Toast.makeText(getActivity(),newVal+" "+getActivity().getResources().getString(R.string.deleted),Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
+
+        //listener per vedere se è stato premuto il tasto di logout
+        logout.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if(newValue.toString().equals("true")) {
+                    logout.setDefaultValue("false");
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean("logged", false);
+                    editor.putString("loggedAs", "");
+                    editor.commit();
+                    //riavvio l'app
+                    Intent intent = frg.getActivity().getPackageManager().getLaunchIntentForPackage(frg.getActivity().getPackageName());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 }
                 return false;
             }

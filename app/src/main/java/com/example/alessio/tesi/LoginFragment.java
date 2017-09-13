@@ -53,29 +53,14 @@ public class LoginFragment  extends DialogFragment {
         registrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                username = logText.getText().toString();
-                String password = logPwd.getText().toString();
-                //INVIO DATI AL SERVER
-                //invio username e password al server che mi risponde dicendomi se c'è stato un errore o è andata bene
-                //vedo se sono connesso
-                if(isConnected()) {
-                    if(!username.equals("") && !password.equals("")) {
-                        try {
-                            //1) costruisco il json
-                            JSONObject jsonObject = new JSONObject();
-                            jsonObject.accumulate("username", username);
-                            jsonObject.accumulate("password", password);
-                            String json = jsonObject.toString();
-                            //2) preparo la richiesta, la invio e ottengo la risposta
-                            Registration sc = new Registration(new RequestHandler(json,"registration.php"));
-                            sc.execute();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                else
-                    Toast.makeText(getActivity(),getActivity().getResources().getString(R.string.noConnection),Toast.LENGTH_LONG).show();
+                prepareRequest("registration.php");
+            }
+        });
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prepareRequest("login.php");
             }
         });
 
@@ -118,6 +103,43 @@ public class LoginFragment  extends DialogFragment {
             return false;
     }
 
+    //metodo unico per preparare la richiesta e il json con i dati in output
+    private void prepareRequest(String filename) {
+        username = logText.getText().toString();
+        String password = logPwd.getText().toString();
+        //INVIO DATI AL SERVER
+        //invio username e password al server che mi risponde dicendomi se c'è stato un errore o è andata bene
+        //vedo se sono connesso
+        if(isConnected()) {
+            if(!username.equals("") && !password.equals("")) {
+                try {
+                    //1) costruisco il json
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.accumulate("username", username);
+                    jsonObject.accumulate("password", password);
+                    String json = jsonObject.toString();
+                    //2) preparo la richiesta e la invio
+                    if(filename.equals("registration.php")) {
+                        Registration reg = new Registration(new RequestHandler(json, filename));
+                        reg.execute();
+                    }
+                    else if(filename.equals("login.php")) {
+                        Login log = new Login(new RequestHandler(json, filename));
+                        log.execute();
+                    }
+                    //per sicurezza
+                    else
+                        System.exit(1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else
+            Toast.makeText(getActivity(),getActivity().getResources().getString(R.string.noConnection),Toast.LENGTH_LONG).show();
+    }
+
+    //classe per eseguire in background la richiesta per registrarsi
     private class Registration extends AsyncTask<Void,Void,Void> {
         private RequestHandler rh;
         private JSONObject response;
@@ -148,13 +170,57 @@ public class LoginFragment  extends DialogFragment {
                     editor.putBoolean("logged", true);
                     editor.putString("loggedAs", username);
                     editor.commit();
-                    Log.d("logged?",String.valueOf(prefs.getBoolean("logged",false)));
                     getActivity().getFragmentManager().beginTransaction().remove(frg).commit();
                 }
                 //se username già preso
                 else if (message.equals("taken"))
                     Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.usrnameTaken), Toast.LENGTH_LONG).show();
-                    //se la query fallisce per motivi misteriosi
+                //se la query fallisce per motivi misteriosi
+                else if (message.equals("error"))
+                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.unknownErr), Toast.LENGTH_LONG).show();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //classe per eseguire in background la richiesta per loggarsi
+    private class Login extends AsyncTask<Void,Void,Void> {
+        private RequestHandler rh;
+        private JSONObject response;
+
+        Login(RequestHandler rh) {
+            this.rh = rh;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            response = rh.makeRequest();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            String message;
+            try {
+                if (response != null)
+                    message = response.getString("message");
+                else
+                    message = "error";
+                //3) interpretazione della risposta
+                //se risposta positiva
+                if (message.equals("ok")) {
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(frg.getActivity());
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putBoolean("logged", true);
+                    editor.putString("loggedAs", username);
+                    editor.commit();
+                    getActivity().getFragmentManager().beginTransaction().remove(frg).commit();
+                }
+                //se login fallito
+                else if (message.equals("wrong"))
+                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.loginFailed), Toast.LENGTH_LONG).show();
+                //se la query fallisce per motivi misteriosi
                 else if (message.equals("error"))
                     Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.unknownErr), Toast.LENGTH_LONG).show();
             } catch(Exception e) {

@@ -28,6 +28,13 @@
         android:key="delete_all_preference"
         android:title="@string/delete_all_label" />
 
+    <ListPreference
+        android:id="@+id/logout_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:key="logout_button"
+        android:title="Logout" />
+
     <CheckBoxPreference
         android:id="@+id/checkPomodoro"
         android:layout_width="match_parent"

@@ -1,5 +1,7 @@
 package com.example.alessio.tesi;
 
+import android.util.Log;
+
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
