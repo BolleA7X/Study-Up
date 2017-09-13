@@ -2,16 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/registrationButton"
-        android:layout_width="270dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/newPass"
-        android:layout_alignStart="@+id/newPass"
-        android:layout_below="@+id/newPass"
-        android:background="@android:color/transparent"
-        android:text="Registrati" />
-
     <EditText
         android:id="@+id/newLog"
         android:layout_width="match_parent"
@@ -43,16 +33,37 @@
         android:hint="@string/password_textview_label"
         android:inputType="textPassword" />
 
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="270dp"
+    <LinearLayout
+        android:id="@+id/LoginLinear"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/registrationButton"
-        android:layout_alignBottom="@+id/registrationButton"
-        android:layout_toEndOf="@+id/registrationButton"
-        android:layout_toRightOf="@+id/registrationButton"
-        android:background="@android:color/transparent"
-        android:text="Accedi" />
+        android:layout_alignLeft="@+id/newPass"
+        android:layout_alignStart="@+id/newPass"
+        android:layout_below="@+id/newPass"
+        android:orientation="horizontal"
+        android:layout_alignRight="@+id/newPass"
+        android:layout_alignEnd="@+id/newPass">
+
+        <Button
+            android:id="@+id/loginButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/login_access_label" />
+
+        <Button
+            android:id="@+id/registrationButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/login_registration_label" />
+    </LinearLayout>
 
 
 </RelativeLayout>

@@ -164,6 +164,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
             case R.id.addSubjectButton:
                 setSubjectFragment subjDialogFragment = new setSubjectFragment ();
                 FragmentManager fSm = getFragmentManager();
+                subjDialogFragment.setCancelable(false);
                 subjDialogFragment.show(fSm, "Sample Fragment");
                 break;
             //Bottone aggiunta location

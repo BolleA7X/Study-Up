@@ -500,8 +500,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void updateTimer(boolean reset){
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String currentSub = prefs.getString("subj", null);
-        pomodoroMode = prefs.getBoolean("pomodoro", false);
-
+        pomodoroMode = prefs.getBoolean("pomodoro", true);
+        Toast t = Toast.makeText(this, Boolean.toString(pomodoroMode),Toast.LENGTH_LONG);
+        t.show();
         if(currentSub!= null && !currentSub.isEmpty() ){
             currentSubject.setText(currentSub);
             go = true;
@@ -588,6 +589,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void firstOpening(){
         LoginFragment loginFragment = new LoginFragment();
         fSm = getFragmentManager();
+        loginFragment.setCancelable(false);
         loginFragment.show(fSm, "Sample Fragment");
     }
 }
