@@ -21,7 +21,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -81,35 +84,24 @@ public class LoginFragment  extends DialogFragment {
                 //invio username e password al server che mi risponde dicendomi se c'è stato un errore o è andata bene
                 //vedo se sono connesso
                 if(isConnected()) {
-                    try {
-                        //1) costruisco il json
-                        JSONObject jsonObject = new JSONObject();
-                        jsonObject.accumulate("username", username);
-                        jsonObject.accumulate("password", password);
-                        //2) preparo la richiesta
-                        URL url = new URL("https","webdev.dibris.unige.it/S4052357","registration.php");
-                        HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
-                        httpCon.setDoInput(true);
-                        httpCon.setDoOutput(true);
-                        httpCon.setUseCaches(false);
-                        httpCon.setRequestProperty("Content-type","application/json");
-                        httpCon.setRequestProperty("Accept","application/json");
-                        httpCon.setRequestMethod("POST");
-                        //3) invio la richiesta
-                        httpCon.connect();
-                        OutputStream os = httpCon.getOutputStream();
-                        OutputStreamWriter osw = new OutputStreamWriter(os,"UTF-8");
-                        osw.write(jsonObject.toString());
-                        osw.flush();
-                        osw.close();
-                        //4) ricevo la risposta
-                        InputStream inputStream = new BufferedInputStream(httpCon.getInputStream());
-                        String message;
-                        if (inputStream != null) {
-                            JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
-                            String name = reader.nextName();
+                    if(!username.equals("") && !password.equals("")) {
+                        try {
+                            //1) costruisco il json
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.accumulate("username", username);
+                            jsonObject.accumulate("password", password);
+                            String json = jsonObject.toString();
+                            Log.d("JSON", json);
+                            //2) preparo la richiesta
+                            RequestHandler rh = new RequestHandler(json,"registration.php");
+                            JsonReader reader = rh.getResponse();
+                            String name;
+                            if(reader != null)
+                                name = reader.nextName();
+                            else
+                                name = "error";
                             if (name.equals("message")) {
-                                message = reader.nextString();
+                                String message = reader.nextString();
                                 //se risposta positiva
                                 if (message.equals("ok")) {
                                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -120,23 +112,19 @@ public class LoginFragment  extends DialogFragment {
                                 }
                                 //se username già preso
                                 else if (message.equals("taken"))
-                                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.usrnameTaken), Toast.LENGTH_SHORT);
+                                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.usrnameTaken), Toast.LENGTH_SHORT).show();
                                     //se la query fallisce per motivi misteriosi
                                 else if (message.equals("error"))
-                                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.unknownErr), Toast.LENGTH_SHORT);
+                                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.unknownErr), Toast.LENGTH_SHORT).show();
                             }
 
-                        } else
-                            Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.unknownErr), Toast.LENGTH_SHORT);
-
-                        httpCon.disconnect();
-
-                    } catch (Exception e) {
-                        System.out.println(e.getLocalizedMessage());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 else
-                    Toast.makeText(getActivity(),getActivity().getResources().getString(R.string.noConnection),Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity(),getActivity().getResources().getString(R.string.noConnection),Toast.LENGTH_SHORT).show();
             }
         });
 
