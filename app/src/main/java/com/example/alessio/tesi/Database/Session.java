@@ -9,6 +9,8 @@ public class Session {
     private int theory, exercise, project;
     private String location_name, course_name;
 
+    public Session() {}
+
     public Session(int year, int month, int day, int duration, int theory, int exercise, int project,
                    String location_name, String course_name) {
         this.year = year;

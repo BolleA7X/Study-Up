@@ -136,10 +136,12 @@
     <string name="allDataDeleted">Tutti i dati sono stati eliminati</string>
     <string name="deleted">eliminato</string>
 
-    <!-- stringhe per il login -->
+    <!-- stringhe per il login e rete-->
     <string name="usrnameTaken">Questo username è già stato preso</string>
     <string name="unknownErr">Errore sconosciuto. Riprovare più tardi</string>
     <string name="noConnection">Non sei connesso a internet</string>
     <string name="loginFailed">Username o password sbagliati</string>
+    <string name="syncUpLabel">Condividi risultati</string>
+    <string name="alreadySynced">Dati già sincronizzati</string>
 
 </resources>

@@ -2,9 +2,11 @@ package com.example.alessio.tesi.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.github.mikephil.charting.data.PieData;
@@ -501,6 +503,29 @@ public class AppDB {
             cursor1.close();
         this.closeDB();
 
+        return result;
+    }
+
+    public ArrayList<Session> getAllSessions(int lastIndex) {
+        ArrayList<Session> result = new ArrayList<>();
+        this.openReadableDB();
+        String[] args = {"*"};
+        String where = SESSION_ID + "> ?";
+        String[] whereArgs = {String.valueOf(lastIndex)};
+        Cursor cursor = db.query(SESSION_TABLE,args,where,whereArgs,null,null,null);
+        while(cursor.moveToNext()) {
+            Session s = new Session();
+            s.setId(cursor.getInt(cursor.getColumnIndex(SESSION_ID)));
+            s.setYear(cursor.getInt(cursor.getColumnIndex(SESSION_YEAR)));
+            s.setMonth(cursor.getInt(cursor.getColumnIndex(SESSION_MONTH)));
+            s.setDay(cursor.getInt(cursor.getColumnIndex(SESSION_DAY)));
+            s.setDuration(cursor.getInt(cursor.getColumnIndex(SESSION_DURATION)));
+            s.setTheory(cursor.getInt(cursor.getColumnIndex(SESSION_THEORY)));
+            s.setExercise(cursor.getInt(cursor.getColumnIndex(SESSION_EXERCISE)));
+            s.setProject(cursor.getInt(cursor.getColumnIndex(SESSION_PROJECT)));
+            s.setCourse_name(cursor.getString(cursor.getColumnIndex(SESSION_COURSE_NAME)));
+            result.add(s);
+        }
         return result;
     }
 
