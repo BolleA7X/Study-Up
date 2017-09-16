@@ -125,7 +125,7 @@
     <string name="typeDistribution">Distribuzione tipi di sessione</string>
 
     <string name="advice_2_0">Stai studiando con costanza. </string>
-    <string name="advice_2_1">Dovresi studiare con maggiore frequenza. </string>
+    <string name="advice_2_1">Dovresti studiare con maggiore frequenza. </string>
     <string name="advice_1_0">Sarebbe meglio studiare per più tempo al giorno. </string>
     <string name="advice_1_1">Rischi di affaticarti e stressarti se studi per troppo tempo al giorno. </string>
     <string name="advice_1_2">Stai studiando il corretto numero di ore al giorno. Continua così. </string>
@@ -141,7 +141,10 @@
     <string name="unknownErr">Errore sconosciuto. Riprovare più tardi</string>
     <string name="noConnection">Non sei connesso a internet</string>
     <string name="loginFailed">Username o password sbagliati</string>
+    <string name="unknownUser">Utente non trovato</string>
     <string name="syncUpLabel">Condividi risultati</string>
     <string name="alreadySynced">Dati già sincronizzati</string>
+    <string name="search_label">Guarda i risultati di un amico</string>
+    <string name="search_button">Cerca</string>
 
 </resources>
