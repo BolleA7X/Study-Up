@@ -38,7 +38,7 @@ public class ResultsActivity extends AppCompatActivity {
 
     PieChart subjectsPiechart;
     PieChart typesPiechart;
-    TextView mostFrequentLocation;
+    TextView mostFrequentLocation,mostFrequentLocationLabel;
     TextView totalTime;
     TextView advice;
     EditText searchUser;
@@ -57,10 +57,11 @@ public class ResultsActivity extends AppCompatActivity {
         searchButton = (Button)findViewById(R.id.search_user_button);
 
         //istanzio le textview e ne setto il testo tramite query
-        mostFrequentLocation = (TextView)findViewById(R.id.mostFrequentLocationLabel);
+        mostFrequentLocation = (TextView)findViewById(R.id.mostFrequentLocationTextView);
+        mostFrequentLocationLabel = (TextView)findViewById(R.id.mostFrequentLocationLabel);
         String place = db.getMostFrequentLocation();
         if(place != null)
-            mostFrequentLocation.setText(place);
+            mostFrequentLocationLabel.setText(place);
 
         totalTime = (TextView)findViewById(R.id.totalTimeLabel);
         int time = db.getTotalTime();
@@ -299,8 +300,10 @@ public class ResultsActivity extends AppCompatActivity {
                     typesPiechart.setData(typeData);
                     typesPiechart.setDescription(desc);
                     typesPiechart.invalidate();
-                    //tolgo i consigli
+                    //tolgo i consigli e il luogo più frequentato
                     advice.setVisibility(View.INVISIBLE);
+                    mostFrequentLocation.setVisibility(View.INVISIBLE);
+                    mostFrequentLocationLabel.setVisibility(View.INVISIBLE);
                 }
                 else if(message.equals("wrong"))
                     Toast.makeText(ResultsActivity.this, ResultsActivity.this.getResources().getString(R.string.unknownUser), Toast.LENGTH_SHORT).show();
