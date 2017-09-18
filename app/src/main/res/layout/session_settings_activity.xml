@@ -97,64 +97,46 @@
         android:id="@+id/projectCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/project"
-        android:layout_below="@+id/exercisesCheckBox"
-        android:layout_alignLeft="@+id/theoryCheckBox"
         android:layout_alignStart="@+id/theoryCheckBox"
+        android:layout_below="@+id/exercisesCheckBox"
         android:padding="5dp"
-        android:textSize="30sp"/>
+        android:text="@string/project"
+        android:textSize="30sp" />
 
     <LinearLayout
+        android:id="@+id/Linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        style="?android:attr/buttonBarStyle"
-        android:layout_below="@+id/projectCheckBox"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
-        android:layout_alignLeft="@+id/StudyTypeLabel"
-        android:layout_alignStart="@+id/StudyTypeLabel">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/addSubjectButton"
-            style="?android:attr/buttonBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="@string/add_subject"
-            android:textSize="30sp" />
-
-        <Button
-            android:id="@+id/addLocationButton"
-            style="?android:attr/buttonBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:padding="10dp"
-            android:text="@string/add_location"
-            android:textSize="30sp" />
-
-        <TextView
-            android:id="@+id/textView2"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="" />
+            android:text="@string/add_subject"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/addLocationButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/add_location"
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/endedConfig"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginStart="30dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="10dp"
             android:text="@string/ok"
-            android:textSize="30sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
     </LinearLayout>
 

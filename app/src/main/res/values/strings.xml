@@ -20,9 +20,9 @@
     <string name="plus_symbol">+</string>
     <string name="ok">OK</string>
 
-    <string name="add_subject">Nuovo corso</string>
+    <string name="add_subject">Nuovo\ncorso</string>
     <string name="add_subject_label">Aggiungere materia?</string>
-    <string name="add_location">Nuovo luogo</string>
+    <string name="add_location">Nuovo\nluogo</string>
     <string name="add_location_label">Aggiungere luogo?</string>
     <string name="add_label">Aggiungi</string>
     <string name="abort_label">Annulla</string>
@@ -146,5 +146,8 @@
     <string name="alreadySynced">Dati già sincronizzati</string>
     <string name="search_label">Guarda i risultati di un amico</string>
     <string name="search_button">Cerca</string>
+    <!-- Intro -->
+    <string name="title_intro">Titolo Intro</string>
+    <string name="description_intro">Descrizione/nlunga</string>
 
 </resources>

@@ -46,4 +46,5 @@ dependencies {
         exclude group: 'org.apache.httpcomponents'
     }
     compile 'com.google.android.gms:play-services-safetynet:11.0.4'
+    compile 'com.github.apl-devs:appintro:v4.2.2'
 }

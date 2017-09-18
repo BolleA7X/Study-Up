@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //per avere i trofei a disposizione in tutti i metodi
     private Trophy[] trophies;
     private FragmentManager fSm;
-    //TODO mettere icona ai settings
+
 
     //Menu
     @Override
@@ -110,6 +110,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /***********************************/
+        //controlla se l'app è stata già aperta
+        // uso questo metodo, che sembra essere più bellino dell'altro
+        // anche se in pratica sono uguali*/
+        Thread tr = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean isFirstStart = prefs.getBoolean("firstStart", true);
+
+                //  If the activity has never started before...
+                if (isFirstStart) {
+                    //  Launch app intro
+                    final Intent i = new Intent(getApplicationContext(), IntroActivity.class);
+
+                    runOnUiThread(new Runnable() {
+                        @Override public void run() {
+                            //startActivity(i);
+                            i.putExtra("Opening","");
+                            startActivityForResult(i,0);
+                        }
+                    });
+                    SharedPreferences.Editor e = prefs.edit();
+                    e.putBoolean("firstStart", false);
+                    e.apply();
+                }
+            }
+        });
+        // Start the thread
+        tr.start();
+        /*********************************************************************/
         // get references to widgets
         startTimerButton = (ImageButton)findViewById(R.id.startTimerButton);
         minuteValue = (TextView)findViewById(R.id.minuteValue);
@@ -147,9 +177,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         //vedo se devo loggare
-        boolean logged = prefs.getBoolean("logged",false);
+        //SPOSTATO IN INTROACTIVITY
+       /* boolean logged = prefs.getBoolean("logged",false);
+
         if(!logged)
-            firstOpening();
+            firstOpening();*/
 
         //Ottengo la data di oggi
         Calendar calendar = Calendar.getInstance();
@@ -213,20 +245,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
-        if(data != null) {
-            sessionData = data.getStringArrayExtra("currentSessionData");
-            String subj = sessionData[3];
-            String locat = sessionData[4];
-            if(subj != null) {
-                currentSubject.setText(subj);
-                go = true;
-            }
 
-            prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("subj", subj);
-            editor.putString("loc", locat);
-            editor.apply();
+        if(data != null ) {
+            //Per i risultati da SessionSettings
+            if(data.hasExtra("currentSessionData")){
+                sessionData = data.getStringArrayExtra("currentSessionData");
+                String subj = sessionData[3];
+                String locat = sessionData[4];
+                if(subj != null) {
+                    currentSubject.setText(subj);
+                    go = true;
+                }
+                prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("subj", subj);
+                editor.putString("loc", locat);
+                editor.apply();
+            }else if(data.hasExtra("Opening")){ //per i risultati da intro
+                String first = data.getStringExtra("Opening");
+                if(first.equals("firstOpening")){
+                    firstOpening();
+                }
+            }
         }
 
     }
@@ -501,8 +541,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String currentSub = prefs.getString("subj", null);
         pomodoroMode = prefs.getBoolean("pomodoro", true);
-        Toast t = Toast.makeText(this, Boolean.toString(pomodoroMode),Toast.LENGTH_LONG);
-        t.show();
+        /*Toast t = Toast.makeText(this, Boolean.toString(pomodoroMode),Toast.LENGTH_LONG);
+        t.show();*/
         if(currentSub!= null && !currentSub.isEmpty() ){
             currentSubject.setText(currentSub);
             go = true;
@@ -585,7 +625,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
-
     private void firstOpening(){
         LoginFragment loginFragment = new LoginFragment();
         fSm = getFragmentManager();
