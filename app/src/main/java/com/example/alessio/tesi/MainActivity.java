@@ -37,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private Thread tr;
     private SharedPreferences prefs;
     private FloatingActionButton fab;
     private boolean pomodoroMode;
@@ -114,10 +115,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //controlla se l'app è stata già aperta
         // uso questo metodo, che sembra essere più bellino dell'altro
         // anche se in pratica sono uguali*/
-        Thread tr = new Thread(new Runnable() {
+        tr = new Thread(new Runnable() {
             @Override
             public void run() {
-                boolean isFirstStart = prefs.getBoolean("firstStart", true);
+                SharedPreferences pr = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                boolean isFirstStart = pr.getBoolean("firstStart", true);
 
                 //  If the activity has never started before...
                 if (isFirstStart) {
@@ -176,12 +178,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        //vedo se devo loggare
-        //SPOSTATO IN INTROACTIVITY
-       /* boolean logged = prefs.getBoolean("logged",false);
+       //vedo se devo loggare
+       boolean logged = prefs.getBoolean("logged",false);
 
         if(!logged)
-            firstOpening();*/
+            firstOpening();
 
         //Ottengo la data di oggi
         Calendar calendar = Calendar.getInstance();
