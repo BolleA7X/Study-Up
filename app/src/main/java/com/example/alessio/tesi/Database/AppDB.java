@@ -35,6 +35,7 @@ public class AppDB {
             db.execSQL(CREATE_LOCATION_TABLE);
             db.execSQL(CREATE_COURSE_TABLE);
             db.execSQL(CREATE_TROPHY_TABLE);
+            db.execSQL(CREATE_USER_TABLE);
 
             //inserting all trophies
             db.execSQL("INSERT INTO "+TROPHY_TABLE+" VALUES (1, "+Trophy.BRONZE+", 0)");
@@ -66,13 +67,14 @@ public class AppDB {
             db.execSQL(DROP_LOCATION_TABLE);
             db.execSQL(DROP_COURSE_TABLE);
             db.execSQL(DROP_TROPHY_TABLE);
+            db.execSQL(DROP_USER_TABLE);
             onCreate(db);
         }
     }
 
     //database constants
     public static final String DB_NAME = "appDB.db";
-    public static final int DB_VERSION = 9;
+    public static final int DB_VERSION = 10;
 
     //session constants
     public static final String SESSION_TABLE = "session";
@@ -107,6 +109,9 @@ public class AppDB {
     public static final String SESSION_COURSE_NAME = "course_name";
     public static final int SESSION_COURSE_ID_COL = 10;
 
+    public static final String SESSION_USER = "username";
+    public static final int SESSION_USER_COL = 11;
+
     //location constants
     public static final String LOCATION_TABLE = "location";
 
@@ -125,6 +130,9 @@ public class AppDB {
     public static final String COURSE_NAME = "_name";
     public static final int COURSE_NAME_COL = 1;
 
+    public static final String COURSE_USER = "user";
+    public static final int COURSE_USER_COL = 2;
+
     //trophy constants
     public static final String TROPHY_TABLE = "trophy";
 
@@ -136,6 +144,15 @@ public class AppDB {
 
     public static final String TROPHY_UNLOCKED = "unlocked";
     public static final int TROPHY_UNLOCKED_COL = 3;
+
+    //user constants
+    public static final String USER_TABLE = "user";
+
+    public static final String USER_ID = "_id";
+    public static final int USER_ID_COL = 1;
+
+    public static final String USER_LASTID = "lastId";
+    public static final int USER_LASTID_COL = 2;
 
     //CREATE TABLE statements
     public static final String CREATE_SESSION_TABLE =
@@ -149,7 +166,8 @@ public class AppDB {
                     SESSION_EXERCISE + " INTEGER, " +
                     SESSION_PROJECT + " INTEGER, " +
                     SESSION_LOCATION_NAME + " TEXT, " +
-                    SESSION_COURSE_NAME + " TEXT);";
+                    SESSION_COURSE_NAME + " TEXT, " +
+                    SESSION_USER + " TEXT);";
 
     public static final String CREATE_LOCATION_TABLE =
             "CREATE TABLE " + LOCATION_TABLE + " ( " +
@@ -167,6 +185,11 @@ public class AppDB {
                     TROPHY_COLOR + " TEXT, " +
                     TROPHY_UNLOCKED + " INTEGER);";
 
+    public static final String CREATE_USER_TABLE =
+            "CREATE TABLE " + USER_TABLE + " ( " +
+                    USER_ID + " TEXT, " +
+                    USER_LASTID + " INTEGER);";
+
     //DROP TABLE statements
     public static final String DROP_SESSION_TABLE =
             "DROP TABLE IF EXISTS " + SESSION_TABLE;
@@ -179,6 +202,9 @@ public class AppDB {
 
     public static final String DROP_TROPHY_TABLE =
             "DROP TABLE IF EXISTS " + TROPHY_TABLE;
+
+    public static final String DROP_USER_TABLE =
+            "DROP TABLE IF EXISTS " + USER_TABLE;
 
     //attributes and methods
     private SQLiteDatabase db;
@@ -203,9 +229,10 @@ public class AppDB {
 
     //METODI PER ESEGUIRE SPECIFICHE QUERY: NON SPECIFICO I DETTAGLI DI OGNI SINGOLO METODO
     //query per inserire nuova materia
-    public void insertSubject(Course course) {
+    public void insertSubject(Course course,String user) {
         ContentValues cv = new ContentValues();
         cv.put(COURSE_NAME,course.getName());
+        cv.put(COURSE_USER,user);
         this.openWriteableDB();
         long rowID = db.insert(COURSE_TABLE,null,cv);
         this.closeDB();
@@ -223,7 +250,7 @@ public class AppDB {
     }
 
     //query per inserire dati di sessione appena finita
-    public void insertSession(Session session) {
+    public void insertSession(Session session,String user) {
         ContentValues cv = new ContentValues();
         cv.put(SESSION_YEAR,session.getYear());
         cv.put(SESSION_MONTH,session.getMonth());
@@ -234,16 +261,19 @@ public class AppDB {
         cv.put(SESSION_PROJECT,session.getProject());
         cv.put(SESSION_LOCATION_NAME,session.getLocation_name());
         cv.put(SESSION_COURSE_NAME,session.getCourse_name());
+        cv.put(SESSION_USER,user);
         this.openWriteableDB();
         long rowId = db.insert(SESSION_TABLE,null,cv);
         this.closeDB();
     }
 
     //query per ottenere le materie (per relativo spinner)
-    public ArrayList<String> getSubjects() {
+    public ArrayList<String> getSubjects(String user) {
         this.openReadableDB();
         String[] args = new String[] {COURSE_NAME};
-        Cursor cursor = db.query(COURSE_TABLE,args,null,null,null,null,null);
+        String where = COURSE_USER + "= ?";
+        String[] whereArgs = {user};
+        Cursor cursor = db.query(COURSE_TABLE,args,where,whereArgs,null,null,null);
         ArrayList<String> subjects = new ArrayList<String>();
         while(cursor.moveToNext())
            subjects.add(cursor.getString(cursor.getColumnIndex(COURSE_NAME)));
@@ -267,7 +297,7 @@ public class AppDB {
         return locations;
     }
 
-    //query per ottenere i trofei (per avere i dati nel relatico fragment)
+    //query per ottenere i trofei (per avere i dati nel relativo fragment)
     public Trophy[] getTrophies() {
         this.openReadableDB();
         String[] args = new String[] {TROPHY_COLOR,TROPHY_UNLOCKED};
@@ -286,22 +316,24 @@ public class AppDB {
     }
 
     //query per ottenere i dati da inserire nel grafico a torta dei corsi
-    public ArrayList<PieEntry> getSubjectsPieChartData() {
+    public ArrayList<PieEntry> getSubjectsPieChartData(String user) {
         ArrayList<PieEntry> entries = new ArrayList<>();
         this.openReadableDB();
         String[] args = new String[] {"SUM("+SESSION_DURATION+")"};
-        //1) ottengo la somma delle durate totali
-        Cursor cursor = db.query(SESSION_TABLE,args,null,null,null,null,null);
+        String where = SESSION_USER + "= ";
+        String[] whereArgs = {user};
+        //1) ottengo la somma delle durate totali dell'utente loggato
+        Cursor cursor = db.query(SESSION_TABLE,args,where,whereArgs,null,null,null);
         cursor.moveToFirst();
         int totalDuration = cursor.getInt(0);
         //2) ottengo la lista dei corsi, uso un iteratore per comodità
-        ArrayList<String> subjects = this.getSubjects();
+        ArrayList<String> subjects = this.getSubjects(user);
         Iterator<String> iterator = subjects.iterator();
         //3)itero per ottenere la somma delle durate dei singoli corsi e calcolare le singole percentuali
         while(iterator.hasNext()) {
             String course = iterator.next();
-            String where = SESSION_COURSE_NAME + "= ?";
-            String[] whereArgs = {course};
+            where = SESSION_COURSE_NAME + "= ? AND " + SESSION_USER + "= ?";
+            whereArgs = new String[] {course,user};
             if(!db.isOpen())
                 this.openReadableDB();
             cursor = db.query(SESSION_TABLE,args,where,whereArgs,null,null,null);
@@ -317,28 +349,28 @@ public class AppDB {
     }
 
     //query per ottenere i dati da inserire nel grafico a torta dei tipi
-    public ArrayList<PieEntry> getTypesPieChartData() {
+    public ArrayList<PieEntry> getTypesPieChartData(String user) {
         float[] percents = new float[3];
         ArrayList<PieEntry> entries = new ArrayList<>();
         this.openReadableDB();
         String[] args = new String[] {"COUNT("+SESSION_ID+")"};
+        String where = SESSION_USER + "= ?";
+        String[] whereArgs = {user};
         //1) ottengo il numero di sessioni
-        Cursor cursor = db.query(SESSION_TABLE,args,null,null,null,null,null);
+        Cursor cursor = db.query(SESSION_TABLE,args,where,whereArgs,null,null,null);
         cursor.moveToFirst();
         float numberOfSessions = (float)cursor.getInt(0);
-        Log.d("Sessioni totali",String.valueOf(numberOfSessions));
         //2) itero sui tre tipi di sessione e conto le occorrenze per ognuno
         String[] types = {SESSION_THEORY,SESSION_EXERCISE,SESSION_PROJECT};
         for(int i=0;i<3;i++) {
-            String where = types[i] + "= ?";
-            String[] whereArgs = {"1"};
+            where = types[i] + "= ? AND " + SESSION_USER + "= ?";
+            whereArgs = new String[] {"1",user};
             if(!db.isOpen())
                 this.openReadableDB();
             cursor = db.query(SESSION_TABLE,args,where,whereArgs,null,null,null);
             cursor.moveToFirst();
             //3) calcolo le percentuali assolute per ogni tipo
             percents[i] = ((float)cursor.getInt(0))/numberOfSessions;
-            Log.d(types[i],String.valueOf(percents[i]));
         }
         //4) trovo il coefficiente di normalizzazione
         float k = 1/(percents[0] + percents[1] + percents[2]);
@@ -370,11 +402,13 @@ public class AppDB {
         return result;
     }
 
-    public int getTotalTime() {
+    public int getTotalTime(String user) {
         int totalDuration = 0;
         this.openReadableDB();
         String[] args = new String[] {"SUM("+SESSION_DURATION+")"};
-        Cursor cursor = db.query(SESSION_TABLE,args,null,null,null,null,null);
+        String where = SESSION_USER + "= ?";
+        String[] whereArgs = {user};
+        Cursor cursor = db.query(SESSION_TABLE,args,where,whereArgs,null,null,null);
         while(cursor.moveToNext())
             totalDuration = cursor.getInt(0);
         if(cursor != null)
@@ -399,7 +433,7 @@ public class AppDB {
         return result;
     }
 
-    public float[] getInfoForAdvice() {
+    public float[] getInfoForAdvice(String user) {
         int cont = 0;
         float[] result = new float[3];
         String select;
@@ -411,16 +445,19 @@ public class AppDB {
         //1) MEDIA DEI CORSI STUDIATI IN 10 GIORNI
         //ottengo la conta dei giorni
         select = "DISTINCT "+SESSION_DAY+","+SESSION_MONTH+","+SESSION_YEAR;
-        query = "SELECT "+select+" FROM "+SESSION_TABLE+" ORDER BY "+SESSION_ID+" DESC LIMIT 10";
-        cursor1 = db.rawQuery(query,null);
+        query = "SELECT "+select+" FROM "+SESSION_TABLE+" WHERE "+SESSION_USER+"= ?"+" ORDER BY "+SESSION_ID+" DESC LIMIT 10";
+        whereArgs = new String[] {user};
+        cursor1 = db.rawQuery(query,whereArgs);
         if(cursor1.getCount() != 0) {
             while(cursor1.moveToNext()) {
                 select = "COUNT(DISTINCT "+SESSION_COURSE_NAME+")";
                 query = "SELECT "+select+" FROM "+SESSION_TABLE+" WHERE "+
+                        SESSION_USER+"=? AND "+
                         SESSION_DAY+"=? AND "+
                         SESSION_MONTH+"=? AND "+
                         SESSION_YEAR+"=?";
-                whereArgs = new String[] {String.valueOf(cursor1.getInt(cursor1.getColumnIndex(SESSION_DAY))),
+                whereArgs = new String[] {user,
+                                          String.valueOf(cursor1.getInt(cursor1.getColumnIndex(SESSION_DAY))),
                                           String.valueOf(cursor1.getInt(cursor1.getColumnIndex(SESSION_MONTH))),
                                           String.valueOf(cursor1.getInt(cursor1.getColumnIndex(SESSION_YEAR)))};
                 if(!db.isOpen())
@@ -436,13 +473,14 @@ public class AppDB {
 
         //2) MEDIA DELLA DURATA TOTALE GIORNALIERA
         //ottengo la durata totale
-        cont = this.getTotalTime();
+        cont = this.getTotalTime(user);
         //ottengo i giorni
         select = "DISTINCT "+SESSION_DAY+","+SESSION_MONTH+","+SESSION_YEAR;
-        query = "SELECT "+select+" FROM "+SESSION_TABLE;
+        query = "SELECT "+select+" FROM "+SESSION_TABLE+" WHERE "+SESSION_USER+"= ?";
+        whereArgs = new String[] {user};
         if(!db.isOpen())
             this.openReadableDB();
-        cursor1 = db.rawQuery(query,null);
+        cursor1 = db.rawQuery(query,whereArgs);
         //calcolo il secondo risultato
         if(cont != 0)
             result[1] = (float)cont / (float)cursor1.getCount();
@@ -452,8 +490,8 @@ public class AppDB {
         //3) MEDIA DELLE DISTANZE DI TEMPO TRA SESSIONI
         //ottengo il numero di sessioni
         select = "*";
-        query = "SELECT "+select+" FROM "+SESSION_TABLE+" GROUP BY "+SESSION_DAY+","+SESSION_MONTH+","+SESSION_YEAR;
-        cursor1 = db.rawQuery(query,null);
+        query = "SELECT "+select+" FROM "+SESSION_TABLE+" WHERE "+SESSION_USER+"= ?"+" GROUP BY "+SESSION_DAY+","+SESSION_MONTH+","+SESSION_YEAR;
+        cursor1 = db.rawQuery(query,whereArgs);
         cont = cursor1.getCount();
         if(cont > 1) {
             //ottengo la somma delle differenze di tempo tra sessioni
@@ -461,9 +499,9 @@ public class AppDB {
             Calendar cal1 = Calendar.getInstance();
             Calendar cal2 = Calendar.getInstance();
             select = SESSION_DAY + "," + SESSION_MONTH + "," + SESSION_YEAR;
-            query = "SELECT " + select + " FROM " + SESSION_TABLE + " WHERE " + SESSION_ID + "= ?";
+            query = "SELECT " + select + " FROM " + SESSION_TABLE + " WHERE " + SESSION_ID + "= ? AND "+SESSION_USER+"= ?";
             cursor1.moveToFirst();
-            whereArgs = new String[] {String.valueOf(cursor1.getInt(cursor1.getColumnIndex(SESSION_ID)))};
+            whereArgs = new String[] {String.valueOf(cursor1.getInt(cursor1.getColumnIndex(SESSION_ID))),user};
             cursor2 = db.rawQuery(query, whereArgs);
             cursor2.moveToFirst();
             cal1.set(cursor2.getInt(cursor2.getColumnIndex(SESSION_YEAR)),
@@ -477,7 +515,7 @@ public class AppDB {
             while(cursor1.moveToNext()) {
                 if (!db.isOpen())
                     this.openReadableDB();
-                whereArgs = new String[] {String.valueOf(cursor1.getInt(cursor1.getColumnIndex(SESSION_ID)))};
+                whereArgs = new String[] {String.valueOf(cursor1.getInt(cursor1.getColumnIndex(SESSION_ID))),user};
                 cursor2 = db.rawQuery(query, whereArgs);
                 cursor2.moveToFirst();
                 cal2.set(cursor2.getInt(cursor2.getColumnIndex(SESSION_YEAR)),
@@ -506,12 +544,12 @@ public class AppDB {
         return result;
     }
 
-    public ArrayList<Session> getAllSessions(int lastIndex) {
+    public ArrayList<Session> getAllSessions(int lastIndex,String user) {
         ArrayList<Session> result = new ArrayList<>();
         this.openReadableDB();
         String[] args = {"*"};
-        String where = SESSION_ID + "> ?";
-        String[] whereArgs = {String.valueOf(lastIndex)};
+        String where = SESSION_ID + "> ? AND "+SESSION_USER + "= ?";
+        String[] whereArgs = {String.valueOf(lastIndex),user};
         Cursor cursor = db.query(SESSION_TABLE,args,where,whereArgs,null,null,null);
         while(cursor.moveToNext()) {
             Session s = new Session();
@@ -540,20 +578,17 @@ public class AppDB {
         return rowCount;
     }
 
-    public void deleteAll() {
+    public void deleteAll(String user) {
         this.openWriteableDB();
-        db.execSQL(DROP_SESSION_TABLE);
-        db.execSQL(DROP_LOCATION_TABLE);
-        db.execSQL(DROP_COURSE_TABLE);
-        db.execSQL(CREATE_SESSION_TABLE);
-        db.execSQL(CREATE_LOCATION_TABLE);
-        db.execSQL(CREATE_COURSE_TABLE);
+        String[] whereArgs = {user};
+        db.rawQuery("DELETE FROM "+SESSION_TABLE+" WHERE "+SESSION_USER+"= ?",whereArgs);
+        db.rawQuery("DELETE FROM "+COURSE_TABLE+" WHERE "+COURSE_USER+"= ?",whereArgs);
         this.closeDB();
     }
 
-    public int deleteCourse(String name) {
-        String where = COURSE_NAME + "= ?";
-        String[] whereArgs = {name};
+    public int deleteCourse(String name,String user) {
+        String where = COURSE_NAME + "= ? AND " + COURSE_USER + "= ?";
+        String[] whereArgs = {name,user};
         this.openWriteableDB();
         int rowCount = db.delete(COURSE_TABLE,where,whereArgs);
         this.closeDB();
@@ -573,12 +608,12 @@ public class AppDB {
 
     //trofei 7 e 8: 2 o 3 materie diverse al giorno
     //ritorna il numero di materie diverse studiate questo giorno
-    public int differentCourses(Calendar calendar) {
+    public int differentCourses(Calendar calendar,String user) {
         this.openReadableDB();
         String[] args = {"COUNT(DISTINCT "+SESSION_COURSE_NAME+")"};
-        String where = SESSION_DAY+"= ? AND "+SESSION_MONTH+"= ? AND "+SESSION_YEAR+"= ?";
+        String where = SESSION_DAY+"= ? AND "+SESSION_MONTH+"= ? AND "+SESSION_YEAR+"= ?"+SESSION_USER+"= ?";
         String[] whereArgs = {String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)),String.valueOf(calendar.get(Calendar.MONTH)),
-                              String.valueOf(calendar.get(Calendar.YEAR))};
+                              String.valueOf(calendar.get(Calendar.YEAR)),user};
         Cursor cursor = db.query(SESSION_TABLE,args,where,whereArgs,null,null,null);
         cursor.moveToFirst();
         int result = cursor.getInt(0);
