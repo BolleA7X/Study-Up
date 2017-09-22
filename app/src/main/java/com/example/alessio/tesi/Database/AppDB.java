@@ -673,4 +673,40 @@ public class AppDB {
         else
             return false;
     }
+
+    //query per gestire l'ultimo indice memorizzato sul server
+
+    public void insertUser(String user) {
+        this.openWriteableDB();
+        ContentValues cv = new ContentValues();
+        cv.put(USER_ID,user);
+        cv.put(USER_LASTID,0);
+        db.insert(USER_TABLE,null,cv);
+        this.closeDB();
+    }
+
+    public int getLastIndex(String user) {
+        this.openReadableDB();
+        String[] args = {USER_LASTID};
+        String where = USER_ID + "= ?";
+        String[] whereArgs = {user};
+        Cursor cursor = db.query(USER_TABLE,args,where,whereArgs,null,null,null);
+        cursor.moveToFirst();
+        int result = cursor.getInt(0);
+        if(cursor != null)
+            cursor.close();
+        this.closeDB();
+        return result;
+    }
+
+    public int setLastIndex(String user,int newIndex) {
+        this.openWriteableDB();
+        String where = USER_ID + "= ?";
+        String[] whereArgs = {user};
+        ContentValues cv = new ContentValues();
+        cv.put(USER_LASTID,newIndex);
+        int rowCount = db.update(USER_TABLE,cv,where,whereArgs);
+        this.closeDB();
+        return rowCount;
+    }
 }

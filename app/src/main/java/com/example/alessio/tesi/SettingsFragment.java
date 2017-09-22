@@ -36,6 +36,7 @@ public class SettingsFragment extends PreferenceFragment {
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
     Fragment frg;
+    String user;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,7 @@ public class SettingsFragment extends PreferenceFragment {
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editor = prefs.edit();
+        user = prefs.getString("loggedAs","");
 
        checkPomodoro.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -79,7 +81,7 @@ public class SettingsFragment extends PreferenceFragment {
         CharSequence[] deleteAllEntriesValues = {"false","true"};
 
         //valori base degli altri due: prelevati dal db
-        ArrayList<String> entries1 = db.getSubjects();
+        ArrayList<String> entries1 = db.getSubjects(user);
         entries1.add(0,getActivity().getResources().getString(R.string.none));
         ArrayList<String> entries2 = db.getLocations();
         entries2.add(0,getActivity().getResources().getString(R.string.none));
@@ -125,7 +127,7 @@ public class SettingsFragment extends PreferenceFragment {
                 deleteAll.setDefaultValue("false");
                 if(newValue.toString().equals("true")) {
                     AppDB appDB = new AppDB(getActivity());
-                    appDB.deleteAll();
+                    appDB.deleteAll(user);
                     //Cancella le sharedPref
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     SharedPreferences.Editor editor = sharedPref.edit();
@@ -151,7 +153,7 @@ public class SettingsFragment extends PreferenceFragment {
                 String newVal = newValue.toString();
                 if(!newVal.equals(getActivity().getResources().getString(R.string.none))) {
                     AppDB db = new AppDB(getActivity());
-                    db.deleteCourse(newVal);
+                    db.deleteCourse(newVal,user);
                     Toast.makeText(getActivity(),newVal+" "+getActivity().getResources().getString(R.string.deleted),Toast.LENGTH_SHORT).show();
                     if(db.getTrophies()[10].getUnlocked() == 0){
                         db.unlockTrophy(11);
@@ -235,7 +237,7 @@ public class SettingsFragment extends PreferenceFragment {
         if(isConnected()) {
             //1) ottengo le sessioni dal db
             AppDB db = new AppDB(getActivity());
-            ArrayList<Session> data = db.getAllSessions(prefs.getInt("lastIndex",0));
+            ArrayList<Session> data = db.getAllSessions(db.getLastIndex(prefs.getString("loggedAs","")),user);
             try {
                 //2) costruisco il json
                 JSONObject mainJsonObject = new JSONObject();
@@ -286,6 +288,7 @@ public class SettingsFragment extends PreferenceFragment {
         @Override
         protected void onPostExecute(Void result) {
             String message;
+            AppDB db = new AppDB(frg.getActivity());
             try {
                 if (response != null)
                     message = response.getString("message");
@@ -294,11 +297,11 @@ public class SettingsFragment extends PreferenceFragment {
                 //3) interpretazione della risposta
                 //se risposta positiva
                 if(message.equals("ok"))
-                    editor.putInt("lastIndex",response.getInt("index")).commit();
+                    db.setLastIndex(prefs.getString("loggedAs",""),response.getInt("index"));
                 else if(message.equals("alreadySynced"))
                     Toast.makeText(frg.getActivity(),frg.getActivity().getResources().getString(R.string.alreadySynced),Toast.LENGTH_LONG).show();
                 else if(message.equals("error")) {
-                    editor.putInt("lastIndex",response.getInt("index")).commit();
+                    db.setLastIndex(prefs.getString("loggedAs",""),response.getInt("index"));
                     Toast.makeText(frg.getActivity(),frg.getActivity().getResources().getString(R.string.unknownErr),Toast.LENGTH_LONG).show();
                 }
                 else if(message.equals("fatal_error"))

@@ -386,7 +386,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 // SBLOCCO TROFEI 4 - 5 - 6
-                int totalStudyTime = db.getTotalTime();
+                int totalStudyTime = db.getTotalTime(prefs.getString("loggedAs",""));
                 if(totalStudyTime >= 600 && totalStudyTime < 1500 && trophies[3].getUnlocked() == 0){
                     db.unlockTrophy(4);
                     trophies[3].setUnlocked(1);
@@ -496,11 +496,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         AppDB db = new AppDB(this);
         if(session != null)
-            db.insertSession(session);         //eseguo query per inserire nel db i dati
+            db.insertSession(session,prefs.getString("loggedAs",""));         //eseguo query per inserire nel db i dati
 
         // SBLOCCO TROFEI 7 - 8
         if(trophies[6].getUnlocked() == 0 || trophies[7].getUnlocked() == 0) {
-            int differentCourses = db.differentCourses(calendar);
+            int differentCourses = db.differentCourses(calendar,prefs.getString("loggedAs",""));
             if(differentCourses == 2) {
                 db.unlockTrophy(7);
                 trophies[6].setUnlocked(1);

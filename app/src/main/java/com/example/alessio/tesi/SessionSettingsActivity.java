@@ -189,7 +189,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         subjSpinPosition = prefs.getInt("subjSpinPosition",-1);
 
         //eseguo la query tramite il metodo getSubjects() per ottenere l'ArrayAdapter contenete le info sui corsi
-        ArrayAdapter<String> subjects = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,db.getSubjects());
+        ArrayAdapter<String> subjects = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,db.getSubjects(prefs.getString("loggedAs","")));
         if(subjects != null) {
             //se l'array è valido lo associo allo spinner.
             subjects.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

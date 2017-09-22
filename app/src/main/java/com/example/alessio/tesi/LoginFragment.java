@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.alessio.tesi.Database.AppDB;
+
 import org.json.JSONObject;
 
 public class LoginFragment  extends DialogFragment {
@@ -202,6 +204,7 @@ public class LoginFragment  extends DialogFragment {
         @Override
         protected void onPostExecute(Void result) {
             String message;
+            AppDB db = new AppDB(frg.getActivity());
             try {
                 if (response != null)
                     message = response.getString("message");
@@ -212,9 +215,9 @@ public class LoginFragment  extends DialogFragment {
                 if (message.equals("ok")) {
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(frg.getActivity());
                     SharedPreferences.Editor editor = prefs.edit();
-                    editor.putBoolean("logged", true);
-                    editor.putString("loggedAs", username);
-                    editor.commit();
+                    editor.putBoolean("logged", true).commit();
+                    editor.putString("loggedAs", username).commit();
+                    db.insertUser(username);
                     getActivity().getFragmentManager().beginTransaction().remove(frg).commit();
                 }
                 //se login fallito

@@ -43,6 +43,7 @@ public class ResultsActivity extends AppCompatActivity {
     TextView advice;
     EditText searchUser;
     Button searchButton;
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,10 @@ public class ResultsActivity extends AppCompatActivity {
 
         //preparo db
         AppDB db = new AppDB(this);
+
+        //ottengo le SharedPreferences
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String user = prefs.getString("loggedAs","");
 
         //istanzio la edittext e il button per cercare i risultati di un utente
         searchUser = (EditText)findViewById(R.id.search_field);
@@ -64,11 +69,11 @@ public class ResultsActivity extends AppCompatActivity {
             mostFrequentLocationLabel.setText(place);
 
         totalTime = (TextView)findViewById(R.id.totalTimeLabel);
-        int time = db.getTotalTime();
+        int time = db.getTotalTime(user);
         totalTime.setText(String.valueOf(time)+" minuti");
 
         advice = (TextView)findViewById(R.id.advice);
-        float[] infoForAdvice = db.getInfoForAdvice();              //informazioni recuperate dal db per il consiglio
+        float[] infoForAdvice = db.getInfoForAdvice(user);              //informazioni recuperate dal db per il consiglio
         //chiamo un metodo che generi a runtime la stringa del consiglio sulla base delle informazioni recuperate
         //dal db
         advice.setText(chooseAdvice(infoForAdvice));
@@ -82,8 +87,8 @@ public class ResultsActivity extends AppCompatActivity {
         legend.setEnabled(false);
 
         //eseguo query per ottenere i dati dal db da inserire el grafico a torta
-        ArrayList<PieEntry> subjEntries = db.getSubjectsPieChartData();
-        ArrayList<PieEntry> typesEntries = db.getTypesPieChartData();
+        ArrayList<PieEntry> subjEntries = db.getSubjectsPieChartData(user);
+        ArrayList<PieEntry> typesEntries = db.getTypesPieChartData(user);
 
         if(subjEntries.size() != 0 && typesEntries.size() != 0) {
             //una volta ottenuto l'ArrayList<PieEntry> con i dati, questi sono i passaggi necessari per poterli inserire

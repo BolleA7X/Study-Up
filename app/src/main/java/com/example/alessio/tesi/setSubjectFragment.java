@@ -19,6 +19,8 @@ import com.example.alessio.tesi.Database.Course;
 public class setSubjectFragment extends DialogFragment  {
 
     private EditText subject;
+    private SharedPreferences prefs;
+
     //override per far apparire subito la nuova materia/location nello spinner
     @Override
     public void onDismiss(DialogInterface dialogInterface) {
@@ -35,6 +37,8 @@ public class setSubjectFragment extends DialogFragment  {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view;
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         builder.setView(view = inflater.inflate(R.layout.set_subject_fragment, null));
@@ -46,7 +50,7 @@ public class setSubjectFragment extends DialogFragment  {
                         if(subj!= null && !subj.isEmpty()){
                             Course course = new Course(subject.getText().toString());
                             AppDB db = new AppDB(getActivity());
-                            db.insertSubject(course);
+                            db.insertSubject(course,prefs.getString("loggedAs",""));
                             // SBLOCCO TROFEO 10
                             if(db.getTrophies()[9].getUnlocked() == 0){
                                 db.unlockTrophy(10);
