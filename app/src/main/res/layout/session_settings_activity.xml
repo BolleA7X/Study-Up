@@ -147,7 +147,7 @@
         android:layout_alignEnd="@+id/subjectsSpinner"
         android:layout_alignRight="@+id/subjectsSpinner"
         android:layout_alignTop="@+id/locationSpinner"
-        android:background="@android:color/white"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/map_button_content"
         android:onClick="onClick"
         android:scaleType="fitCenter"

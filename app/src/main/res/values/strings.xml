@@ -21,8 +21,10 @@
     <string name="ok">OK</string>
 
     <string name="add_subject">Nuovo\ncorso</string>
+    <string name="ex_subject">Es: Fisica</string>
     <string name="add_subject_label">Aggiungere materia?</string>
     <string name="add_location">Nuovo\nluogo</string>
+    <string name="ex_location">Es: Casa</string>
     <string name="add_location_label">Aggiungere luogo?</string>
     <string name="add_label">Aggiungi</string>
     <string name="abort_label">Annulla</string>
@@ -147,7 +149,14 @@
     <string name="search_label">Guarda i risultati di un amico</string>
     <string name="search_button">Cerca</string>
     <!-- Intro -->
-    <string name="title_intro">Titolo Intro</string>
-    <string name="description_intro">Descrizione/nlunga</string>
+    <string name="title_intro_1">Studia e lavora meglio!</string>
+    <string name="description_intro_1">Fissando tempi di studio e di pausa prima di inziare potrai essere
+    più efficiente e produttivo!</string>
+    <string name="title_intro_2">Pomodoro o custom?</string>
+    <string name="description_intro_2">Puoi usare la tecnica "Pomodoro", con timer fissi da 25 minuti oppure
+        scegliere te il tempo di lavoro, nella modalità Personalizzata</string>
+    <string name="title_intro_3">Visualizza e condividi</string>
+    <string name="description_intro_3">Controlla i tuoi risultati con grafici e statistiche,
+        confontali con quelli dei tuoi amici online!</string>
 
 </resources>

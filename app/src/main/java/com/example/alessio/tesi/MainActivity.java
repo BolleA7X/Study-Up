@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView currentSubject;
     private boolean isOn;
     String[] sessionData;
+    private int pause;
     //questa è per capire se la subj è settata o no
     public boolean go;
     CountDownTimer cTimer = null;
@@ -119,10 +120,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 SharedPreferences pr = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                boolean isFirstStart = pr.getBoolean("firstStart", true);
+                boolean logged = prefs.getBoolean("logged",false);
 
                 //  If the activity has never started before...
-                if (isFirstStart) {
+                if (!logged) {
                     //  Launch app intro
                     final Intent i = new Intent(getApplicationContext(), IntroActivity.class);
 
@@ -179,10 +180,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
        //vedo se devo loggare
-       boolean logged = prefs.getBoolean("logged",false);
+       /*boolean logged = prefs.getBoolean("logged",false);
 
         if(!logged)
-            firstOpening();
+            firstOpening();*/
 
         //Ottengo la data di oggi
         Calendar calendar = Calendar.getInstance();
@@ -274,6 +275,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onPause() {
+
         super.onPause();
     }
 
@@ -284,7 +286,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onResume() {
+
         super.onResume();
+
     }
 
     @Override
@@ -295,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     stop();
                 } else {
                     if(go){
-                        start();
+                        start(0);
                     }else{
                         FirstErrorToast();
                     }
@@ -314,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toast.show();
     }
 
-    private void start(){
+    private void start(int pause){
         final AppDB db = new AppDB(this);
         final SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("timeVal", timeVal);
@@ -334,7 +338,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         isOn = true;
         startTimerButton.setImageResource(stop);
         secTimer = 60;
-        int mytime = (timeVal*5)*60*1000; //secondi
+        int mytime;
+        if(pause==0){
+            mytime = (timeVal*5)*60*1000; //secondi
+        }else{
+            mytime = pause;
+        }
+
         seekBar.setEnabled(false);
         fab.setClickable(false);
         fab.setVisibility(View.INVISIBLE);

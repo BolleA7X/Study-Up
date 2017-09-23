@@ -20,7 +20,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginStart="30dp"
-        android:hint="@string/add_subject"
+        android:hint="@string/ex_subject"
         android:inputType="text" />
 
 </RelativeLayout>
