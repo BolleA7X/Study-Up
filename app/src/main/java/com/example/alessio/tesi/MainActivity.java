@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 SharedPreferences pr = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                boolean logged = prefs.getBoolean("logged",false);
+                boolean logged = pr.getBoolean("logged",false);
 
                 //  If the activity has never started before...
                 if (!logged) {
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             startActivityForResult(i,0);
                         }
                     });
-                    SharedPreferences.Editor e = prefs.edit();
+                    SharedPreferences.Editor e = pr.edit();
                     e.putBoolean("firstStart", false);
                     e.apply();
                 }

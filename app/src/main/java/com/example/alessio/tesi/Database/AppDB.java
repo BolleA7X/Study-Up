@@ -74,7 +74,7 @@ public class AppDB {
 
     //database constants
     public static final String DB_NAME = "appDB.db";
-    public static final int DB_VERSION = 10;
+    public static final int DB_VERSION = 11;
 
     //session constants
     public static final String SESSION_TABLE = "session";
@@ -177,7 +177,8 @@ public class AppDB {
 
     public static final String CREATE_COURSE_TABLE =
             "CREATE TABLE " + COURSE_TABLE + " ( " +
-                    COURSE_NAME + " TEXT PRIMARY KEY);";
+                    COURSE_NAME + " TEXT PRIMARY KEY, " +
+                    COURSE_USER + " TEXT);";
 
     public static final String CREATE_TROPHY_TABLE =
             "CREATE TABLE " + TROPHY_TABLE + " ( " +
@@ -320,7 +321,7 @@ public class AppDB {
         ArrayList<PieEntry> entries = new ArrayList<>();
         this.openReadableDB();
         String[] args = new String[] {"SUM("+SESSION_DURATION+")"};
-        String where = SESSION_USER + "= ";
+        String where = SESSION_USER + "= ?";
         String[] whereArgs = {user};
         //1) ottengo la somma delle durate totali dell'utente loggato
         Cursor cursor = db.query(SESSION_TABLE,args,where,whereArgs,null,null,null);
@@ -611,7 +612,7 @@ public class AppDB {
     public int differentCourses(Calendar calendar,String user) {
         this.openReadableDB();
         String[] args = {"COUNT(DISTINCT "+SESSION_COURSE_NAME+")"};
-        String where = SESSION_DAY+"= ? AND "+SESSION_MONTH+"= ? AND "+SESSION_YEAR+"= ?"+SESSION_USER+"= ?";
+        String where = SESSION_DAY+"= ? AND "+SESSION_MONTH+"= ? AND "+SESSION_YEAR+"= ? AND "+SESSION_USER+"= ?";
         String[] whereArgs = {String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)),String.valueOf(calendar.get(Calendar.MONTH)),
                               String.valueOf(calendar.get(Calendar.YEAR)),user};
         Cursor cursor = db.query(SESSION_TABLE,args,where,whereArgs,null,null,null);
