@@ -295,7 +295,7 @@ public class AppDB {
         Cursor cursor = db.query(LOCATION_TABLE,args,null,null,null,null,null);
         ArrayList<String> locations = new ArrayList<String>();
         while(cursor.moveToNext())
-            locations.add(cursor.getString(cursor.getColumnIndex(COURSE_NAME)));
+            locations.add(cursor.getString(cursor.getColumnIndex(LOCATION_NAME)));
         if(cursor != null)
             cursor.close();
         this.closeDB();
