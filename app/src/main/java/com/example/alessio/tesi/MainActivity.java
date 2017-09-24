@@ -421,6 +421,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"19",Toast.LENGTH_LONG);
                     t.show();
                 }
+
+                // SBLOCCO TROFEO 17
+                if (trophies[16].getUnlocked() == 0 && db.getLocationsCount() == 5){
+                    db.unlockTrophy(17);
+                    trophies[16].setUnlocked(1);
+                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"17",Toast.LENGTH_LONG);
+                    t.show();
+                }
             }
         };
         cTimer.start();
