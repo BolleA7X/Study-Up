@@ -65,8 +65,13 @@ public class ResultsActivity extends AppCompatActivity {
         mostFrequentLocation = (TextView)findViewById(R.id.mostFrequentLocationTextView);
         mostFrequentLocationLabel = (TextView)findViewById(R.id.mostFrequentLocationLabel);
         String place = db.getMostFrequentLocation();
-        if(place != null)
-            mostFrequentLocationLabel.setText(place);
+        if(place != null) {
+            if (!place.equals(""))
+                mostFrequentLocationLabel.setText(place);
+            else
+                mostFrequentLocation.setText(this.getResources().getString(R.string.noData));
+        }
+
 
         totalTime = (TextView)findViewById(R.id.totalTimeLabel);
         int time = db.getTotalTime(user);

@@ -498,7 +498,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Boolean th = prefs.getBoolean("th", false);
         Boolean ex = prefs.getBoolean("ex", false);
         Boolean pr = prefs.getBoolean("pr", false);
-        String loc = prefs.getString("loc", this.getResources().getString(R.string.noData));
+        String loc = prefs.getString("loc", "");
         Calendar calendar = Calendar.getInstance();
 
         Session session = new Session(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH),

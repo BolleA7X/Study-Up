@@ -655,6 +655,22 @@ public class AppDB {
         return result;
     }
 
+    //trofeo 17: numero di posti diversi in cui è stata svolta almeno una sessione
+    //ritorna il numero di posti diversi dalla tabella delle sessioni
+    public int getLocationsCount() {
+        this.openReadableDB();
+        String[] args = {SESSION_LOCATION_NAME};
+        String where = SESSION_LOCATION_NAME + "<> ?";
+        String[] whereArgs = {""};
+        String group = SESSION_LOCATION_NAME;
+        Cursor cursor = db.query(SESSION_TABLE,args,where,whereArgs,group,null,null);
+        int result = cursor.getCount();
+        if(cursor != null)
+            cursor.close();
+        this.closeDB();
+        return result;
+    }
+
     //trofeo 20: PLATINO!!!
     //ritorna true se il numero di trofei sbloccati è 19, false altrimenti
     //questo andrebbe chiamato ogni volta si sblocca un trofeo ma può risultare pesante
