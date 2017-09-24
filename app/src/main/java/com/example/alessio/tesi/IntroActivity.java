@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
+import com.example.alessio.tesi.Database.AppDB;
+import com.example.alessio.tesi.Database.Trophy;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntro2Fragment;
 import com.github.paolorotolo.appintro.AppIntroFragment;
@@ -58,6 +61,15 @@ public class IntroActivity extends AppIntro {
     @Override
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
+        // SBLOCCO TROFEO 1
+        // Eseguo solo la prima volta che apro l'app
+        AppDB db = new AppDB(this);
+        Trophy[] trophies = db.getTrophies();
+        if(trophies[0].getUnlocked() == 0){
+            db.unlockTrophy(1);
+            Toast t = Toast.makeText(this, this.getResources().getString(R.string.unlockTrophy)+"1",Toast.LENGTH_LONG);
+            t.show();
+        }
         launchMain();
     }
 

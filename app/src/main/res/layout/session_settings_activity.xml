@@ -97,6 +97,7 @@
         android:id="@+id/projectCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/theoryCheckBox"
         android:layout_alignStart="@+id/theoryCheckBox"
         android:layout_below="@+id/exercisesCheckBox"
         android:padding="5dp"

@@ -221,14 +221,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.putInt("lastMonth",calendar.get(Calendar.MONTH));
         editor.putInt("lastYear",calendar.get(Calendar.YEAR));
 
-        // SBLOCCO TROFEO 1
-        // Eseguo solo la prima volta che apro l'app
-        if(trophies[0].getUnlocked() == 0){
-            db.unlockTrophy(1);
-            Toast t = Toast.makeText(this, this.getResources().getString(R.string.unlockTrophy)+"1",Toast.LENGTH_LONG);
-            t.show();
-        }
-
         // SBLOCCO TROFEO 20 (PLATINO)
         //per ora l'ho messo qua, ovvero quando viene aperta l'app fa il controllo. In teoria andrebbe fatto ogni volta che
         //viene sbloccato un trofeo

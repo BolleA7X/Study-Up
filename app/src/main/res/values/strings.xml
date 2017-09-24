@@ -156,13 +156,13 @@
 
     <!-- Intro -->
     <string name="title_intro_1">Studia e lavora meglio!</string>
-    <string name="description_intro_1">Fissando tempi di studio e di pausa prima di inziare potrai essere
+    <string name="description_intro_1">Fissando tempi di studio e di pausa prima di iniziare potrai essere
     più efficiente e produttivo!</string>
     <string name="title_intro_2">Pomodoro o custom?</string>
     <string name="description_intro_2">Puoi usare la tecnica "Pomodoro", con timer fissi da 25 minuti oppure
-        scegliere te il tempo di lavoro, nella modalità Personalizzata</string>
+        scegliere te il tempo di lavoro, nella modalità Personalizzata!</string>
     <string name="title_intro_3">Visualizza e condividi</string>
     <string name="description_intro_3">Controlla i tuoi risultati con grafici e statistiche,
-        confontali con quelli dei tuoi amici online!</string>
+        confrontali con quelli dei tuoi amici online!</string>
 
 </resources>
