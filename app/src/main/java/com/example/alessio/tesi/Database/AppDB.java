@@ -74,7 +74,7 @@ public class AppDB {
 
     //database constants
     public static final String DB_NAME = "appDB.db";
-    public static final int DB_VERSION = 11;
+    public static final int DB_VERSION = 12;
 
     //session constants
     public static final String SESSION_TABLE = "session";
@@ -127,11 +127,14 @@ public class AppDB {
     //course constants
     public static final String COURSE_TABLE = "course";
 
-    public static final String COURSE_NAME = "_name";
-    public static final int COURSE_NAME_COL = 1;
+    public static final String COURSE_ID = "_id";
+    public static final int COURSE_ID_COL = 1;
+
+    public static final String COURSE_NAME = "name";
+    public static final int COURSE_NAME_COL = 2;
 
     public static final String COURSE_USER = "user";
-    public static final int COURSE_USER_COL = 2;
+    public static final int COURSE_USER_COL = 3;
 
     //trophy constants
     public static final String TROPHY_TABLE = "trophy";
@@ -177,7 +180,8 @@ public class AppDB {
 
     public static final String CREATE_COURSE_TABLE =
             "CREATE TABLE " + COURSE_TABLE + " ( " +
-                    COURSE_NAME + " TEXT PRIMARY KEY, " +
+                    COURSE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COURSE_NAME + " TEXT, " +
                     COURSE_USER + " TEXT);";
 
     public static final String CREATE_TROPHY_TABLE =
@@ -579,11 +583,56 @@ public class AppDB {
         return rowCount;
     }
 
+    public boolean searchUser(String user) {
+        this.openReadableDB();
+        String[] args = {"*"};
+        String where = USER_ID+"= ?";
+        String[] whereArgs = {user};
+        Cursor cursor = db.query(USER_TABLE,args,where,whereArgs,null,null,null);
+        boolean result;
+        if(cursor.getCount() == 0)
+            result = false;
+        else
+            result = true;
+        if(cursor != null)
+            cursor.close();
+        this.closeDB();
+        return result;
+    }
+
+    public boolean searchCourse(String user,String course) {
+        this.openReadableDB();
+        String[] args = {"*"};
+        String where = COURSE_NAME+"= ? AND "+COURSE_USER+"= ?";
+        String[] whereArgs = {course,user};
+        Cursor cursor = db.query(COURSE_TABLE,args,where,whereArgs,null,null,null);
+        boolean result;
+        if(cursor.getCount() == 0)
+            result = false;
+        else
+            result = true;
+        if(cursor != null)
+            cursor.close();
+        this.closeDB();
+        return result;
+    }
+
+    public void deleteUserSessions(String user) {
+        this.openWriteableDB();
+        String where = SESSION_USER+"= ?";
+        String[] whereArgs = {user};
+        db.delete(SESSION_TABLE,where,whereArgs);
+        this.closeDB();
+    }
+
     public void deleteAll(String user) {
         this.openWriteableDB();
+        String where = COURSE_USER+"= ?";
         String[] whereArgs = {user};
-        db.rawQuery("DELETE FROM "+SESSION_TABLE+" WHERE "+SESSION_USER+"= ?",whereArgs);
-        db.rawQuery("DELETE FROM "+COURSE_TABLE+" WHERE "+COURSE_USER+"= ?",whereArgs);
+        deleteUserSessions(user);
+        if(!db.isOpen())
+            this.openWriteableDB();
+        db.delete(COURSE_TABLE,where,whereArgs);
         this.closeDB();
     }
 
@@ -725,5 +774,18 @@ public class AppDB {
         int rowCount = db.update(USER_TABLE,cv,where,whereArgs);
         this.closeDB();
         return rowCount;
+    }
+
+    //query per ottenere l'indice più alto nella tabella delle sessioni
+    public int getMaxLocalIndex() {
+        this.openReadableDB();
+        String[] args = {"MAX("+SESSION_ID+")"};
+        Cursor cursor = db.query(SESSION_TABLE,args,null,null,null,null,null);
+        cursor.moveToFirst();
+        int result = cursor.getInt(0);
+        if(cursor != null)
+            cursor.close();
+        this.closeDB();
+        return result;
     }
 }

@@ -69,7 +69,7 @@ public class ResultsActivity extends AppCompatActivity {
             if (!place.equals(""))
                 mostFrequentLocationLabel.setText(place);
             else
-                mostFrequentLocation.setText(this.getResources().getString(R.string.noData));
+                mostFrequentLocationLabel.setText(this.getResources().getString(R.string.noData));
         }
 
 

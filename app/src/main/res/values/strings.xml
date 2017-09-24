@@ -146,8 +146,14 @@
     <string name="unknownUser">Utente non trovato</string>
     <string name="syncUpLabel">Condividi risultati</string>
     <string name="alreadySynced">Dati già sincronizzati</string>
+    <string name="noDataToGet">Nessun dato da ottenere dal server</string>
     <string name="search_label">Guarda i risultati di un amico</string>
     <string name="search_button">Cerca</string>
+    <string name="syncDownLabel">Scarica i tuoi risultati</string>
+    <string name="wait">Attendere...</string>
+    <string name="syncComplete">Sincronizzazione completata</string>
+    <string name="syncWarning">Tutti i dati non condivisi verranno persi</string>
+
     <!-- Intro -->
     <string name="title_intro_1">Studia e lavora meglio!</string>
     <string name="description_intro_1">Fissando tempi di studio e di pausa prima di inziare potrai essere

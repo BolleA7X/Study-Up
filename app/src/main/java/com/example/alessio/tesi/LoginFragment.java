@@ -206,6 +206,7 @@ public class LoginFragment  extends DialogFragment {
 
         @Override
         protected void onPostExecute(Void result) {
+            AppDB db = new AppDB(frg.getActivity());
             String message;
             try {
                 if (response != null)
@@ -219,6 +220,10 @@ public class LoginFragment  extends DialogFragment {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putBoolean("logged", true).commit();
                     editor.putString("loggedAs", username).commit();
+                    if(!db.searchUser(username)) {
+                        db.insertUser(username);
+                        Log.d("nuovo utente","inserito in login");
+                    }
                     getActivity().getFragmentManager().beginTransaction().remove(frg).commit();
                 }
                 //se login fallito

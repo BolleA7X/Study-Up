@@ -46,6 +46,14 @@
         android:title="@string/syncUpLabel" />
 
     <ListPreference
+        android:id="@+id/syncDown_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:key="syncDown_button"
+        android:title="@string/syncDownLabel"
+        android:summary="@string/syncWarning" />
+
+    <ListPreference
         android:id="@+id/logout_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
