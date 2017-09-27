@@ -1,6 +1,7 @@
 package com.example.alessio.tesi;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -43,8 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean pomodoroMode;
     private int stop = R.drawable.only_stop1_pomodoro_seeds;
     private int start = R.drawable.only_play_pomodoro_seeds;
-    //valore della seekbar che poi andrà moltiplicato per 5
-    private int timeVal;
+    private int timeVal;   //valore della seekbar che poi andrà moltiplicato per 5
     private int secTimer = 60;
     private TextView minuteValue;
     private TextView secondValue;
@@ -53,12 +53,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView currentSubject;
     private boolean isOn;
     String[] sessionData;
-    private int pause;
-    //questa è per capire se la subj è settata o no
-    public boolean go;
+    public boolean go;    //questa è per capire se la subj è settata o no
     CountDownTimer cTimer = null;
-    //per avere i trofei a disposizione in tutti i metodi
-    private Trophy[] trophies;
+    long lastPress;
+    private Trophy[] trophies;   //per avere i trofei a disposizione in tutti i metodi
     private FragmentManager fSm;
 
 
@@ -72,9 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // Handle action bar item clicks here.
         int id = item.getItemId();
         Fragment fragment;
         FragmentManager fragmentManager;
@@ -112,10 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /***********************************/
         //controlla se l'app è stata già aperta
-        // uso questo metodo, che sembra essere più bellino dell'altro
-        // anche se in pratica sono uguali*/
         tr = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -142,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         // Start the thread
         tr.start();
-        /*********************************************************************/
         // get references to widgets
         startTimerButton = (ImageButton)findViewById(R.id.startTimerButton);
         minuteValue = (TextView)findViewById(R.id.minuteValue);
@@ -153,10 +145,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // set listeners
         startTimerButton.setOnClickListener(this);
         seekBar.setOnSeekBarChangeListener(seekBarListener);
-
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        //pomodoroMode = prefs.getBoolean("pomodoro",true);
-        timeVal = prefs.getInt("timeVal",12);
 
         //Metti il corso nella textview
         updateTimer(false);
@@ -169,21 +157,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),SessionSettingsActivity.class);
-                /*
-                putExtra mette informazione extra nell'intent. Una volta che viene aperta la nuova activity è possibile usare
-                l'intent per passare informazioni tra le due activity. Il metodo startActivityForResult serve proprio per fare in
-                modo che la seconda activity possa dare risultati e passarli all prima
-                 */
                 intent.putExtra("dataToPass","");
                 startActivityForResult(intent,0);
             }
         });
-
-       //vedo se devo loggare
-       /*boolean logged = prefs.getBoolean("logged",false);
-
-        if(!logged)
-            firstOpening();*/
 
         //Ottengo la data di oggi
         Calendar calendar = Calendar.getInstance();
@@ -220,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.putInt("lastDay",calendar.get(Calendar.DAY_OF_MONTH));
         editor.putInt("lastMonth",calendar.get(Calendar.MONTH));
         editor.putInt("lastYear",calendar.get(Calendar.YEAR));
-
+        editor.apply();
         // SBLOCCO TROFEO 20 (PLATINO)
         //per ora l'ho messo qua, ovvero quando viene aperta l'app fa il controllo. In teoria andrebbe fatto ogni volta che
         //viene sbloccato un trofeo
@@ -231,11 +208,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 t.show();
             }
         }
-
     }
-
-    //questo metodo viene chiamato quando la seconda activity viene chiusa e passa i risultati a questa tramite la putExtra()
-    //nell'intent. Questi dati vengono prelevati dall'intent tramite getStringArrayExtra() e messi in "sessionData".
+    //Controlla i risultati delle activity, i valori ritornati
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
@@ -267,10 +241,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onPause() {
-
+        //TODO fare thread?
+        if (isOn) {
+            stop();
+        }
         super.onPause();
     }
+    @Override
+    public void onBackPressed() {
+        int count = getFragmentManager().getBackStackEntryCount();
 
+        if (count == 0) {
+
+            Toast backpressToast =Toast.makeText(getBaseContext(), R.string.back_confirm, Toast.LENGTH_LONG);
+            long currentTime = System.currentTimeMillis();
+            if(currentTime - lastPress > 5000){
+                backpressToast.show();
+                lastPress = currentTime;
+            } else {
+                if (backpressToast != null) backpressToast.cancel();
+                super.onBackPressed();
+            }
+        } else {
+            getFragmentManager().popBackStack();
+        }
+
+    }
     @Override
     protected void onStop(){
         super.onStop();
@@ -280,7 +276,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
 
         super.onResume();
-
     }
 
     @Override
@@ -288,10 +283,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.startTimerButton:
                 if (isOn) {
-                    stop();
+                    DialogStop();
                 } else {
                     if(go){
-                        start(0);
+                        start();
                     }else{
                         FirstErrorToast();
                     }
@@ -303,14 +298,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Funzione che manda il toast se non ho ancora messo sessione e corso
     private void FirstErrorToast(){
         Context context = getApplicationContext();
-        CharSequence text = this.getResources().getString(R.string.noSessionData);;
+        CharSequence text = this.getResources().getString(R.string.noSessionData);
         int duration = Toast.LENGTH_LONG;
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
 
-    private void start(int pause){
+    private void start(){
         final AppDB db = new AppDB(this);
         final SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("timeVal", timeVal);
@@ -331,11 +326,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startTimerButton.setImageResource(stop);
         secTimer = 60;
         int mytime;
-        if(pause==0){
-            mytime = (timeVal*5)*60*1000; //secondi
-        }else{
-            mytime = pause;
-        }
+        mytime = (timeVal*5)*60*1000; //secondi
+
 
         seekBar.setEnabled(false);
         fab.setClickable(false);
@@ -433,9 +425,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
         cTimer.start();
     }
+    //Per il dialog di conferma
+    private void DialogStop(){
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean confirm = prefs.getBoolean("ConfirmOnExit",true);
+        if(confirm){
+            ConfirmOnExit ConfirmOnExitFragment = new ConfirmOnExit ();
+            FragmentManager fSm = getFragmentManager();
+            ConfirmOnExitFragment.setCancelable(false);
+            ConfirmOnExitFragment.show(fSm, "Confirm Fragment");
+        }else{
+            stop();
+        }
+    }
     //se il timer viene stoppato prima della fine salvo la sessione passando la durata totale - la durata rimasta
-    private void stop(){
+    public void stop(){
         secondValue.setVisibility(View.INVISIBLE);
         startTimerButton.setImageResource(start);
         isOn = false;
@@ -636,6 +641,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
+
     private void firstOpening(){
         LoginFragment loginFragment = new LoginFragment();
         fSm = getFragmentManager();

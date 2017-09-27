@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
     android:id="@+id/sessionSettingsActivity">
 
     <fragment
@@ -56,7 +57,8 @@
         android:layout_alignStart="@+id/subjectsSpinner"
         android:layout_alignTop="@+id/locationLabel"
         android:padding="5dp"
-        android:layout_toStartOf="@+id/viewLocationButton" />
+        android:layout_toStartOf="@+id/viewLocationButton"
+        android:layout_toLeftOf="@+id/viewLocationButton"/>
 
     <TextView
         android:id="@+id/StudyTypeLabel"

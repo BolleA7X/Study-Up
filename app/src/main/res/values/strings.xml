@@ -39,6 +39,11 @@
     <string name="close_button_content">Bottone per chiudere mappa</string>
     <string name="map_button_content">Bottone per aprire mappa</string>
 
+    <string name="confirm_exit_label">Non mostrare più</string>
+    <string name="confirm_message">Sicuro di voler fermare il timer? I tempi non saranno salvati</string>
+    <string name="confirm_title">Attenzione!</string>
+
+
     <string name="trophy_title_01">Fuori il primo! E gli altri?</string>
     <string name="trophy_title_02">Splash!</string>
     <string name="trophy_title_03">Pentasplash!</string>
@@ -84,6 +89,7 @@
     <!-- Toast -->
     <string name="first_error_toast">Devi selezionare corso e tipo della sessione!</string>
     <string name="empty_insert_error_toast">Inserisci un nome</string>
+    <string name="back_confirm">Premi di nuovo indietro per uscire</string>
 
     <string name="gps_is_off">Il gps è disattivato, vuoi disattivarlo?</string>
     <string name="go_to_sett">Vai alle impostazioni</string>

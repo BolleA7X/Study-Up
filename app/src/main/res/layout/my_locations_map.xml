@@ -15,7 +15,7 @@
         android:layout_margin="20dp"
         android:background="@android:color/transparent"
         android:contentDescription="@string/close_button_content"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+        app:srcCompat="@drawable/close_small" />
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"

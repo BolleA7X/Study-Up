@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import com.example.alessio.tesi.Database.AppDB;
 
+import static com.example.alessio.tesi.R.layout.session_settings_activity;
+
 public class SessionSettingsActivity extends AppCompatActivity implements View.OnClickListener{
     private SharedPreferences prefs;
     private Button endedConfig;
@@ -36,7 +38,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.session_settings_activity);
+        setContentView(session_settings_activity);
 
         endedConfig = (Button) findViewById(R.id.endedConfig);
         endedConfig.setOnClickListener(this);
@@ -170,6 +172,7 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
                 break;
             //Bottone aggiunta location
             case R.id.addLocationButton:
+
                 MapViewFragment mapFragment = new MapViewFragment();
                 FragmentManager fLm = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fLm.beginTransaction();

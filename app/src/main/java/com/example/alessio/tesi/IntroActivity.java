@@ -21,20 +21,18 @@ public class IntroActivity extends AppIntro {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Note here that we DO NOT use setContentView();
-
-        // Slide custom
+        // Se voglio usare slide custom in dei fragments
         /*addSlide(firstFragment);
         addSlide(secondFragment);
         addSlide(thirdFragment);
         addSlide(fourthFragment);*/
 
-        // Instead of fragments, you can also use our default slide
-        // Just set a title, description, background and image. AppIntro will do the rest.
+        // Se invece uso le slide di default
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.title_intro_1), getString(R.string.description_intro_1), R.drawable.icon_yellow, Color.parseColor("#3F51B5")));
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.title_intro_2), getString(R.string.description_intro_2), R.drawable.pom_custom_icon, Color.parseColor("#3F51B5")));
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.title_intro_3), getString(R.string.description_intro_3), R.drawable.graphic_icon, Color.parseColor("#3F51B5")));
-        // OPTIONAL METHODS
+
+        // METODI ADDIZIONALI
         // Override bar/separator color.
         setBarColor(Color.parseColor("#3F51B5"));
         setSeparatorColor(Color.parseColor("#2196F3"));
@@ -44,7 +42,7 @@ public class IntroActivity extends AppIntro {
         setProgressButtonEnabled(true);
 
         setFadeAnimation();
-        //askForPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 3);
+        askForPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 3);
 
         // Turn vibration on and set intensity.
         // NOTE: you will probably need to ask VIBRATE permission in Manifest.
