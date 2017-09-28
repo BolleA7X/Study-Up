@@ -30,11 +30,7 @@ public class MyLocationsFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.my_locations_map, container, false);
 
-       /* int color = ContextCompat.getColor(getActivity(), android.R.color.white);
-        rootView.setBackgroundColor(color);*/
-
         LocName = getArguments().getString("LocName");
-
         closeButton =(ImageButton) rootView.findViewById(R.id.closeButton);
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
 
@@ -65,18 +61,15 @@ public class MyLocationsFragment extends Fragment{
 
                 // For showing a move to my location button
                 //googleMap.setMyLocationEnabled(true);
-
                 // For dropping a marker at a point on the Map
                 //LatLng opPia = new LatLng(44.402880, 8.958766);
                 LatLng myLoc = new LatLng(coord[0], coord[1]);
-
 
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(myLoc).zoom(12).build();
                 mark = googleMap.addMarker(new MarkerOptions().position(myLoc)
                         .title(LocName));
                 mark.setTag(0);
-
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });

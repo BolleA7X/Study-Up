@@ -5,15 +5,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,14 +32,9 @@ public class LoginFragment  extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         frg = this;
-        // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Get the layout inflater.
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view;
-
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
         builder.setView(view = inflater.inflate(R.layout.login_fragment, null));
 
         logText = (EditText)view.findViewById(R.id.newLog);
@@ -169,7 +161,7 @@ public class LoginFragment  extends DialogFragment {
                 //3) interpretazione della risposta
                 //se risposta positiva
                 if (message.equals("ok")) {
-                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(frg.getActivity());
+                    prefs = PreferenceManager.getDefaultSharedPreferences(frg.getActivity());
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putBoolean("logged", true);
                     editor.putString("loggedAs", username);

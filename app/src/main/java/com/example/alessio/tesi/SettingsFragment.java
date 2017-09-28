@@ -28,8 +28,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static android.content.Context.MODE_PRIVATE;
-
 public class SettingsFragment extends PreferenceFragment {
 
     ListPreference deleteCourse, deleteLocation, deleteAll, syncUp, syncDown, logout;
@@ -65,7 +63,6 @@ public class SettingsFragment extends PreferenceFragment {
         checkPomodoro = (CheckBoxPreference)findPreference("use_pomodoro_mode");
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        editor = prefs.edit();
         user = prefs.getString("loggedAs","");
 
        checkPomodoro.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {

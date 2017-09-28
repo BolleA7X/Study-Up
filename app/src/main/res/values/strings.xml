@@ -42,7 +42,8 @@
     <string name="confirm_exit_label">Non mostrare più</string>
     <string name="confirm_message">Sicuro di voler fermare il timer? I tempi non saranno salvati</string>
     <string name="confirm_title">Attenzione!</string>
-
+    <string name="go_on_negative">Interrompi</string>
+    <string name="go_on_positive">Continua il timer</string>
 
     <string name="trophy_title_01">Fuori il primo! E gli altri?</string>
     <string name="trophy_title_02">Splash!</string>

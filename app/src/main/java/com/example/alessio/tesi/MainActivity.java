@@ -1,7 +1,6 @@
 package com.example.alessio.tesi;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -38,7 +37,6 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Thread tr;
     private SharedPreferences prefs;
     private FloatingActionButton fab;
     private boolean pomodoroMode;
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     CountDownTimer cTimer = null;
     long lastPress;
     private Trophy[] trophies;   //per avere i trofei a disposizione in tutti i metodi
-    private FragmentManager fSm;
+    private FragmentManager fragmentManager;
 
 
     //Menu
@@ -73,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Handle action bar item clicks here.
         int id = item.getItemId();
         Fragment fragment;
-        FragmentManager fragmentManager;
         FragmentTransaction fragmentTransaction;
         Intent intent;
 
@@ -107,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Thread tr;
         //controlla se l'app è stata già aperta
         tr = new Thread(new Runnable() {
             @Override
@@ -557,8 +554,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String currentSub = prefs.getString("subj", null);
         pomodoroMode = prefs.getBoolean("pomodoro", true);
-        /*Toast t = Toast.makeText(this, Boolean.toString(pomodoroMode),Toast.LENGTH_LONG);
-        t.show();*/
+
         if(currentSub!= null && !currentSub.isEmpty() ){
             currentSubject.setText(currentSub);
             go = true;
@@ -644,8 +640,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void firstOpening(){
         LoginFragment loginFragment = new LoginFragment();
-        fSm = getFragmentManager();
+        fragmentManager = getFragmentManager();
         loginFragment.setCancelable(false);
-        loginFragment.show(fSm, "Sample Fragment");
+        loginFragment.show(fragmentManager, "Sample Fragment");
     }
 }

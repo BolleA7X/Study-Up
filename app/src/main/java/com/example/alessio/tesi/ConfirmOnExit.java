@@ -28,7 +28,7 @@ public class ConfirmOnExit  extends DialogFragment {
 
         builder.setMessage(R.string.confirm_message)
                 .setTitle(R.string.confirm_title)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.go_on_negative, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         ((MainActivity)getActivity()).stop();
                         if(ch.isChecked()){
@@ -37,6 +37,11 @@ public class ConfirmOnExit  extends DialogFragment {
                             editor.putBoolean("ConfirmOnExit", false);
                             editor.apply();
                         }
+                    }
+                })
+                .setNegativeButton(R.string.go_on_positive, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
                     }
                 });
 

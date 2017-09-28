@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.example.alessio.tesi.Database.AppDB;
 import com.example.alessio.tesi.Database.Course;
 
-//classe che crea il dialog ed è chiamata in SessionSettingsActivity in openDialog()
 public class setSubjectFragment extends DialogFragment  {
 
     private EditText subject;
@@ -25,15 +24,12 @@ public class setSubjectFragment extends DialogFragment  {
     @Override
     public void onDismiss(DialogInterface dialogInterface) {
         ((SessionSettingsActivity)getActivity()).updateSpinner();
-        // PROVA: setRetainInstance(false);
     }
 
-    //TODO terminare errore setRetainInstance(true) rotazione modalità landscape
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Get the layout inflater.
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view;
 
@@ -66,20 +62,10 @@ public class setSubjectFragment extends DialogFragment  {
                 })
                .setNegativeButton(R.string.abort_label, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // PROVA: setRetainInstance(false);
                     }
                 });
         setRetainInstance(true);
-        // Create the AlertDialog object and return it
         return builder.create();
-    }
-
-    @Override
-    public void onDestroyView() {
-        if (getDialog() != null && getRetainInstance())
-            getDialog().setDismissMessage(null);
-        // PROVA: else if(getDialog() != null && getRetainInstance() == false)getDialog().dismiss();
-        super.onDestroyView();
     }
 
 }

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
@@ -14,18 +13,14 @@ import com.example.alessio.tesi.Database.AppDB;
 import com.example.alessio.tesi.Database.Trophy;
 import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntro2Fragment;
-import com.github.paolorotolo.appintro.AppIntroFragment;
+
 
 public class IntroActivity extends AppIntro {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // Se voglio usare slide custom in dei fragments
-        /*addSlide(firstFragment);
-        addSlide(secondFragment);
-        addSlide(thirdFragment);
-        addSlide(fourthFragment);*/
+        //addSlide(firstFragment);
 
         // Se invece uso le slide di default
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.title_intro_1), getString(R.string.description_intro_1), R.drawable.icon_yellow, Color.parseColor("#3F51B5")));
@@ -45,7 +40,6 @@ public class IntroActivity extends AppIntro {
         askForPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 3);
 
         // Turn vibration on and set intensity.
-        // NOTE: you will probably need to ask VIBRATE permission in Manifest.
         setVibrate(true);
         setVibrateIntensity(30);
     }

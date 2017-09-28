@@ -6,7 +6,6 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -55,7 +54,6 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
 
         //Shared per i checkbox
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        //SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         Boolean th = prefs.getBoolean("th", false);
         Boolean ex = prefs.getBoolean("ex", false);
         Boolean pr = prefs.getBoolean("pr", false);
@@ -103,7 +101,6 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         return true;
     }
 
-    //TODO il menu ora come ora non funziona in questa activity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -220,8 +217,8 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
         try {
             loc = locationSpinner.getSelectedItem().toString();
         }
-
         catch (Exception exc) {
+
         }
 
         if(loc !=null && !loc.isEmpty()){
