@@ -215,6 +215,8 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if(newValue.toString().equals("true")) {
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    SharedPreferences.Editor editor = sharedPref.edit();
                     logout.setDefaultValue("false");
                     editor.putBoolean("logged", false);
                     editor.putString("loggedAs", "");
