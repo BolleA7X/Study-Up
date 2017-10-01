@@ -511,15 +511,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             db.insertSession(session,prefs.getString("loggedAs",""));         //eseguo query per inserire nel db i dati
 
         // SBLOCCO TROFEI 7 - 8
-        if(trophies[6].getUnlocked() == 0 || trophies[7].getUnlocked() == 0) {
-            int differentCourses = db.differentCourses(calendar,prefs.getString("loggedAs",""));
-            if(differentCourses == 2) {
+        int differentCourses = db.differentCourses(calendar,prefs.getString("loggedAs",""));
+        if(trophies[6].getUnlocked() == 0) {
+            if(differentCourses >= 2) {
                 db.unlockTrophy(7);
                 trophies[6].setUnlocked(1);
                 Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"7",Toast.LENGTH_LONG);
                 t.show();
             }
-            else if(differentCourses > 2) {
+        }
+        if(trophies[7].getUnlocked() == 0) {
+            if(differentCourses >= 3) {
                 db.unlockTrophy(8);
                 trophies[7].setUnlocked(1);
                 Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"8",Toast.LENGTH_LONG);
@@ -576,6 +578,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(reset){
                 timeVal = 12;
             }
+            else
+                timeVal = prefs.getInt("timeVal",12);
             minuteValue.setText(String.valueOf(timeVal*5));
             seekBar.setProgress(timeVal);
             secondValue.setText(R.string.seconds_value);
