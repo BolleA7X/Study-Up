@@ -110,10 +110,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 SharedPreferences pr = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                boolean logged = pr.getBoolean("logged",false);
+                boolean firstStart = pr.getBoolean("firstStart",false);
 
                 //  If the activity has never started before...
-                if (!logged) {
+                if (!firstStart) {
                     //  Launch app intro
                     final Intent i = new Intent(getApplicationContext(), IntroActivity.class);
 
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     });
                     SharedPreferences.Editor e = pr.edit();
-                    e.putBoolean("firstStart", false);
+                    e.putBoolean("firstStart", true);
                     e.apply();
                 }
             }
@@ -158,6 +158,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivityForResult(intent,0);
             }
         });
+
+        if(!prefs.getBoolean("logged",false))
+            firstOpening();
 
         //Ottengo la data di oggi
         Calendar calendar = Calendar.getInstance();
@@ -226,12 +229,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 editor.putString("subj", subj);
                 editor.putString("loc", locat);
                 editor.apply();
-            }else if(data.hasExtra("Opening")){ //per i risultati da intro
+            }/*else if(data.hasExtra("Opening")){ //per i risultati da intro
                 String first = data.getStringExtra("Opening");
                 if(first.equals("firstOpening")){
                     firstOpening();
                 }
-            }
+            }*/
         }
 
     }
