@@ -40,7 +40,7 @@
     <string name="map_button_content">Bottone per aprire mappa</string>
 
     <string name="confirm_exit_label">Non mostrare più</string>
-    <string name="confirm_message">Sicuro di voler fermare il timer? I tempi non saranno salvati</string>
+    <string name="confirm_message">Sicuro di voler fermare il timer? Non passerai gli esami facendo così!</string>
     <string name="confirm_title">Attenzione!</string>
     <string name="go_on_negative">Interrompi</string>
     <string name="go_on_positive">Continua il timer</string>
