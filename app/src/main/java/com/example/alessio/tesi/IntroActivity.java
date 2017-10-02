@@ -16,6 +16,7 @@ import com.github.paolorotolo.appintro.AppIntro2Fragment;
 
 
 public class IntroActivity extends AppIntro {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,7 @@ public class IntroActivity extends AppIntro {
         super.onSkipPressed(currentFragment);
         launchMain();
     }
+
     //Quando finisci tutte le slide
     @Override
     public void onDonePressed(Fragment currentFragment) {
@@ -59,7 +61,7 @@ public class IntroActivity extends AppIntro {
         Trophy[] trophies = db.getTrophies();
         if(trophies[0].getUnlocked() == 0){
             db.unlockTrophy(1);
-            Toast t = Toast.makeText(this, this.getResources().getString(R.string.unlockTrophy)+"1",Toast.LENGTH_LONG);
+            Toast t = Toast.makeText(this, this.getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_01),Toast.LENGTH_LONG);
             t.show();
         }
         launchMain();
@@ -70,6 +72,7 @@ public class IntroActivity extends AppIntro {
         super.onSlideChanged(oldFragment, newFragment);
         // Do something when the slide changes.
     }
+
     private void launchMain(){
         Intent i = new Intent();
         i.putExtra("Opening","firstOpening");

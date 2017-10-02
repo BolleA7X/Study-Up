@@ -38,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private SharedPreferences prefs;
+    private boolean showMenu = true;
     private FloatingActionButton fab;
     private boolean pomodoroMode;
     private int stop = R.drawable.only_stop1_pomodoro_seeds;
@@ -79,9 +80,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 fragment = new TrophiesFragment();
                 fragmentManager = getFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.mainActivity, fragment);
+                fragmentTransaction.add(R.id.mainActivity, fragment, "trophiesFragment");
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+                showMenu = false;
+                invalidateOptionsMenu();    //chiama onPrepareOptionsMenu per disabilitare il menu
                 break;
             case R.id.menu_settings:
                 fragment = new SettingsFragment();
@@ -90,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 fragmentTransaction.add(R.id.mainActivity, fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+                showMenu = false;
+                invalidateOptionsMenu();    //chiama onPrepareOptionsMenu per disabilitare il menu
                 break;
             case R.id.menu_results:
                 intent = new Intent(this,ResultsActivity.class);
@@ -98,6 +103,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //ci serve per refreshare il menu e settarlo visibile solo dove vogliamo
+    @Override
+    public boolean onPrepareOptionsMenu (Menu menu) {
+        if (showMenu == false) {
+            menu.clear();
+        }
+        return true;
     }
 
     @Override
@@ -186,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         long difference = (TimeUnit.MILLISECONDS.toDays(Math.abs(calendar.getTimeInMillis() - lastUse.getTimeInMillis())));
         if(difference >= 7 && trophies[12].getUnlocked() == 0) {
             db.unlockTrophy(13);
-            Toast t = Toast.makeText(this, this.getResources().getString(R.string.unlockTrophy)+"13",Toast.LENGTH_LONG);
+            Toast t = Toast.makeText(this, this.getResources().getString(R.string.unlockTrophy)+ " " + this.getResources().getString(R.string.trophy_title_13),Toast.LENGTH_LONG);
             t.show();
         }
         //se il giorno è cambiato azzero il contatore di pomodori giornalieri
@@ -204,11 +218,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(trophies[19].getUnlocked() == 0) {
             if(db.platinum()) {
                 db.unlockTrophy(20);
-                Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"20",Toast.LENGTH_LONG);
+                Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+ " " + this.getResources().getString(R.string.trophy_title_20),Toast.LENGTH_LONG);
                 t.show();
             }
         }
     }
+
     //Controlla i risultati delle activity, i valori ritornati
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -247,6 +262,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         super.onPause();
     }
+
     @Override
     public void onBackPressed() {
         int count = getFragmentManager().getBackStackEntryCount();
@@ -263,19 +279,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 super.onBackPressed();
             }
         } else {
+            showMenu = true;    //quando viene premuto il tasto "back" faccio si che si mostri il menu perché si torna sempre nella main activity
+            invalidateOptionsMenu();
             getFragmentManager().popBackStack();
         }
 
-    }
-    @Override
-    protected void onStop(){
-        super.onStop();
-    }
-
-    @Override
-    protected void onResume() {
-
-        super.onResume();
     }
 
     @Override
@@ -317,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(pomodoroMode && trophies[11].getUnlocked() == 0) {
             db.unlockTrophy(12);
             trophies[11].setUnlocked(1);
-            Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"12",Toast.LENGTH_LONG);
+            Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_12),Toast.LENGTH_LONG);
             t.show();
         }
         editor.apply();
@@ -327,7 +335,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         secTimer = 60;
         int mytime;
         mytime = (timeVal*5)*60*1000; //secondi
-
 
         seekBar.setEnabled(false);
         fab.setClickable(false);
@@ -353,7 +360,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if(trophies[1].getUnlocked() == 0){
                         db.unlockTrophy(2);
                         trophies[1].setUnlocked(1);
-                        Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"2",Toast.LENGTH_LONG);
+                        Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_02),Toast.LENGTH_LONG);
                         t.show();
                     }
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -366,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if(consecutivelyCompletedTomatoes == 5 && trophies[2].getUnlocked() == 0){
                         db.unlockTrophy(3);
                         trophies[2].setUnlocked(1);
-                        Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"3",Toast.LENGTH_LONG);
+                        Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_03),Toast.LENGTH_LONG);
                         t.show();
                     }
 
@@ -374,7 +381,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if(dailyTomatoes == 10 && trophies[8].getUnlocked() == 0) {
                         db.unlockTrophy(9);
                         trophies[8].setUnlocked(1);
-                        Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"9",Toast.LENGTH_LONG);
+                        Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_09),Toast.LENGTH_LONG);
                         t.show();
                     }
                 }
@@ -384,19 +391,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(totalStudyTime >= 600 && totalStudyTime < 1500 && trophies[3].getUnlocked() == 0){
                     db.unlockTrophy(4);
                     trophies[3].setUnlocked(1);
-                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"4",Toast.LENGTH_LONG);
+                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_04),Toast.LENGTH_LONG);
                     t.show();
                 }
                 else if(totalStudyTime >= 1500 && totalStudyTime < 3000 && trophies[4].getUnlocked() == 0){
                     db.unlockTrophy(5);
                     trophies[4].setUnlocked(1);
-                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"5",Toast.LENGTH_LONG);
+                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_05),Toast.LENGTH_LONG);
                     t.show();
                 }
                 else if(totalStudyTime >= 3000 && trophies[5].getUnlocked() == 0){
                     db.unlockTrophy(6);
                     trophies[5].setUnlocked(1);
-                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"6",Toast.LENGTH_LONG);
+                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_06),Toast.LENGTH_LONG);
                     t.show();
                 }
 
@@ -404,13 +411,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(trophies[17].getUnlocked() == 0 && timeVal*5 >= 120) {
                     db.unlockTrophy(18);
                     trophies[17].setUnlocked(1);
-                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"18",Toast.LENGTH_LONG);
+                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_18),Toast.LENGTH_LONG);
                     t.show();
                 }
                 if(trophies[18].getUnlocked() == 0 && timeVal*5 >= 180) {
                     db.unlockTrophy(19);
                     trophies[18].setUnlocked(1);
-                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"19",Toast.LENGTH_LONG);
+                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_19),Toast.LENGTH_LONG);
                     t.show();
                 }
 
@@ -418,13 +425,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (trophies[16].getUnlocked() == 0 && db.getLocationsCount() == 5){
                     db.unlockTrophy(17);
                     trophies[16].setUnlocked(1);
-                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"17",Toast.LENGTH_LONG);
+                    Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_17),Toast.LENGTH_LONG);
                     t.show();
                 }
             }
         };
         cTimer.start();
     }
+
     //Per il dialog di conferma
     private void DialogStop(){
 
@@ -439,6 +447,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             stop();
         }
     }
+
     //se il timer viene stoppato prima della fine salvo la sessione passando la durata totale - la durata rimasta
     public void stop(){
         secondValue.setVisibility(View.INVISIBLE);
@@ -519,7 +528,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(differentCourses >= 2) {
                 db.unlockTrophy(7);
                 trophies[6].setUnlocked(1);
-                Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"7",Toast.LENGTH_LONG);
+                Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_07),Toast.LENGTH_LONG);
                 t.show();
             }
         }
@@ -527,7 +536,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(differentCourses >= 3) {
                 db.unlockTrophy(8);
                 trophies[7].setUnlocked(1);
-                Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"8",Toast.LENGTH_LONG);
+                Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_08),Toast.LENGTH_LONG);
                 t.show();
             }
         }
@@ -537,7 +546,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(db.oneMonth()) {
                 db.unlockTrophy(15);
                 trophies[14].setUnlocked(1);
-                Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"15",Toast.LENGTH_LONG);
+                Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_15),Toast.LENGTH_LONG);
                 t.show();
             }
         }
@@ -547,7 +556,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(db.numberOfSessions() >= 42) {
                 db.unlockTrophy(16);
                 trophies[15].setUnlocked(1);
-                Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+"16",Toast.LENGTH_LONG);
+                Toast t = Toast.makeText(this,this.getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_16),Toast.LENGTH_LONG);
                 t.show();
             }
         }

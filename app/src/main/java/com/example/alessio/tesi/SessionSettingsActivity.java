@@ -95,49 +95,6 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        Fragment fragment;
-        FragmentManager fragmentManager;
-        FragmentTransaction fragmentTransaction;
-
-        switch(id){
-            case R.id.menu_trophies:
-                fragment = new TrophiesFragment();
-                fragmentManager = getFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.sessionSettingsActivity, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-                break;
-            case R.id.menu_settings:
-                fragment = new SettingsFragment();
-                fragmentManager = getFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.sessionSettingsActivity, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-                break;
-            case R.id.menu_results:
-                Intent intent = new Intent(this,ResultsActivity.class);
-                startActivity(intent);
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onClick(View v) {
 
         switch (v.getId()){
@@ -169,7 +126,6 @@ public class SessionSettingsActivity extends AppCompatActivity implements View.O
                 break;
             //Bottone aggiunta location
             case R.id.addLocationButton:
-
                 MapViewFragment mapFragment = new MapViewFragment();
                 FragmentManager fLm = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fLm.beginTransaction();

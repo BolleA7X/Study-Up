@@ -133,57 +133,9 @@ public class ResultsActivity extends AppCompatActivity {
         // SBLOCCO TROFEO 14
         if(db.getTrophies()[13].getUnlocked() == 0){
             db.unlockTrophy(14);
-            Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+"14",Toast.LENGTH_LONG);
+            Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_14),Toast.LENGTH_LONG);
             t.show();
         }
-    }
-
-    //Menu
-    //IN QUESTA ACTIVITY EVITO CHE IL MENU SIA UTILIZZABILE
-    //by Alessio: ho pensato che fosse una buona idea per evitare che l'utente potesse aprire activity su activity troppe volte
-    //TODO se si decide di fare così dovremmo considerare l'idea di farlo anche nei fragment dei trofei e delle opzioni
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        Fragment fragment;
-        FragmentManager fragmentManager;
-        FragmentTransaction fragmentTransaction;
-
-        switch(id){
-            case R.id.menu_trophies:
-                fragment = new TrophiesFragment();
-                fragmentManager = getFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.resultsActivity, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-                break;
-            case R.id.menu_settings:
-                fragment = new SettingsFragment();
-                fragmentManager = getFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.resultsActivity, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-                break;
-            case R.id.menu_results:
-                Intent intent = new Intent(this,ResultsActivity.class);
-                startActivity(intent);
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private String chooseAdvice(float[] infoForAdvice) {
