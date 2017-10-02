@@ -159,9 +159,10 @@ public class SettingsFragment extends PreferenceFragment {
                     AppDB db = new AppDB(getActivity());
                     db.deleteCourse(newVal,user);
                     Toast.makeText(getActivity(),newVal+" "+getActivity().getResources().getString(R.string.deleted),Toast.LENGTH_SHORT).show();
+                    //SBLOCCO TROFEO 11
                     if(db.getTrophies()[10].getUnlocked() == 0){
                         db.unlockTrophy(11);
-                        Toast t = Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.unlockTrophy)+"11",Toast.LENGTH_LONG);
+                        Toast t = Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_11),Toast.LENGTH_LONG);
                         t.show();
                     }
                 }
