@@ -2,47 +2,47 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sessionSettingsActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
-    android:id="@+id/sessionSettingsActivity">
+    android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
 
     <fragment
-        android:name="com.example.alessio.tesi.TrophiesFragment"
         android:id="@+id/trophies_fragment"
+        android:name="com.example.alessio.tesi.TrophiesFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         tools:layout="@layout/trophies_fragment" />
 
     <TextView
         android:id="@+id/subjectLabel"
+        style="@style/SessionsSettingsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/SessionsSettingsLabel"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
         android:text="@string/subject_label" />
 
     <Spinner
         android:id="@+id/subjectsSpinner"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_alignTop="@+id/subjectLabel"
         android:layout_marginEnd="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginStart="30dp"
         android:layout_toEndOf="@+id/locationLabel"
         android:layout_toRightOf="@+id/locationLabel"
-        android:layout_alignTop="@+id/subjectLabel"
-        android:padding="5dp"/>
+        android:padding="5dp" />
 
     <TextView
         android:id="@+id/locationLabel"
+        style="@style/SessionsSettingsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/SessionsSettingsLabel"
         android:layout_alignLeft="@+id/subjectLabel"
         android:layout_alignStart="@+id/subjectLabel"
         android:layout_below="@+id/subjectLabel"
@@ -56,20 +56,20 @@
         android:layout_alignLeft="@+id/subjectsSpinner"
         android:layout_alignStart="@+id/subjectsSpinner"
         android:layout_alignTop="@+id/locationLabel"
-        android:padding="5dp"
+        android:layout_toLeftOf="@+id/viewLocationButton"
         android:layout_toStartOf="@+id/viewLocationButton"
-        android:layout_toLeftOf="@+id/viewLocationButton"/>
+        android:padding="5dp" />
 
     <TextView
         android:id="@+id/StudyTypeLabel"
+        style="@style/SessionsSettingsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/SessionsSettingsLabel"
-        android:text="@string/study_type_label"
         android:layout_below="@+id/locationLabel"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="60dp"/>
+        android:layout_marginTop="60dp"
+        android:text="@string/study_type_label" />
 
     <CheckBox
         android:id="@+id/theoryCheckBox"
@@ -78,11 +78,11 @@
         android:layout_alignBottom="@+id/StudyTypeLabel"
         android:layout_alignLeft="@+id/subjectsSpinner"
         android:layout_alignStart="@+id/subjectsSpinner"
-        android:layout_toRightOf="@+id/StudyTypeLabel"
         android:layout_toEndOf="@+id/StudyTypeLabel"
-        android:text="@string/theory"
+        android:layout_toRightOf="@+id/StudyTypeLabel"
         android:padding="5dp"
-        android:textSize="30sp"/>
+        android:text="@string/theory"
+        android:textSize="30sp" />
 
     <CheckBox
         android:id="@+id/exercisesCheckBox"
@@ -91,9 +91,9 @@
         android:layout_alignLeft="@+id/subjectsSpinner"
         android:layout_alignStart="@+id/subjectsSpinner"
         android:layout_below="@+id/theoryCheckBox"
-        android:text="@string/exercises"
         android:padding="5dp"
-        android:textSize="30sp"/>
+        android:text="@string/exercises"
+        android:textSize="30sp" />
 
     <CheckBox
         android:id="@+id/projectCheckBox"

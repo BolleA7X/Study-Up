@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+
 public class MyLocationsFragment extends Fragment{
 
     MapView mMapView;
@@ -29,7 +30,7 @@ public class MyLocationsFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.my_locations_map, container, false);
-
+        //sessionSettingsLayout.getForeground().setAlpha(220);
         LocName = getArguments().getString("LocName");
         closeButton =(ImageButton) rootView.findViewById(R.id.closeButton);
         mMapView = (MapView) rootView.findViewById(R.id.mapView);

@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Trophy[] trophies;   //per avere i trofei a disposizione in tutti i metodi
     private FragmentManager fragmentManager;
 
+    PowerManager.WakeLock wakeLock;
+    PowerManager powerManager;
 
     //Menu
     @Override
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -94,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 showMenu = false;
-                invalidateOptionsMenu();    //chiama onPrepareOptionsMenu per disabilitare il menu
+                invalidateOptionsMenu();
                 break;
             case R.id.menu_results:
                 intent = new Intent(this,ResultsActivity.class);
@@ -105,15 +109,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-    //ci serve per refreshare il menu e settarlo visibile solo dove vogliamo
     @Override
-    public boolean onPrepareOptionsMenu (Menu menu) {
-        if (showMenu == false) {
-            menu.clear();
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem settings = menu.findItem(R.id.menu_settings);
+        MenuItem trophies = menu.findItem(R.id.menu_trophies);
+        MenuItem results = menu.findItem(R.id.menu_results);
+        //se il timer è attivo o sono in un fragment, rendo il menù invisibile
+        if(isOn ||!showMenu)
+        {
+            settings.setVisible(false);
+            trophies.setVisible(false);
+            results.setVisible(false);
+        }
+        else
+        {
+            settings.setVisible(true);
+            trophies.setVisible(true);
+            results.setVisible(true);
         }
         return true;
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -256,10 +272,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onPause() {
-        //TODO fare thread?
-        if (isOn) {
-            stop();
-        }
         super.onPause();
     }
 
@@ -268,7 +280,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int count = getFragmentManager().getBackStackEntryCount();
 
         if (count == 0) {
-
             Toast backpressToast =Toast.makeText(getBaseContext(), R.string.back_confirm, Toast.LENGTH_LONG);
             long currentTime = System.currentTimeMillis();
             if(currentTime - lastPress > 5000){
@@ -279,11 +290,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 super.onBackPressed();
             }
         } else {
-            showMenu = true;    //quando viene premuto il tasto "back" faccio si che si mostri il menu perché si torna sempre nella main activity
+            //quando viene premuto il tasto "back" faccio si che si mostri il menu perchÃ© si torna sempre nella main activity
+            showMenu = true;
             invalidateOptionsMenu();
             getFragmentManager().popBackStack();
         }
 
+    }
+    @Override
+    protected void onStop(){
+        //stop();
+        super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -314,6 +336,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void start(){
+        invalidateOptionsMenu();
         final AppDB db = new AppDB(this);
         final SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("timeVal", timeVal);
@@ -335,6 +358,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         secTimer = 60;
         int mytime;
         mytime = (timeVal*5)*60*1000; //secondi
+        //attiva il wakelock per tenere il thread attivo
+        powerManager = (PowerManager) getSystemService(POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                "MyWakelockTag");
+        wakeLock.acquire();
 
         seekBar.setEnabled(false);
         fab.setClickable(false);
@@ -450,6 +478,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //se il timer viene stoppato prima della fine salvo la sessione passando la durata totale - la durata rimasta
     public void stop(){
+        invalidateOptionsMenu();
         secondValue.setVisibility(View.INVISIBLE);
         startTimerButton.setImageResource(start);
         isOn = false;
@@ -461,6 +490,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         int saveInt = timeVal*5 - Integer.parseInt(minuteValue.getText().toString());
         saveSession(saveInt);
+        wakeLock.release(); //ferma il wakelock
     }
 
     //Funzione per aggiornare le TextView per il timer

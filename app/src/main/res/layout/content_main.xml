@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
+        android:maxLength="14"
         android:text="@string/current_subject_label"
         android:textSize="80sp" />
 

@@ -38,7 +38,7 @@ public class IntroActivity extends AppIntro {
         setProgressButtonEnabled(true);
 
         setFadeAnimation();
-        askForPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 3);
+        askForPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WAKE_LOCK }, 3);
 
         // Turn vibration on and set intensity.
         setVibrate(true);
