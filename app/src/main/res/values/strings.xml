@@ -101,9 +101,12 @@
     <string name="pomodoro_mode_label">Usa modalità pomodoro</string>
     <string name="pomodoro_mode_expl">Modalità alternativa con sessioni fisse da 25 minuti</string>
 
+    <string name="subjects_pie_chart_label">Le tue materie:</string>
+    <string name="types_pie_chart_label">Tipo di studio:</string>
     <string name="most_frequent_location_label">Luogo più frequente: </string>
     <string name="most_frequent_location_default_value">Non specificato</string>
     <string name="total_time_label">Tempo totale: </string>
+    <string name="advice_label">Conclusioni: </string>
 
     <string name="notification_title_label_custom">Timer Concluso! </string>
     <string name="notification_title_label_pomodoro">Pomodoro Concluso! </string>
@@ -133,6 +136,7 @@
     <string name="courseDistribution">Distribuzione corsi</string>
     <string name="typeDistribution">Distribuzione tipi di sessione</string>
 
+    <!-- Stringhe advices -->
     <string name="advice_2_0">Stai studiando con costanza. </string>
     <string name="advice_2_1">Dovresti studiare con maggiore frequenza. </string>
     <string name="advice_1_0">Sarebbe meglio studiare per più tempo al giorno. </string>
@@ -142,10 +146,11 @@
     <string name="advice_0_1">Dovresti concentrarti su meno materie alla volta.</string>
     <string name="advice_0_2">Negli ultimi dieci giorni hai studiato il corretto numero di materie diverse al giorno.</string>
 
+    <!-- Stringhe eliminazione materie, corsi ed entrambi -->
     <string name="allDataDeleted">Tutti i dati sono stati eliminati</string>
     <string name="deleted">eliminato</string>
 
-    <!-- stringhe per il login e rete-->
+    <!-- Stringhe per il login e rete -->
     <string name="usrnameTaken">Questo username è già stato preso</string>
     <string name="unknownErr">Errore sconosciuto. Riprovare più tardi</string>
     <string name="noConnection">Non sei connesso a internet</string>

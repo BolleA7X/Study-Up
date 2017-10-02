@@ -6,51 +6,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <!-- C'è un problema col fragment di questo layout. Quando si apre il fragment dei settings dal menu viene fuori solo una riga
-    in alto -->
-
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context="com.example.alessio.tesi.ResultsActivity"
-        android:id="@+id/resultsActivity" >
+        android:id="@+id/resultsActivity">
 
-        <fragment
-            android:name="com.example.alessio.tesi.TrophiesFragment"
-            android:id="@+id/trophies_fragment"
-            android:layout_width="0dp"
-            android:layout_height="match_parent" />
+        <!-- Le tue materie + grafico -->
+        <TextView
+            android:id="@+id/subjectsPieChartLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/subjects_pie_chart_label"
+            style="@style/ResultsActivityLabels" />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/subjectsPieChart"
-            android:layout_width="match_parent"
-            android:layout_height="500sp">
-
+            android:layout_width="500sp"
+            android:layout_height="500sp"
+            android:layout_centerHorizontal="true" >
         </com.github.mikephil.charting.charts.PieChart>
+
+        <!-- Tipi di studio + grafico -->
+        <TextView
+            android:id="@+id/typesPieChartLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/types_pie_chart_label"
+            android:layout_below="@+id/subjectsPieChart"
+            style="@style/ResultsActivityLabels" />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/typesPieChart"
-            android:layout_width="match_parent"
+            android:layout_width="500sp"
             android:layout_below="@+id/subjectsPieChart"
-            android:layout_height="500sp">
-
+            android:layout_height="500sp"
+            android:layout_centerHorizontal="true" >
         </com.github.mikephil.charting.charts.PieChart>
 
+        <!-- Luogo più frequente -->
         <LinearLayout
             android:id="@+id/mostFrequentLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_below="@+id/typesPieChart"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp" >
 
             <TextView
                 android:id="@+id/mostFrequentLocationTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textSize="20sp"
-                android:text="@string/most_frequent_location_label" />
+                android:text="@string/most_frequent_location_label"
+                style="@style/ResultsActivityLabels" />
 
             <TextView
                 android:id="@+id/mostFrequentLocationLabel"
@@ -59,11 +68,13 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
-                android:text="@string/most_frequent_location_default_value"
-                android:textSize="20sp" />
+                android:padding="3dp"
+                android:textSize="20sp"
+                android:text="@string/most_frequent_location_default_value"/>
 
         </LinearLayout>
 
+        <!-- Tempo totale -->
         <LinearLayout
             android:id="@+id/totalTime"
             android:layout_width="match_parent"
@@ -76,8 +87,8 @@
                 android:id="@+id/totalTimetextView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textSize="20sp"
-                android:text="@string/total_time_label" />
+                android:text="@string/total_time_label"
+                style="@style/ResultsActivityLabels"/>
 
             <TextView
                 android:id="@+id/totalTimeLabel"
@@ -86,24 +97,48 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
+                android:padding="3dp"
                 android:text="@string/most_frequent_location_default_value"
                 android:textSize="20sp" />
 
         </LinearLayout>
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/advice"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/totalTime" />
+        <!-- Consigli -->
+        <LinearLayout
+            android:id="@+id/adviceLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/totalTime"
+            android:layout_marginTop="10dp">
 
+            <TextView
+                android:id="@+id/adviceLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/ResultsActivityLabels"
+                android:text="@string/advice_label"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/advice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:padding="3dp"
+                android:textSize="20sp"/>
+
+        </LinearLayout>
+
+        <!-- Cerca utente -->
         <TextView
             android:id="@+id/search_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/advice"
+            android:layout_below="@+id/adviceLayout"
             android:layout_marginTop="30sp"
-            android:text="@string/search_label" />
+            android:text="@string/search_label"
+            style="@style/ResultsActivityLabels"/>
 
         <EditText
             android:id="@+id/search_field"
