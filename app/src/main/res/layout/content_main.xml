@@ -32,6 +32,7 @@
             android:layout_height="328dp"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
+            android:background="#0000"
             android:backgroundTint="#0000"
             android:contentDescription="@string/image_desc"
             android:elevation="0dp"
@@ -42,9 +43,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="25dp"
+            android:layout_marginEnd="30dp"
             android:layout_marginLeft="0dp"
-            android:layout_marginRight="25dp"
+            android:layout_marginRight="30dp"
             android:layout_marginStart="0dp"
             android:layout_marginTop="110dp"
             android:orientation="vertical">

@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:checked="true"
-        android:defaultValue="true"
+        android:defaultValue="false"
         android:key="use_pomodoro_mode"
         android:summary="@string/pomodoro_mode_expl"
         android:title="@string/pomodoro_mode_label" />
