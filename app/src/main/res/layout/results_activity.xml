@@ -142,15 +142,21 @@
 
         <EditText
             android:id="@+id/search_field"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/search_label" />
+            android:layout_below="@+id/search_label"
+            android:ems="22"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"/>
 
         <Button
             android:id="@+id/search_user_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/search_field"
+            android:layout_toRightOf="@+id/search_field"
+            android:layout_toEndOf="@+id/search_field"
+            android:layout_below="@+id/search_label"
+            android:layout_marginLeft="10dp"
             android:text="@string/search_button"
             android:backgroundTint="@android:color/transparent" />
 

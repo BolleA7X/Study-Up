@@ -9,7 +9,6 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_results">Results</string>
     <string name="menu_trophies">Trophies</string>
-    <string name="menu_calendar">Calendar</string>
 
     <string name="subject_label">Corso</string>
     <string name="location_label">Luogo</string>
@@ -39,12 +38,7 @@
     <string name="close_button_content">Bottone per chiudere mappa</string>
     <string name="map_button_content">Bottone per aprire mappa</string>
 
-    <string name="confirm_exit_label">Non mostrare più</string>
-    <string name="confirm_message">Sicuro di voler fermare il timer? Non passerai gli esami facendo così!</string>
-    <string name="confirm_title">Attenzione!</string>
-    <string name="go_on_negative">Interrompi</string>
-    <string name="go_on_positive">Continua il timer</string>
-
+    <!-- Stringhe titolo trofei -->
     <string name="trophy_title_01">Fuori il primo! E gli altri?</string>
     <string name="trophy_title_02">Splash!</string>
     <string name="trophy_title_03">Pentasplash!</string>
@@ -66,6 +60,7 @@
     <string name="trophy_title_19">Caffeinomane</string>
     <string name="trophy_title_20">Mr Pomodoro</string>
 
+    <!-- Stringhe descrizione trofei -->
     <string name="trophy_description_01">Apri per la prima volta l\'app.</string>
     <string name="trophy_description_02">Completa un pomodoro.</string>
     <string name="trophy_description_03">Completa 5 pomodori di fila.</string>
@@ -87,32 +82,49 @@
     <string name="trophy_description_19">Completa una sessione normale da almeno due ore.</string>
     <string name="trophy_description_20">Sblocca tutti gli altri trofei..studiando!</string>
 
-    <!-- Toast -->
-    <string name="first_error_toast">Devi selezionare corso e tipo della sessione!</string>
-    <string name="empty_insert_error_toast">Inserisci un nome</string>
-    <string name="back_confirm">Premi di nuovo indietro per uscire</string>
+    <!-- Stringa sblocco trofei -->
+    <string name="unlockTrophy">CONGRATULAZIONI! Hai sbloccato il trofeo: </string>
 
     <string name="gps_is_off">Il gps è disattivato, vuoi disattivarlo?</string>
     <string name="go_to_sett">Vai alle impostazioni</string>
 
+    <!-- Stringhe delle impostazioni -->
     <string name="delete_location_label">Cancella luogo</string>
     <string name="delete_course_label">Cancella corso</string>
     <string name="delete_all_label">Cancella tutti i dati</string>
     <string name="pomodoro_mode_label">Usa modalità pomodoro</string>
     <string name="pomodoro_mode_expl">Modalità alternativa con sessioni fisse da 25 minuti</string>
 
-    <string name="subjects_pie_chart_label">Le tue materie:</string>
-    <string name="types_pie_chart_label">Tipo di studio:</string>
-    <string name="most_frequent_location_label">Luogo più frequente: </string>
-    <string name="most_frequent_location_default_value">Non specificato</string>
-    <string name="total_time_label">Tempo totale: </string>
-    <string name="advice_label">Conclusioni: </string>
+    <!-- Stringhe eliminazione materie, corsi ed entrambi -->
+    <string name="allDataDeleted">Tutti i dati sono stati eliminati</string>
+    <string name="deleted">eliminato</string>
 
+    <!-- Toast -->
+    <string name="first_error_toast">Devi selezionare corso e tipo della sessione!</string>
+    <string name="empty_insert_error_toast">Inserisci un nome</string>
+    <string name="back_confirm">Premi di nuovo indietro per uscire</string>
+
+    <!-- Stringhe in ResultsActivity -->
+    <string name="subjects_pie_chart_label">Le tue materie:</string>
+    <string name="subjects_pie_chart_of_friend_label">Le materie di:</string>
+    <string name="types_pie_chart_label">Tipo di studio:</string>
+    <string name="most_frequent_location_label">Luogo più frequente:</string>
+    <string name="most_frequent_location_default_value">Non specificato</string>
+    <string name="total_time_label">Tempo totale:</string>
+    <string name="minutes">minuti</string>
+    <string name="advice_label">Conclusioni:</string>
+
+    <!-- Stringhe della mainActivity -->
     <string name="notification_title_label_custom">Timer Concluso! </string>
     <string name="notification_title_label_pomodoro">Pomodoro Concluso! </string>
     <string name="notification_text_label">Continui? </string>
     <string name="lazy_title_label">Vuoi mettere il timer a zero?</string>
     <string name="lazy_text_label">Almeno 5 minuti, dai!</string>
+    <string name="confirm_exit_label">Non mostrare più</string>
+    <string name="confirm_message">Sicuro di voler fermare il timer? Non passerai gli esami facendo così!</string>
+    <string name="confirm_title">Attenzione!</string>
+    <string name="go_on_negative">Interrompi</string>
+    <string name="go_on_positive">Continua il timer</string>
 
     <!-- Stringhe che erano rimaste "volanti" -->
     <string name="none">Nessuno</string>
@@ -127,8 +139,6 @@
     <string name="messaggioInutile">Dati ottenuti usando il calendario di Goole:</string>
     <string name="apiError">Si è verificato un errore:</string>
     <string name="reqCancelled">Richiesta annullata</string>
-
-    <string name="unlockTrophy">CONGRATULAZIONI! Hai sbloccato il trofeo </string>
 
     <string name="noSessionData">Devi selezionare corso e tipo della sessione!</string>
     <string name="endedTimer">Timer concluso!</string>
@@ -146,10 +156,6 @@
     <string name="advice_0_1">Dovresti concentrarti su meno materie alla volta.</string>
     <string name="advice_0_2">Negli ultimi dieci giorni hai studiato il corretto numero di materie diverse al giorno.</string>
 
-    <!-- Stringhe eliminazione materie, corsi ed entrambi -->
-    <string name="allDataDeleted">Tutti i dati sono stati eliminati</string>
-    <string name="deleted">eliminato</string>
-
     <!-- Stringhe per il login e rete -->
     <string name="usrnameTaken">Questo username è già stato preso</string>
     <string name="unknownErr">Errore sconosciuto. Riprovare più tardi</string>
@@ -166,7 +172,7 @@
     <string name="syncComplete">Sincronizzazione completata</string>
     <string name="syncWarning">Tutti i dati non condivisi verranno persi</string>
 
-    <!-- Intro -->
+    <!-- Stringhe intro -->
     <string name="title_intro_1">Studia e lavora meglio!</string>
     <string name="description_intro_1">Fissando tempi di studio e di pausa prima di iniziare potrai essere
     più efficiente e produttivo!</string>

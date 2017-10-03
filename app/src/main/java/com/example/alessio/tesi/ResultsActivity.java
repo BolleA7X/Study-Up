@@ -36,10 +36,12 @@ import java.util.ArrayList;
 
 public class ResultsActivity extends AppCompatActivity {
 
+    TextView subjectsPieChartLabel;
     PieChart subjectsPiechart;
     PieChart typesPiechart;
     TextView mostFrequentLocation,mostFrequentLocationLabel;
     TextView totalTime;
+    TextView adviceLabel;
     TextView advice;
     EditText searchUser;
     Button searchButton;
@@ -62,8 +64,10 @@ public class ResultsActivity extends AppCompatActivity {
         searchButton = (Button)findViewById(R.id.search_user_button);
 
         //istanzio le textview e ne setto il testo tramite query
+        subjectsPieChartLabel = (TextView) findViewById(R.id.subjectsPieChartLabel);
         mostFrequentLocation = (TextView)findViewById(R.id.mostFrequentLocationTextView);
         mostFrequentLocationLabel = (TextView)findViewById(R.id.mostFrequentLocationLabel);
+        adviceLabel = (TextView) findViewById(R.id.adviceLabel);
         String place = db.getMostFrequentLocation();
         if(place != null) {
             if (!place.equals(""))
@@ -142,17 +146,17 @@ public class ResultsActivity extends AppCompatActivity {
         String advice = new String("");
         //considero la distanza temporale media tra le sessioni
         if(infoForAdvice[2] <= 2)                                   //distanza media di 2 giorni o meno
-            advice = this.getResources().getString(R.string.advice_2_0);
+            advice = this.getResources().getString(R.string.advice_2_0) + " ";
         else
-            advice = this.getResources().getString(R.string.advice_2_1);
+            advice = this.getResources().getString(R.string.advice_2_1) + " ";
 
         //considero la media dei minuti di studio al giorno
         if(infoForAdvice[1] <= 60)
-            advice += this.getResources().getString(R.string.advice_1_0);
+            advice += this.getResources().getString(R.string.advice_1_0) + " ";
         else if(infoForAdvice[1] >= 240)
-            advice += this.getResources().getString(R.string.advice_1_1);
+            advice += this.getResources().getString(R.string.advice_1_1) + " ";
         else
-            advice += this.getResources().getString(R.string.advice_1_2);
+            advice += this.getResources().getString(R.string.advice_1_2) + " ";
 
         //considero la media del numero di corsi diversi studiati negli ultimi 10 giorni
         if(infoForAdvice[0] <= 2)
@@ -226,7 +230,7 @@ public class ResultsActivity extends AppCompatActivity {
                     int totalDuration = response.getInt("total_time");
                     ArrayList<PieEntry> subj = new ArrayList<>();
                     ArrayList<PieEntry> types = new ArrayList<>();
-                    totalTime.setText(String.valueOf(totalDuration));
+                    totalTime.setText(String.valueOf(totalDuration) + " " + getResources().getString(R.string.minutes));
                     JSONArray courses = response.getJSONArray("courses");
                     JSONObject typePerc = response.getJSONObject("percents");
                     //prelevo i dati sui corsi dal json e calcolo le percentuali, quindi preparo le strutture dati per inserirli
@@ -263,6 +267,8 @@ public class ResultsActivity extends AppCompatActivity {
                     typesPiechart.setDescription(desc);
                     typesPiechart.invalidate();
                     //tolgo i consigli e il luogo più frequentato
+                    subjectsPieChartLabel.setText(getResources().getString(R.string.subjects_pie_chart_of_friend_label) + " " + searchUser.getText().toString());
+                    adviceLabel.setVisibility(View.INVISIBLE);
                     advice.setVisibility(View.INVISIBLE);
                     mostFrequentLocation.setVisibility(View.INVISIBLE);
                     mostFrequentLocationLabel.setVisibility(View.INVISIBLE);
