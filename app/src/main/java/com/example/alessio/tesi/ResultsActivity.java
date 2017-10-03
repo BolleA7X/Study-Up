@@ -45,6 +45,7 @@ public class ResultsActivity extends AppCompatActivity {
     TextView advice;
     EditText searchUser;
     Button searchButton;
+    boolean searchDone;
     SharedPreferences prefs;
 
     @Override
@@ -79,7 +80,7 @@ public class ResultsActivity extends AppCompatActivity {
 
         totalTime = (TextView)findViewById(R.id.totalTimeLabel);
         int time = db.getTotalTime(user);
-        totalTime.setText(String.valueOf(time)+" minuti");
+        totalTime.setText(String.valueOf(time) + " " + getResources().getString(R.string.minutes));
 
         advice = (TextView)findViewById(R.id.advice);
         float[] infoForAdvice = db.getInfoForAdvice(user);              //informazioni recuperate dal db per il consiglio
@@ -125,6 +126,9 @@ public class ResultsActivity extends AppCompatActivity {
         else
             Toast.makeText(this,this.getResources().getString(R.string.noData),Toast.LENGTH_SHORT).show();
 
+        //Setto di default a false il boolean searchDone così se clicco indietro, anzichè ricaricare la view come quando è true, possa tornare alla mainActivity
+        searchDone = false;
+
         // RICERCA DI UN UTENTE
         //richiesta al server e risposta
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +144,14 @@ public class ResultsActivity extends AppCompatActivity {
             Toast t = Toast.makeText(getApplicationContext(), getApplication().getResources().getString(R.string.unlockTrophy)+ " " + getResources().getString(R.string.trophy_title_14),Toast.LENGTH_LONG);
             t.show();
         }
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(searchDone){
+            recreate();
+        }
+        else finish();
     }
 
     private String chooseAdvice(float[] infoForAdvice) {
@@ -272,6 +284,7 @@ public class ResultsActivity extends AppCompatActivity {
                     advice.setVisibility(View.INVISIBLE);
                     mostFrequentLocation.setVisibility(View.INVISIBLE);
                     mostFrequentLocationLabel.setVisibility(View.INVISIBLE);
+                    searchDone = true;
                 }
                 else if(message.equals("wrong"))
                     Toast.makeText(ResultsActivity.this, ResultsActivity.this.getResources().getString(R.string.unknownUser), Toast.LENGTH_SHORT).show();
