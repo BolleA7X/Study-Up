@@ -37,7 +37,6 @@
         android:key="use_pomodoro_mode"
         android:summary="@string/pomodoro_mode_expl"
         android:title="@string/pomodoro_mode_label" />
-
     <ListPreference
         android:id="@+id/syncUp_button"
         android:layout_width="match_parent"

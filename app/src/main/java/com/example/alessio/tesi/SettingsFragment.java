@@ -12,12 +12,15 @@ import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Toast;
 import com.example.alessio.tesi.Database.AppDB;
 import com.example.alessio.tesi.Database.Course;
@@ -42,8 +45,6 @@ public class SettingsFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preference);
         frg = this;
-
-        AppDB db = new AppDB(getActivity());
 
         //ottengo il riferimento ai ListPreference
         deleteCourse = new ListPreference(getActivity());
@@ -75,43 +76,8 @@ public class SettingsFragment extends PreferenceFragment {
                 return true;
             }
         });
-
-        //valori di base del pulsante che permette di eliminare tutti i dati
-        CharSequence[] deleteAllEntries = {"No","Si"};
-        CharSequence[] deleteAllEntriesValues = {"false","true"};
-
-        //valori base degli altri due: prelevati dal db
-        ArrayList<String> entries1 = db.getSubjects(user);
-        entries1.add(0,getActivity().getResources().getString(R.string.none));
-        ArrayList<String> entries2 = db.getLocations();
-        entries2.add(0,getActivity().getResources().getString(R.string.none));
-        CharSequence[] deleteCourseEntries = entries1.toArray(new CharSequence[entries1.size()]);
-        CharSequence[] deleteLocationEntries = entries2.toArray(new CharSequence[entries2.size()]);
-
-        //setto questi valori
-        deleteAll.setEntries(deleteAllEntries);
-        deleteAll.setEntryValues(deleteAllEntriesValues);
-        deleteAll.setDefaultValue("false");
-
-        deleteCourse.setEntries(deleteCourseEntries);
-        deleteCourse.setEntryValues(deleteCourseEntries);
-        deleteCourse.setDefaultValue(getActivity().getResources().getString(R.string.none));
-
-        deleteLocation.setEntries(deleteLocationEntries);
-        deleteLocation.setEntryValues(deleteLocationEntries);
-        deleteLocation.setDefaultValue(getActivity().getResources().getString(R.string.none));
-
-        syncUp.setEntries(deleteAllEntries);
-        syncUp.setEntryValues(deleteAllEntriesValues);
-        syncUp.setDefaultValue(getActivity().getResources().getString(R.string.none));
-
-        syncDown.setEntries(deleteAllEntries);
-        syncDown.setEntryValues(deleteAllEntriesValues);
-        syncDown.setDefaultValue(getActivity().getResources().getString(R.string.none));
-
-        logout.setEntries(deleteAllEntries);
-        logout.setEntryValues(deleteAllEntriesValues);
-        logout.setDefaultValue(getActivity().getResources().getString(R.string.none));
+        //Aggiorna le preference ricaricando i valori dal DB
+        updateEntries();
     }
 
     @Override
@@ -166,8 +132,10 @@ public class SettingsFragment extends PreferenceFragment {
                         t.show();
                     }
                 }
+                updateEntries();
                 return false;
             }
+
         });
 
         //listener per vedere quale posto è stato selezionato per l'eliminazione
@@ -181,6 +149,7 @@ public class SettingsFragment extends PreferenceFragment {
                     db.deleteLocation(newVal);
                     Toast.makeText(getActivity(),newVal+" "+getActivity().getResources().getString(R.string.deleted),Toast.LENGTH_SHORT).show();
                 }
+                updateEntries();
                 return false;
             }
         });
@@ -221,7 +190,8 @@ public class SettingsFragment extends PreferenceFragment {
                     logout.setDefaultValue("false");
                     editor.putBoolean("logged", false);
                     editor.putString("loggedAs", "");
-                    editor.commit();
+                    editor.remove("subj");
+                    editor.apply();
                     //riavvio l'app
                     Intent intent = frg.getActivity().getPackageManager().getLaunchIntentForPackage(frg.getActivity().getPackageName());
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -420,5 +390,44 @@ public class SettingsFragment extends PreferenceFragment {
                 e.printStackTrace();
             }
         }
+    }
+    public void updateEntries(){
+        AppDB db = new AppDB(getActivity());
+        //valori di base del pulsante che permette di eliminare tutti i dati
+        CharSequence[] deleteAllEntries = {"No","Si"};
+        CharSequence[] deleteAllEntriesValues = {"false","true"};
+
+        //valori base degli altri due: prelevati dal db
+        ArrayList<String> entries1 = db.getSubjects(user);
+        entries1.add(0,getActivity().getResources().getString(R.string.none));
+        ArrayList<String> entries2 = db.getLocations();
+        entries2.add(0,getActivity().getResources().getString(R.string.none));
+        CharSequence[] deleteCourseEntries = entries1.toArray(new CharSequence[entries1.size()]);
+        CharSequence[] deleteLocationEntries = entries2.toArray(new CharSequence[entries2.size()]);
+
+        //setto questi valori
+        deleteAll.setEntries(deleteAllEntries);
+        deleteAll.setEntryValues(deleteAllEntriesValues);
+        deleteAll.setDefaultValue("false");
+
+        deleteCourse.setEntries(deleteCourseEntries);
+        deleteCourse.setEntryValues(deleteCourseEntries);
+        deleteCourse.setDefaultValue(getActivity().getResources().getString(R.string.none));
+
+        deleteLocation.setEntries(deleteLocationEntries);
+        deleteLocation.setEntryValues(deleteLocationEntries);
+        deleteLocation.setDefaultValue(getActivity().getResources().getString(R.string.none));
+
+        syncUp.setEntries(deleteAllEntries);
+        syncUp.setEntryValues(deleteAllEntriesValues);
+        syncUp.setDefaultValue(getActivity().getResources().getString(R.string.none));
+
+        syncDown.setEntries(deleteAllEntries);
+        syncDown.setEntryValues(deleteAllEntriesValues);
+        syncDown.setDefaultValue(getActivity().getResources().getString(R.string.none));
+
+        logout.setEntries(deleteAllEntries);
+        logout.setEntryValues(deleteAllEntriesValues);
+        logout.setDefaultValue(getActivity().getResources().getString(R.string.none));
     }
 }

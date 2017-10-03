@@ -21,7 +21,7 @@
 
     <FrameLayout
         android:id="@+id/frameLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/currentSubjectLabel"
         android:layout_centerHorizontal="true">
@@ -31,8 +31,6 @@
             android:layout_width="238dp"
             android:layout_height="328dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
             android:adjustViewBounds="true"
             android:backgroundTint="#0000"
             android:contentDescription="@string/image_desc"
@@ -44,6 +42,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginEnd="25dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="110dp"
             android:orientation="vertical">
 
