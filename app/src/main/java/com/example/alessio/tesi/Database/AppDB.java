@@ -253,13 +253,21 @@ public class AppDB {
 
     //query per inserire nuovo posto
     public void insertLocation(Location location) {
-        ContentValues cv = new ContentValues();
-        cv.put(LOCATION_NAME,location.getName());
-        cv.put(LOCATION_LATITUDE,location.getLatitude());
-        cv.put(LOCATION_LONGITUDE,location.getLongitude());
+        String[] args = {"*"};
+        String where = LOCATION_NAME+"= ?";
+        String[] whereArgs = {location.getName()};
         this.openWriteableDB();
-        long rowID = db.insert(LOCATION_TABLE,null,cv);
-        this.closeDB();
+        Cursor cursor = db.query(LOCATION_TABLE,args,where,whereArgs,null,null,null);
+        if(cursor.getCount() == 0) {
+            ContentValues cv = new ContentValues();
+            cv.put(LOCATION_NAME, location.getName());
+            cv.put(LOCATION_LATITUDE, location.getLatitude());
+            cv.put(LOCATION_LONGITUDE, location.getLongitude());
+            if(!db.isOpen())
+                this.openWriteableDB();
+            long rowID = db.insert(LOCATION_TABLE, null, cv);
+            this.closeDB();
+        }
     }
 
     //query per inserire dati di sessione appena finita
