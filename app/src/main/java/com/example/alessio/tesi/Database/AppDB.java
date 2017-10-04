@@ -235,12 +235,20 @@ public class AppDB {
     //METODI PER ESEGUIRE SPECIFICHE QUERY: NON SPECIFICO I DETTAGLI DI OGNI SINGOLO METODO
     //query per inserire nuova materia
     public void insertSubject(Course course,String user) {
-        ContentValues cv = new ContentValues();
-        cv.put(COURSE_NAME,course.getName());
-        cv.put(COURSE_USER,user);
+        String[] args = {"*"};
+        String where = COURSE_NAME+"= ? AND "+COURSE_USER+"= ?";
+        String[] whereArgs = {course.getName(),user};
         this.openWriteableDB();
-        long rowID = db.insert(COURSE_TABLE,null,cv);
-        this.closeDB();
+        Cursor cursor = db.query(COURSE_TABLE,args,where,whereArgs,null,null,null);
+        if(cursor.getCount() == 0) {
+            ContentValues cv = new ContentValues();
+            cv.put(COURSE_NAME, course.getName());
+            cv.put(COURSE_USER, user);
+            if (!db.isOpen())
+                this.openWriteableDB();
+            long rowID = db.insert(COURSE_TABLE, null, cv);
+            this.closeDB();
+        }
     }
 
     //query per inserire nuovo posto
