@@ -397,9 +397,9 @@ public class AppDB {
         float k = 1/(percents[0] + percents[1] + percents[2]);
         Log.d("k",String.valueOf(k));
         //5) calcolo le percentuali relative per ogni tipo e le inserisco nell'ArrayList
-        entries.add(new PieEntry(k*percents[0]*100,SESSION_THEORY));
-        entries.add(new PieEntry(k*percents[1]*100,SESSION_EXERCISE));
-        entries.add(new PieEntry(k*percents[2]*100,SESSION_PROJECT));
+        entries.add(new PieEntry(k*percents[0]*100,"Teoria"));
+        entries.add(new PieEntry(k*percents[1]*100,"Esercizi"));
+        entries.add(new PieEntry(k*percents[2]*100,"Progetto"));
         if(cursor != null)
             cursor.close();
         this.closeDB();
