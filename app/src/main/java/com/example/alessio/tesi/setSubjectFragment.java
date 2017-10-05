@@ -41,9 +41,8 @@ public class setSubjectFragment extends DialogFragment  {
         subject = (EditText)view.findViewById(R.id.newSub);
         builder.setMessage(R.string.add_subject_label)
                .setPositiveButton(R.string.add_label, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        String subj = subject.getText().toString();
-                        if(subj!= null && !subj.isEmpty()){
+                    public void onClick(DialogInterface dialog, int id) {String subj = subject.getText().toString();
+                        if(!subj.isEmpty()){
                             Course course = new Course(subject.getText().toString());
                             AppDB db = new AppDB(getActivity());
                             db.insertSubject(course,prefs.getString("loggedAs",""));
@@ -57,7 +56,6 @@ public class setSubjectFragment extends DialogFragment  {
                             Toast toast = Toast.makeText(getActivity(), R.string.empty_insert_error_toast, Toast.LENGTH_LONG);
                             toast.show();
                         }
-
                     }
                 })
                .setNegativeButton(R.string.abort_label, new DialogInterface.OnClickListener() {

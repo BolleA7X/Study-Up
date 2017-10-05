@@ -101,7 +101,7 @@
 
     <!-- Toast -->
     <string name="first_error_toast">Devi selezionare corso e tipo della sessione!</string>
-    <string name="empty_insert_error_toast">Inserisci un nome</string>
+    <string name="empty_insert_error_toast">Materia non inserita. E\' necessario specificare un nome!</string>
     <string name="back_confirm">Premi di nuovo indietro per uscire</string>
 
     <!-- Stringhe in ResultsActivity -->
