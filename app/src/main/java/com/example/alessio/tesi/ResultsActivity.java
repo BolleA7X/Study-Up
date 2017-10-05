@@ -257,9 +257,9 @@ public class ResultsActivity extends AppCompatActivity {
                         subj.add(pe);
                     }
                     //prelevo le percentuali dal json e le inserisco nelle strutture dati
-                    PieEntry th = new PieEntry((float)typePerc.getDouble("th"),"theory");
-                    PieEntry ex = new PieEntry((float)typePerc.getDouble("ex"),"exercise");
-                    PieEntry pr = new PieEntry((float)typePerc.getDouble("pr"),"project");
+                    PieEntry th = new PieEntry((float)typePerc.getDouble("th"),"Teoria");
+                    PieEntry ex = new PieEntry((float)typePerc.getDouble("ex"),"Esercizi");
+                    PieEntry pr = new PieEntry((float)typePerc.getDouble("pr"),"Progetto");
                     types.add(th);types.add(ex);types.add(pr);
                     //setto i dati e le proprietà grafiche dei grafici
                     //colori e descrizione
