@@ -14,10 +14,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:maxLength="14"
         android:text="@string/current_subject_label"
-        android:textSize="80sp" />
+        android:textSize="70sp" />
 
     <FrameLayout
         android:id="@+id/frameLayout"
@@ -28,8 +28,8 @@
 
         <ImageButton
             android:id="@+id/startTimerButton"
-            android:layout_width="238dp"
-            android:layout_height="328dp"
+            android:layout_width="220dp"
+            android:layout_height="280dp"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:background="#0000"
@@ -47,7 +47,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginRight="30dp"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="110dp"
+            android:layout_marginTop="90dp"
             android:orientation="vertical">
 
             <TextView
@@ -83,10 +83,10 @@
         android:layout_below="@+id/frameLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
-        android:layout_marginEnd="70dp"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="70dp"
-        android:layout_marginStart="70dp"
+        android:layout_marginEnd="180dp"
+        android:layout_marginLeft="180dp"
+        android:layout_marginRight="180dp"
+        android:layout_marginStart="180dp"
         android:background="@android:color/transparent"
         android:max="24"
         android:progress="12"

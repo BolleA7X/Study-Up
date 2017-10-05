@@ -25,6 +25,7 @@ public class IntroActivity extends AppIntro {
 
         // Se invece uso le slide di default
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.title_intro_1), getString(R.string.description_intro_1), R.drawable.icon_yellow, Color.parseColor("#3F51B5")));
+        addSlide(AppIntro2Fragment.newInstance(getString(R.string.pomodoro_title), getString(R.string.pomodoro_label), R.drawable.pom_custom_icon, Color.parseColor("#E11010")));
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.title_intro_2), getString(R.string.description_intro_2), R.drawable.pom_custom_icon, Color.parseColor("#3F51B5")));
         addSlide(AppIntro2Fragment.newInstance(getString(R.string.title_intro_3), getString(R.string.description_intro_3), R.drawable.graphic_icon, Color.parseColor("#3F51B5")));
 
@@ -38,7 +39,7 @@ public class IntroActivity extends AppIntro {
         setProgressButtonEnabled(true);
 
         setFadeAnimation();
-        askForPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WAKE_LOCK }, 3);
+       //askForPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 4);
 
         // Turn vibration on and set intensity.
         setVibrate(true);
