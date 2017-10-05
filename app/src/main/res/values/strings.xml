@@ -113,6 +113,7 @@
     <string name="total_time_label">Tempo totale:</string>
     <string name="minutes">minuti</string>
     <string name="advice_label">Conclusioni:</string>
+    <string name="results_activity_edit_text_hint">Inserisci qui l\'username di un amico</string>
 
     <!-- Stringhe della mainActivity -->
     <string name="notification_title_label_custom">Timer Concluso! </string>

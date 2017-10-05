@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -58,23 +60,27 @@ public class MapViewFragment extends Fragment {
                 double longitude = latLng.longitude;
 
                 String locs = newLocation.getText().toString();
-                if(locs!= null && !locs.isEmpty()){
-                    Location location = new Location(newLocation.getText().toString(),latitude,longitude);
+
+                if (!locs.isEmpty()) {
+                    Location location = new Location(newLocation.getText().toString(), latitude, longitude);
                     AppDB db = new AppDB(getActivity());
                     db.insertLocation(location);
-                    ((SessionSettingsActivity)getActivity()).updateSpinner();
-                }else{
+                    ((SessionSettingsActivity) getActivity()).updateSpinner();
+                    getActivity().getFragmentManager().popBackStack();
+                    InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                    inputManager.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                } else {
                     Toast toast = Toast.makeText(getActivity(), R.string.empty_insert_error_toast, Toast.LENGTH_LONG);
                     toast.show();
                 }
-
-                getActivity().getFragmentManager().popBackStack();
             }
         });
         revertButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //torna indietro
                 getActivity().getFragmentManager().popBackStack();
+                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
 

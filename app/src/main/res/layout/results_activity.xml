@@ -147,7 +147,8 @@
             android:layout_below="@+id/search_label"
             android:ems="22"
             android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"/>
+            android:layout_marginStart="5dp"
+            android:hint="@string/results_activity_edit_text_hint"/>
 
         <Button
             android:id="@+id/search_user_button"
